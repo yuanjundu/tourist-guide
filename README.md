@@ -1,2 +1,2 @@
 # nyc_busyness
-Group 16
+Group 16 Research Practicum Project
