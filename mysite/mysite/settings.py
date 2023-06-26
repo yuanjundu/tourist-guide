@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'polls',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.gis',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -79,6 +80,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'tourism': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'tourism',
+        'USER': 'postgres',
+        'PASSWORD': 'postgresgroup16',
+        'HOST': 'ny.cjpj1p90if76.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -123,3 +132,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DATABASE_ROUTERS = ['gmaps.routers.gmapsRouter']
+
+import os
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
