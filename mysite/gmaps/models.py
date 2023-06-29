@@ -48,4 +48,6 @@ class University(Place):
     class Meta:
         db_table = 'university'
 
-
+class Attractions(Place):
+    class Meta:
+        db_table = 'attractions'

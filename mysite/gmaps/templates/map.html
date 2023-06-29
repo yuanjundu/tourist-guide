@@ -1,57 +1,146 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-    <title>NY Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-</head>
+	<head>
+		<title>NY Map</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+		<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.rtl.min.css' %}">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
 
-<body>
-    <div id="map"></div>
+	<body>
+		<div id="map"></div>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+		<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+		<script src="{% static 'main.js' %}"></script>
 
-<script>
-    var map = L.map('map').setView([40.7831, -73.9712], 12);
+		<script>
+			var map = L.map('map').setView([40.7831, -73.9712], 12);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        maxZoom: 22
-    }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+	maxZoom: 22
+}).addTo(map);
 
-    var data = {{ data|safe }};
+var data = {{ data|safe }};
+
+L.geoJSON(data, {
+	filter: function(feature, layer) {
+		return feature.properties.borough == "Manhattan";
+	},
+	style: function(feature) {
+		var locationId = feature.properties.locationid;
+		var choice = getColor(locationId);
+
+		return {
+			fillColor: choice,
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: 3,
+			fillOpacity: 0.7
+		}
+	}
+}).addTo(map);
+
+function getColor(locationId) {
+	var colors = ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#de2d26', '#a50f15'];
+	var index = (locationId - 1) % colors.length;
+	var color = colors[index];
+	return color;
+}
+		</script>
+
+		<header class="p-3 bg-dark text-white">
+			<div class="container">
+				<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+					<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+						<svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+					</a>
+
+					<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+						<li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+						<li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+						<li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+						<li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+						<li><a href="#" class="nav-link px-2 text-white">About</a></li>
+					</ul>
+
+					<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+						<input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+					</form>
+
+					<div class="text-end">
+						<button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+						<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#loginModal">Sign-up</button>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- Login Modal -->
+		<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="wrap">
+							<div class="img" style="background-image: url(images/bg-1.jpg);"></div>
+							<div class="login-wrap p-4 p-md-5">
+								<div class="d-flex">
+									<div class="w-100">
+										<h3 class="mb-4">Sign In</h3>
+									</div>
+									<div class="w-100">
+										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a> <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
+									</div>
+								</div>
+								<form action="#" class="signin-form">
+									<div class="form-group mt-3">
+										<input type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="username">Username</label>
+									</div>
+									<div class="form-group">
+										<input id="password-field" type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye-slash"></span>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+									</div>
+									<div class="form-group d-md-flex">
+										<div class="w-50 text-left">
+											<label class="checkbox-wrap checkbox-primary mb-0">Remember Me <input type="checkbox" checked="checked" /> <span class="checkmark"></span></label>
+										</div>
+										<div class="w-50 text-md-right">
+											<a href="#">Forgot Password</a>
+										</div>
+									</div>
+								</form>
+								<p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
-    L.geoJSON(data, {
-		filter: function(feature, layer) {
-			return feature.properties.borough == "Manhattan";
-		},
-        style: function(feature) {
-            var locationId = feature.properties.locationid;
-            var choice = getColor(locationId);
 
-			return {
-                fillColor: choice,
-                weight: 2,
-                opacity: 1,
-                color: 'white',
-                dashArray: 3,
-                fillOpacity: 0.7
-            }
-        }
-    }).addTo(map);
 
-    function getColor(locationId) {
-        var colors = ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#de2d26', '#a50f15'];
-        var index = (locationId - 1) % colors.length;
-        var color = colors[index];
-        return color;
-    }
-</script>
 
-</body>
+
+
+
+
+
+
+
+
+
+
+
+	</body>
 </html>
 
 
