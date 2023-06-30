@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ["34.233.135.35"]
 
 INSTALLED_APPS = [
     'gmaps',
-    'polls',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.gis',

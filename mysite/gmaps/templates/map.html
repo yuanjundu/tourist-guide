@@ -54,6 +54,15 @@ function getColor(locationId) {
 }
 		</script>
 
+
+		<script>
+			window.addEventListener('load', function() {
+				togglePasswordVisibility();
+			});
+
+		</script>
+
+
 		<header class="p-3 bg-dark text-white">
 			<div class="container">
 				<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -75,7 +84,7 @@ function getColor(locationId) {
 
 					<div class="text-end">
 						<button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-						<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#loginModal">Sign-up</button>
+						<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#signupModal">Sign-up</button>
 					</div>
 				</div>
 			</div>
@@ -94,7 +103,7 @@ function getColor(locationId) {
 										<h3 class="mb-4">Sign In</h3>
 									</div>
 									<div class="w-100">
-										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a> <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
+										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-google"></span></a> <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
 									</div>
 								</div>
 								<form action="#" class="signin-form">
@@ -102,7 +111,7 @@ function getColor(locationId) {
 										<input type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="username">Username</label>
 									</div>
 									<div class="form-group">
-										<input id="password-field" type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye-slash"></span>
+										<input id="password-field" type="password" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye-slash"></span>
 									</div>
 									<div class="form-group">
 										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
@@ -124,19 +133,45 @@ function getColor(locationId) {
 			</div>
 		</div>
 
+		<!-- Signup Modal -->
+		<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="wrap">
+							<div class="img" style="background-image: url(images/bg-1.jpg);"></div>
+							<div class="login-wrap p-4 p-md-5">
+								<div class="d-flex">
+									<div class="w-100">
+										<h3 class="mb-4">Sign Up</h3>
+									</div>
+									<div class="w-100">
+										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex     align-items-center justify-content-center"><span class="fa fa-google"></span></a> <a href="#" class="social-icon d-flex align-ite    ms-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
+										</div>
+								</div>
 
 
-
-
-
-
-
-
-
-
-
-
-
+								<form action="#" class="signup-form">
+									<div class="form-group mt-3">
+										<input type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="username">Username</label>
+									</div>
+									<div class="form-group">
+										<input id="password-field-signup" type="password" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field-signup" class="fa fa-fw field-icon toggle-password-signup fa-eye-slash"></span>
+									</div>
+									<div class="form-group">
+										<input type="email" class="form-control" required="" /> <label class="form-control-placeholder" for="email">Email</label>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
+									</div>
+								</form>
+								<p class="text-center">Already a member? <a data-toggle="modal" data-target="#loginModal" data-dismiss="modal" href="#signin">Sign In</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 

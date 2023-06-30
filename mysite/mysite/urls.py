@@ -23,7 +23,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("map/", map_view, name="NY_map"),
-    path("polls/", include("polls.urls")),
     path('admin/', admin.site.urls),
 ]
 
