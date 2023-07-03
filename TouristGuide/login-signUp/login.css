@@ -1,0 +1,121 @@
+/* Bordered form */
+body {
+    background-color: #f7f7f7;
+  }
+
+.group_no{
+    width: 17%;
+    height: 15%;
+    text-align: left;
+    margin-left: 80%;
+    margin-top: 15%;
+    font-size: 22px;
+}
+
+.log{
+    width: 80%;
+    height: 20%;
+    position: relative;
+    text-align: left;
+    margin-left: 15%;
+    margin-top: 30%;
+    font-size: 76px;
+    line-height: 40px;
+}
+
+.sub_log{
+    width: 80%;
+    height: 5%;
+    position: relative;
+    text-align: left;
+    margin-left: 15%;
+    margin-bottom: 25%;
+    font-size: 36px;
+    line-height: 40px;
+    color: grey;
+}
+
+.line{
+    margin-left: 20%;
+    margin: 1%;
+    margin-top: -5%;
+    position: absolute;
+    left: 13%;
+}
+
+  /* Full-width inputs */
+  input[type=text], input[type=password] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 2%;
+    margin-left: 10%;
+    display: inline-block;
+    border: 1px solid white;
+    font-size: 32px;
+    background-color: transparent;
+}
+  
+  /* Set a style for all buttons */
+  button {
+    background-color: black;
+    color: white;
+    padding: 35px 20px;
+    margin: 15px 0;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    left: 10%;
+    margin-top: 7%;
+    margin-left: 12%;
+    font-size: 40px;
+    font-weight: bold;
+}
+  
+
+  
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  /* Avatar image */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 2%;
+  }
+  
+  .container1{
+    margin-top: 40%;
+  }
+
+  /* The "Forgot password" text */
+  span.psw {
+    margin-left: 25%;
+    font-size: 40px;
+    color: grey;
+}
+  
+a:link {
+    color: black;
+    font-weight: bolder;
+    font-size: 45px;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  /* Change styles for span and cancel button on extra small screens */
+  @media screen and (max-width: 300px) {
+    span.psw {
+      display: block;
+      float: none;
+    }
+    .cancelbtn {
+      width: 100%;
+    }
+  }
