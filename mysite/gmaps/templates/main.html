@@ -1,13 +1,82 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <titile>Welcome to Manhattan</title>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<html lang="en">
 
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="{% static 'main-page.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMTnLlJMThssazGhjRyY6fwjaci2lpat8&libraries=places"
+        async defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'main-page.css' %}">
 
-    </head>
+</head>
+
+<body>
+    <!-- Fixed header on the screen top -->
+    <header>
+        <button id="date-select"><i class="bi bi-calendar-date bootstrap-icons"></i></button>
+        <button id="checkAccount"><i class="bi bi-person-circle bootstrap-icons"></i></button>
+        <div id="account-selection">
+            <ul>
+                <li id="check-history">Itinerary history</li>
+                <li id="log-out">log out</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- Title -->
+        <div id="headline">
+            <h1>Tourist Guide</h1>
+            <p id="intro">Discover, Navigate and Immerse yourself in the wonders of travelling</p>
+            <hr class="divider">
+        </div>
+
+        <!-- Recommendations -->
+        <div id="recommendations">
+            <div id="recommendation-box">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Google maps -->
+        <input type="text" id="search-box" placeholder="Search for a place">
+        <div id="maps"></div>
+
+        <!-- Itinerary -->
+        <hr class="divider">
+        <div id="itinerary">
+            <div class="add-places">
+                <i class="bi bi-geo bootstrap-icons"></i>
+                <span class="details">
+                    <p class="place-details">Place Details</p>
+                </span>
+                <button class="add-details">I'm Here</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <nav>
+            <ul id="nav-list">
+                <li><i class="bi bi-wallet2 bootstrap-icons"></i></li>
+                <li><i class="bi bi-geo-alt bootstrap-icons"></i></li>
+                <li><i class="bi bi-person-circle bootstrap-icons"></i></li>
+                <li><i class="bi bi-house-door bootstrap-icons"></i></li>
+                <li><i class="bi bi-gear bootstrap-icons"></i></li>
+            </ul>
+        </nav>
+    </footer>
+</body>
 
 </html>
+

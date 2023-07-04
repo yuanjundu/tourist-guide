@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="{% static 'login.css' %}" />
+<body>
+    
+
+<div class="group_no">
+    <h2>GROUP 16</h2>
+</div>
+<div class="log">
+    <h1>Let's make</h1>
+    <h1>memories!</h1>
+</div>
+<div class="sub_log">
+    <h3>This will create an account for ya</h3>
+</div>
+
+
+<form method="post" action="{% url 'signup' %}">
+    {% csrf_token %}
+    <div class="container">
+
+        <input type="text" placeholder="Username" name="username" required>
+        {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <h1 class="line">_____________________________________________</h1>
+
+        <input type="text" placeholder="Email" name="email" required>
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <h1 class="line">_____________________________________________</h1>
+
+        <input type="password" placeholder="Password" name="password1" required>
+        {% if form.password1.errors %}
+            {% for error in form.password1.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <h1 class="line">_____________________________________________</h1>
+
+        <input type="password" placeholder="Confirm Password" name="password2" required>
+        {% if form.password2.errors %}
+            {% for error in form.password2.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <h1 class="line">_____________________________________________</h1>
+        
+        <button type="submit">Sign Up</button>
+
+    </div>
+</form>
+
+
+  <div class="container1">
+      <span class="psw">You already have an account? <a href="{% url 'loginPage' %}"><b>Log in</b></a></span>
+  </div>
+
+
+</body>
+</html>
