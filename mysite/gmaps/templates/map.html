@@ -83,9 +83,27 @@ function getColor(locationId) {
 					</form>
 
 					<div class="text-end">
+						{% if user.is_authenticated %}
+						<!-- Dropdown -->
+						<div class="dropdown">
+							<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+								{{ user.username }}
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<li><a class="dropdown-item" href="{% url 'my_space' %}">My Space</a></li>
+								<li><a class="dropdown-item" href="{% url 'settings' %}">Settings</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+							</ul>
+						</div>
+						<!--    <img src="{{ user.avatar.url }}" alt="avatar" class="rounded-circle" width="40" height="40">  -->
+						{% else %}
 						<button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
 						<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#signupModal">Sign-up</button>
+						{% endif %}
 					</div>
+
+
 				</div>
 			</div>
 		</header>
@@ -96,7 +114,6 @@ function getColor(locationId) {
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="wrap">
-							<div class="img" style="background-image: url(images/bg-1.jpg);"></div>
 							<div class="login-wrap p-4 p-md-5">
 								<div class="d-flex">
 									<div class="w-100">
@@ -106,12 +123,13 @@ function getColor(locationId) {
 										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-google"></span></a> <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
 									</div>
 								</div>
-								<form action="#" class="signin-form">
+								<form action="{% url 'user_login' %}" method="post" class="signin-form">
+									{% csrf_token %}
 									<div class="form-group mt-3">
-										<input type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="username">Username</label>
+										<input type="text" class="form-control" required="" name="username"/> <label class="form-control-placeholder" for="username">Username</label>
 									</div>
 									<div class="form-group">
-										<input id="password-field" type="password" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye-slash"></span>
+										<input id="password-field" type="password" class="form-control" required="" name="password"/> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye-slash"></span>
 									</div>
 									<div class="form-group">
 										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
@@ -125,7 +143,7 @@ function getColor(locationId) {
 										</div>
 									</div>
 								</form>
-								<p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+                                <p class="text-center">Not a member? <a data-bs-toggle="modal" data-bs-target="#signupModal" style="text-decoration: underline; cursor: pointer; color: blue;">Sign Up</a></p>
 							</div>
 						</div>
 					</div>
@@ -137,43 +155,61 @@ function getColor(locationId) {
 		<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
-					<div class="modal-body">
-						<div class="wrap">
-							<div class="img" style="background-image: url(images/bg-1.jpg);"></div>
-							<div class="login-wrap p-4 p-md-5">
-								<div class="d-flex">
-									<div class="w-100">
-										<h3 class="mb-4">Sign Up</h3>
-									</div>
-									<div class="w-100">
-										<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex     align-items-center justify-content-center"><span class="fa fa-google"></span></a> <a href="#" class="social-icon d-flex align-ite    ms-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
+
+
+					<form action="{% url 'register' %}" method="post" class="signup-form">
+						<div class="modal-body">
+							<div class="wrap">
+								<div class="login-wrap p-4 p-md-5">
+									<div class="d-flex">
+										<div class="w-100">
+											<h3 class="mb-4">Sign Up</h3>
 										</div>
-								</div>
+										<div class="w-100">
+											<p class="social-media d-flex justify-content-end"><a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-google"></span></a> <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></p>
+										</div>
+									</div>
+									{% csrf_token %}
 
-
-								<form action="#" class="signup-form">
 									<div class="form-group mt-3">
-										<input type="text" class="form-control" required="" /> <label class="form-control-placeholder" for="username">Username</label>
+										<input type="text" class="form-control" required id="id-username" name="username">
+										<label class="form-control-placeholder" for="id_username">Username</label>
 									</div>
 									<div class="form-group">
-										<input id="password-field-signup" type="password" class="form-control" required="" /> <label class="form-control-placeholder" for="password">Password</label> <span toggle="#password-field-signup" class="fa fa-fw field-icon toggle-password-signup fa-eye-slash"></span>
+										<input type="email" class="form-control" required id="id-email" name="email">
+										<label class="form-control-placeholder" for="id_email">Email</label>
 									</div>
 									<div class="form-group">
-										<input type="email" class="form-control" required="" /> <label class="form-control-placeholder" for="email">Email</label>
+										<input type="password" class="form-control" required id="id-password1" name="password1">
+										<label class="form-control-placeholder" for="id_password1">Password</label>
+                                        <span toggle="#id-password1" class="fa fa-fw field-icon toggle-password-signup fa-eye-slash"></span>
 									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" required id="id-password2" name="password2">
+										<label class="form-control-placeholder" for="id-password2">Confirm Password</label>
+									</div>
+
 									<div class="form-group">
 										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
 									</div>
-								</form>
-								<p class="text-center">Already a member? <a data-toggle="modal" data-target="#loginModal" data-dismiss="modal" href="#signin">Sign In</a></p>
+
+                                   <div>
+                                    {% for message in messages %}
+                                        <p id="messages"> {{message}} </p>
+                                    {% endfor %}
+                                   </div>
+
+                                    <p class="text-center">Already a member? <a data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal" style="text-decoration: underline; cursor: pointer; color: blue;">Sign In</a></p>
+								</div>
 							</div>
 						</div>
-					</div>
+
+					</form>
+
 				</div>
+
 			</div>
 		</div>
-
-
 
 	</body>
 </html>

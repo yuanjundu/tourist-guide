@@ -25,13 +25,15 @@ SECRET_KEY = 'django-insecure-o7%wz+uuc&l%yyz^8kkydj044zb#a7zuwik09v+0d5cquo^l9y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["34.233.135.35"]
+ALLOWED_HOSTS = ["34.233.135.35", 'django']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'gmaps',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.gis',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +53,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://34.233.135.35',
+]
+
+
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -138,3 +147,8 @@ import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

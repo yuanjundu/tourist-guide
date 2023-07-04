@@ -1,7 +1,7 @@
 function togglePasswordVisibility() {
     const passwordField = document.getElementById('password-field');
     const toggleButton = document.querySelector('.toggle-password');
-    const passwordFieldSignup = document.getElementById('password-field-signup');
+    const passwordFieldSignup = document.getElementById('id-password1');
     const toggleButtonSignup = document.querySelector('.toggle-password-signup');
 
     toggleButton.addEventListener('click', function() {

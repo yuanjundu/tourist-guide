@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from gmaps.views import map_view
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("map/", map_view, name="NY_map"),
     path('admin/', admin.site.urls),
+#   path('accounts/', include('accounts.urls')),
+    path('gmaps', include('gmaps.urls')),
 ]
 
 if settings.DEBUG:

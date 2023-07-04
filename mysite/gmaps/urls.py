@@ -1,12 +1,12 @@
-import os
-import json
-from django.shortcuts import render
+from django.urls import path
+from . import views
 
-def map_view(request):
-    file_path = os.path.expanduser('~/app/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
-
-    context = {'data': data}
-    return render(request, 'templates/map.html', context)
+urlpatterns = [
+    path('', views.map_view, name='map_view'),
+    path('/register/', views.register, name='register'),
+    path('/user_login/', views.user_login, name='user_login'),
+    path('/myspace', views.my_space, name='my_space'),
+    path('/settings', views.settings, name='settings'),
+    path('/logout_user/', views.logout_user, name='logout'),
+]
 
