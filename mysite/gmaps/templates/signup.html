@@ -31,6 +31,9 @@
                 <p class="error">{{ error }}</p>
             {% endfor %}
         {% endif %}
+        {% if form.username.help_text %}
+            <p class="help-text">{{ form.username.help_text }}</p>
+        {% endif %}
         <h1 class="line">_____________________________________________</h1>
 
         <input type="text" placeholder="Email" name="email" required>
@@ -46,6 +49,9 @@
             {% for error in form.password1.errors %}
                 <p class="error">{{ error }}</p>
             {% endfor %}
+        {% endif %}
+        {% if form.password1.help_text %}
+            <p class="help-text">{{ form.password1.help_text }}</p>
         {% endif %}
         <h1 class="line">_____________________________________________</h1>
 
