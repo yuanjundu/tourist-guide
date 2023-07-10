@@ -12,6 +12,8 @@ class Place(models.Model):
     website = models.CharField(max_length=255, blank=True, null=True)
     geom = gis_models.GeometryField(srid=4326)
     image = models.ImageField(upload_to='place_images/', blank=True, null=True)
+    zone = models.IntegerField(null = True)
+    tag = models.CharField(max_length=255, default='')
 
     class Meta:
         abstract = True
@@ -51,3 +53,5 @@ class University(Place):
 class Attractions(Place):
     class Meta:
         db_table = 'attractions'
+
+
