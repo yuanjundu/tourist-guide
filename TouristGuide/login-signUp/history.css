@@ -1,0 +1,153 @@
+/* Bordered form */
+body {
+    background-color: #f7f7f7;
+  }
+
+  .group_no{
+    width: 105%;
+    padding: 1%;
+    font-size: 50px;
+    color: gray;
+    background-color: white;
+}
+
+.img{
+  width: 25%;
+  height: 25%;
+  float: left;
+  margin-left: 5%;
+  margin-top: 5%;
+  border-radius: 50%;
+}
+
+.settings{
+  margin-left: 40%;
+  margin-top: 12%;
+  color: black;
+}
+
+.log {
+  width: 80%;
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 10%;
+  font-size: 32px;
+  line-height: 40px;
+  background-color: white;
+  padding: 5%;
+  padding-top: 2%;
+  border-radius: 10%;
+}
+
+.savetime{
+  display: inline-block;
+  width: 50%;
+}
+
+.savemoney{
+  display: inline-block;
+}
+
+.percenttime{
+  background-color: green;
+  color: white;
+  font-size: 32px;
+  width: 150px;
+  border-radius: 10%;
+}
+
+.percentmoney{
+  background-color: green;
+  color: white;
+  font-size: 32px;
+  width: 150px;
+  border-radius: 10%;
+}
+
+.value{
+  font-size: 45px;
+}
+
+.line{
+    margin-left: 20%;
+    margin: 1%;
+    margin-top: -5%;
+    position: absolute;
+    left: 13%;
+}
+
+  /* Full-width inputs */
+  input[type=text], input[type=password] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 5%;
+    margin-left: 10%;
+    display: inline-block;
+    border: 1px solid white;
+    font-size: 32px;
+    background-color: transparent;
+}
+  
+  /* Set a style for all buttons */
+  button {
+    background-color: black;
+    color: white;
+    padding: 35px 20px;
+    margin: 15px 0;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    left: 10%;
+    margin-top: 7%;
+    margin-left: 12%;
+    font-size: 40px;
+    font-weight: bold;
+}
+ 
+/* Add padding to containers */
+.container {
+  padding: 2%;
+  font-size: 20px;
+  margin-left: 5%;
+}
+
+.cards{
+  background-color: white;
+  color: black;
+  padding: 5%;
+  margin: 5%;
+  width: 80%;
+  font-size: 28px;
+  border-radius: 10%;
+}
+  .container1{
+    margin-top: 20%;
+  }
+
+  /* The "Forgot password" text */
+  span.psw {
+    margin-left: 25%;
+    font-size: 40px;
+    color: grey;
+}
+  
+a:link {
+    color: black;
+    font-weight: bolder;
+    font-size: 45px;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  /* Change styles for span and cancel button on extra small screens */
+  @media screen and (max-width: 300px) {
+    span.psw {
+      display: block;
+      float: none;
+    }
+    .cancelbtn {
+      width: 100%;
+    }
+  }
