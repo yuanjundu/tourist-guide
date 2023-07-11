@@ -3,6 +3,7 @@ import './App.css';
 import Map from './Map';
 import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
+import Attraction from './Attraction';
 
 
 function App() {
@@ -22,21 +23,30 @@ function App() {
 
   useEffect(() => {
     console.log(selectedDate);
-  },[selectedDate]);
+  }, [selectedDate]);
 
   // Scroll to map
   const mapDivRef = useRef(null);
   const scrollToMap = () => {
-    mapDivRef.current.scrollIntoView({behavior: 'smooth'});
+    mapDivRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   // Scroll to home page top
   const homePageRef = useRef(null);
   const scrollToHome = () => {
-    homePageRef.current.scrollIntoView({behavior: 'smooth'});
+    homePageRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
 
+  // Fetch attractions
+  const [attractions, setAttractions] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/attractions/?format=json")
+      .then((response) => response.json())
+      .then((data) => setAttractions(data));
+  }, []);
+  
 
   return (
     <div className="App">
@@ -64,9 +74,9 @@ function App() {
         {/* Recommendations */}
         <div id="recommendations">
           <div id="recommendation-box">
-            <span></span>
-            <span></span>
-            <span></span>
+            {attractions.map((attraction) => (
+              <Attraction key={attraction.id} attraction={attraction} />
+            ))}
           </div>
         </div>
 

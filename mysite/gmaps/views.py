@@ -7,14 +7,6 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth import get_user_model
 
-def map_view(request):
-    file_path = os.path.expanduser('~/app/mysite/gmaps/JSON/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
-
-    context = {'data': data}
-    return render(request, 'map.html', context)
-
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -88,11 +80,7 @@ def user_login(request):
 
 def logout_user(request):
     logout(request)
-    file_path = os.path.expanduser('~/app/mysite/gmaps/JSON/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
-    context = {'data': data, 'user': request.user}
-    return render(request, 'map.html', context)
+    return render(request, 'index.html')
 
 
 def my_space(request):

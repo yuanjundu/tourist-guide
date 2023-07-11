@@ -26,12 +26,13 @@ SECRET_KEY = 'django-insecure-o7%wz+uuc&l%yyz^8kkydj044zb#a7zuwik09v+0d5cquo^l9y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["34.233.135.35", 'django']
+ALLOWED_HOSTS = ["34.233.135.35", 'django', 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'corsheaders',
     'gmaps',
     'accounts',
@@ -55,10 +56,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://34.233.135.35',
-]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
 
 
 ROOT_URLCONF = 'mysite.urls'
@@ -137,14 +139,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gmaps/react/build/static'),]
-
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # If you are in production, use whitenoise to serve static files
 # This is not applicable if you are in development
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type
@@ -155,8 +156,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATABASE_ROUTERS = ['gmaps.routers.gmapsRouter']
 
 import os
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 SESSION_COOKIE_SECURE = False

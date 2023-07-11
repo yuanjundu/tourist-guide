@@ -2,3 +2,4 @@ __pycache__/
 *.swp
 build/
 node_modules/
+media/
