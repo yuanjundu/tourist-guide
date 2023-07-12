@@ -1,11 +1,18 @@
 import os
 import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def check_login(request):
+    return JsonResponse({'isLoggedIn': request.user.is_authenticated})
 
 def register(request):
     if request.method == 'POST':
@@ -29,7 +36,7 @@ def register(request):
     return render(request, 'map.html', {'form': form, 'data': data})
 
 def default(request):
-    return render(request, 'main.html')
+    return redirect('http://localhost:3000/')
 
 def loginPage(request):
     return render(request, 'login.html')
@@ -80,7 +87,7 @@ def user_login(request):
 
 def logout_user(request):
     logout(request)
-    return render(request, 'index.html')
+    return redirect(default)
 
 
 def my_space(request):

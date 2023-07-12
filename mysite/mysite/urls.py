@@ -24,7 +24,7 @@ from django.urls import re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('gmaps.urls')),
+    path('', include('gmaps.urls')),
     # re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
 ]
 

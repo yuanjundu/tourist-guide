@@ -16,13 +16,15 @@ router = routers.DefaultRouter()
 router.register(r'attractions', AttractionsViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('myspace', views.my_space, name='my_space'),
     path('settings', views.settings, name='settings'),
     path('logout_user/', views.logout_user, name='logout'),
     path('main/', views.default, name='main'),
     path('login/', views.loginPage, name='loginPage'),
+    path('user_login/', views.user_login, name='user_login'),
     path('signup/', views.signup, name='signup'),
+    path('api/check-login', views.check_login, name='check-login')
 ]
 

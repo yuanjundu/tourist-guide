@@ -5,7 +5,7 @@ import Itinerary from './Itinerary';
 export const clickPlaceInfo = createContext();
 const libraries = ['places'];
 
-function Map() {
+function Map({ placeDetails, setPlaceDetails }) {
     // Map reference
     const mapRef = useRef(null);
     // Search box reference
@@ -15,7 +15,9 @@ function Map() {
     // Info window
     const infoWindowRef = useRef(null);
     // Select or search detailed place
-    const [placeDetails, setPlaceDetails] = useState(null);
+    // const [placeDetails, setPlaceDetails] = useState(null);
+
+    const [places, setPlaces] = useState([]);
 
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
@@ -176,7 +178,7 @@ function Map() {
                 <input type="text" id="search-box" placeholder="Search for a place"  />
             </StandaloneSearchBox>
             </GoogleMap>
-            <clickPlaceInfo.Provider value={{placeDetails}}><Itinerary /></clickPlaceInfo.Provider>
+            {/* <clickPlaceInfo.Provider value={{placeDetails}}><Itinerary /></clickPlaceInfo.Provider> */}
         </>
     );
 };
