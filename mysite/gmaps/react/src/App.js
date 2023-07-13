@@ -4,6 +4,7 @@ import Attraction from './Attraction';
 import Itinerary from './Itinerary';
 import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetch } from 'whatwg-fetch';
 import './App.css';
 import './index.css';
@@ -74,6 +75,11 @@ function App() {
     setPlaces(undatedPlaces);
   }
 
+  const navigate = useNavigate();
+  const reDirectToEditProfile = () => {
+    navigate('/editprofile');
+  }
+
   return (
     <div className="App">
       {/* Fixed header on the screen top */}
@@ -114,7 +120,7 @@ function App() {
             <li><button onClick={scrollToMap}><icons.GeoAlt /></button></li>
             <li><button><icons.RocketTakeoff /></button></li>
             <li><button onClick={scrollToHome}><icons.HouseDoor /></button></li>
-            <li><button><icons.Gear /></button></li>
+            <li><button><icons.Gear onClick={reDirectToEditProfile}/></button></li>
           </ul>
         </nav>
       </footer>

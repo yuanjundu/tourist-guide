@@ -36,7 +36,7 @@ const Signup = () => {
       })
       .then((response) => {
         console.log(response.data);
-        window.location.href = '/'; // or wherever you want to redirect to
+        window.location.href = '/';
       })
       .catch((error) => {
         if (error.response) {

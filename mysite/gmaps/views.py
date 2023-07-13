@@ -18,10 +18,14 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MaxLengthValidator
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
 
     # Restrictions on username
     username = serializers.CharField(
@@ -33,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2']
+        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -61,7 +65,24 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password2')
         return User.objects.create_user(**validated_data)
+    
+    def update(self, instance, validated_data):
+        if 'password2' in validated_data:
+            validated_data.pop('password2')
 
+        if 'password' in validated_data:
+            instance.set_password(validated_data.pop('password'))
+
+            return super().update(instance, validated_data)
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['patch', 'head', 'options']
+
+    def get_object(self):
+        return self.request.user
 
 
 class SignupView(views.APIView):

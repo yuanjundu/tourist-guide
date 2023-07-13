@@ -1,6 +1,4 @@
 import React, { useState, useContext } from 'react';
-import * as icons from 'react-bootstrap-icons';
-import { clickPlaceInfo } from './Map';
 
 function Itinerary({ places = [], handleAddPlace, handleDeletePlace }) {
   return (
