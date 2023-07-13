@@ -15,12 +15,4 @@ urlpatterns = [
     path('api/profile/', UserProfileUpdateView.as_view(), name='profile_api'),
     path('api/', include(router.urls)),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('myspace', views.my_space, name='my_space'),
-    path('settings', views.settings, name='settings'),
-    path('logout_user/', views.logout_user, name='logout'),
-    path('main/', views.default, name='main'),
-    path('login/', views.loginPage, name='loginPage'),
-    path('user_login/', views.user_login, name='user_login'),
-    path('signup/', views.signup, name='signup'),
 ]
-

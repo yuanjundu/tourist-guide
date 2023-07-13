@@ -39,7 +39,6 @@ const EditProfile = () => {
         }
     };
 
-
     return (
         <div>
             <div className="group_no">
