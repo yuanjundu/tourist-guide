@@ -1,21 +1,17 @@
-from rest_framework import routers, serializers, viewsets
-from .models import Attractions
+from rest_framework import routers
 from django.urls import path, include
 from . import views
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views import AttractionsViewSet, SignupView
 
-class AttractionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Attractions
-        fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
-
-class AttractionsViewSet(viewsets.ModelViewSet):
-    queryset = Attractions.objects.all()
-    serializer_class = AttractionsSerializer
 
 router = routers.DefaultRouter()
 router.register(r'attractions', AttractionsViewSet)
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/signup/', SignupView.as_view(), name='signup_api'),
     path('api/', include(router.urls)),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('myspace', views.my_space, name='my_space'),
@@ -25,6 +21,5 @@ urlpatterns = [
     path('login/', views.loginPage, name='loginPage'),
     path('user_login/', views.user_login, name='user_login'),
     path('signup/', views.signup, name='signup'),
-    path('api/check-login', views.check_login, name='check-login')
 ]
 

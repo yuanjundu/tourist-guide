@@ -1,67 +1,16 @@
 import logo from './logo.svg';
-import './App.css';
 import Map from './Map';
+import Attraction from './Attraction';
+import Itinerary from './Itinerary';
 import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { fetch } from 'whatwg-fetch';
-import Attraction from './Attraction';
-import Itinerary from './Itinerary';
+import './App.css';
+import './index.css';
 
+import Header from './components/Header';
 
 function App() {
-  // Click then display or fold the account details
-  const accountSelectionRef = useRef(null);
-
-  // Check if logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleSignupRedirect = () => {
-    window.location.href = "http://localhost:8000/signup";
-  };
-
-  const handleLogout = () => {
-    fetch('/logout_user/', { method: 'POST' })
-      .then(() => {
-        setIsLoggedIn(false);
-        // window.location.href = "http://localhost:3000"; 
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
-
-  useEffect(() => {
-    fetch("http://localhost:8000/api/check-login")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setIsLoggedIn(data.isLoggedIn);
-      });
-  }, []);
-  
-  useEffect(() => {
-    console.log(isLoggedIn);
-  }, [isLoggedIn]);
-  
-  
-  
-
-  const showAccountDetails = () => {
-    const displayStatus = window.getComputedStyle(accountSelectionRef.current).getPropertyValue('display');
-    accountSelectionRef.current.style.display = displayStatus === 'none' ? 'block' : 'none';
-  }
-
-  // Select time
-  const [selectedDate, setSelectedDate] = useState('');
-  const handleSelectedDate = (event) => {
-    const dateValue = event.target.value;
-    setSelectedDate(dateValue);
-  }
-
-  useEffect(() => {
-    console.log(selectedDate);
-  }, [selectedDate]);
-
   // Scroll to map
   const mapDivRef = useRef(null);
   const scrollToMap = () => {
@@ -74,16 +23,14 @@ function App() {
     homePageRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-
   // Fetch attractions
   const [attractions, setAttractions] = useState([]);
 
   useEffect(() => {
-    fetch("/api/attractions/?format=json")
+    fetch("http://localhost:8000/api/attractions/?format=json")
       .then((response) => response.json())
       .then((data) => setAttractions(data));
   }, []);
-
 
   const [places, setPlaces] = useState([]);
   const [placeDetails, setPlaceDetails] = useState([]);
@@ -130,23 +77,7 @@ function App() {
   return (
     <div className="App">
       {/* Fixed header on the screen top */}
-      <header>
-        <input type='date' value={selectedDate} onChange={handleSelectedDate} />
-        {/* <button id="date-select"><icons.CalendarDate /></button> */}
-        <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : handleSignupRedirect}>
-          {isLoggedIn ? <icons.PersonCircle /> : <icons.BoxArrowInRight />}
-        </button>
-
-        {isLoggedIn && (
-          <div id="account-selection" ref={accountSelectionRef}>
-            <ul>
-              <li id="check-history">Itinerary history</li>
-              <li id="log-out" onClick={handleLogout}>log out</li>
-            </ul>
-          </div>
-        )}
-      </header>
-
+      <Header />
 
       <main ref={homePageRef}>
         {/* Title */}
@@ -190,6 +121,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
