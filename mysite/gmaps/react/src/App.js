@@ -10,6 +10,7 @@ import './App.css';
 import './index.css';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   // Scroll to map
@@ -112,18 +113,10 @@ function App() {
         <Itinerary places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
 
       </main>
+      
 
-      <footer>
-        <nav>
-          <ul id="nav-list">
-            <li><button><icons.Wallet2 /></button></li>
-            <li><button onClick={scrollToMap}><icons.GeoAlt /></button></li>
-            <li><button><icons.RocketTakeoff /></button></li>
-            <li><button onClick={scrollToHome}><icons.HouseDoor /></button></li>
-            <li><button><icons.Gear onClick={reDirectToEditProfile}/></button></li>
-          </ul>
-        </nav>
-      </footer>
+      {/* Fixed footer on the screen bottom */}
+    <Footer />
     </div>
   );
 }

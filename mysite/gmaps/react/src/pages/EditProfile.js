@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './EditProfile.css';
+import Footer from '../components/Footer';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
@@ -104,6 +105,7 @@ const EditProfile = () => {
                     <button type="submit">Save changes</button>
                 </form>
             </div>
+            <Footer />
         </div>
     );
 };
