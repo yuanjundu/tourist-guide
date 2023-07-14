@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-function Itinerary({ places = [], handleAddPlace, handleDeletePlace }) {
+function Placebar({ places = [], handleAddPlace, handleDeletePlace }) {
   return (
     <div>
       <button id='add-place' onClick={handleAddPlace}>Add this place</button>
@@ -16,5 +16,5 @@ function Itinerary({ places = [], handleAddPlace, handleDeletePlace }) {
   );
 }
 
-export default Itinerary;
+export default Placebar;
 

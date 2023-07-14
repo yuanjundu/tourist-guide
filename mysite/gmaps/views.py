@@ -13,13 +13,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from rest_framework import serializers, views, status, viewsets
 from rest_framework.response import Response
-from .models import Attractions
+from .models import Attractions, Restaurant, AttractionRestaurants
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MaxLengthValidator
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -98,8 +99,6 @@ class SignupView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-
-
 class AttractionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attractions
@@ -112,4 +111,15 @@ class AttractionsViewSet(viewsets.ModelViewSet):
 def default(request):
     return redirect('http://localhost:3000/')
 
+class RestaurantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
 
+class RestaurantsByAttractionView(generics.ListAPIView):
+    serializer_class = RestaurantsSerializer
+
+    def get_queryset(self):
+        attraction = get_object_or_404(Attractions, pk=self.kwargs['pk'])
+        restaurant_ids = AttractionRestaurants.objects.filter(attraction=attraction).values_list('restaurant', flat=True)
+        return Restaurant.objects.filter(id__in=restaurant_ids) 

@@ -1,6 +1,6 @@
 import React, { createContext, useRef, useState, useEffect } from 'react';
 import { GoogleMap, StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
-import Itinerary from './Itinerary';
+import Itinerary from './Placebar';
 
 export const clickPlaceInfo = createContext();
 const libraries = ['places'];

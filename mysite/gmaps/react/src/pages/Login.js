@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Signup.css';
+import SignupStyle from './Signup.module.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -34,35 +34,37 @@ const Login = () => {
   };
 
   return (
+    <body class = {SignupStyle.body}>
     <form onSubmit={handleSubmit}>
-      <div class="group_no">
+      <div class={SignupStyle.group_no}>
         <h2>GROUP 16</h2>
       </div>
-      <div class="log">
+      <div class={SignupStyle.log}>
         <h1>Let's log</h1>
         <h1>you in!</h1>
       </div>
-      <div class="sub_log">
+      <div class={SignupStyle.sub_log}>
         <h3>Enter your details to log in your account.</h3>
       </div>
       <label>
         Username:
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+        <input class = {SignupStyle.input}  type="text" value={username} onChange={e => setUsername(e.target.value)} />
         {errors.username && <p>{errors.username}</p>}
       </label>
 
       <label>
         Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <input class = {SignupStyle.input}  type="password" value={password} onChange={e => setPassword(e.target.value)} />
         {errors.password && <p>{errors.password}</p>}
       </label>
 
-      <input type="submit" value="Submit" />
+      <input class = {SignupStyle.input}  type="submit" value="Submit" />
 
       <div class="container1">
         <span class="psw">Don't have an account? <a href="/signup/"><b>Sign up</b></a></span>
       </div>
     </form>
+    </body>
   );
 };
 

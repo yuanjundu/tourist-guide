@@ -3,6 +3,7 @@ import App from './App';
 import Signup from './pages/Signup'; 
 import Login from './pages/Login'; 
 import EditProfile from "./pages/EditProfile";
+import Itinerary from "./pages/Itinerary";
 
 const AppRoutes = [
   {
@@ -20,6 +21,10 @@ const AppRoutes = [
   {
     path: "editprofile",
     element: <EditProfile />,
+  },
+  {
+    path: "itinerary",
+    element: <Itinerary />,
   },
   
 ];

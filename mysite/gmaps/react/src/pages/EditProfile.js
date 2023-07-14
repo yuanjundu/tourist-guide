@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './EditProfile.css';
+// import './EditProfile.css';
 import Footer from '../components/Footer';
 
 const EditProfile = () => {
@@ -105,7 +105,7 @@ const EditProfile = () => {
                     <button type="submit">Save changes</button>
                 </form>
             </div>
-            <Footer />
+            <Footer onLocationChange={()=>{}}/>
         </div>
     );
 };

@@ -54,4 +54,10 @@ class Attractions(Place):
     class Meta:
         db_table = 'attractions'
 
+class AttractionRestaurants(models.Model):
+    attraction = models.ForeignKey(Attractions, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'attraction_restaurants'
 

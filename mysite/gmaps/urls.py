@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path, include
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import AttractionsViewSet, SignupView, UserProfileUpdateView
+from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView
 
 
 router = routers.DefaultRouter()
@@ -14,5 +14,6 @@ urlpatterns = [
     path('api/signup/', SignupView.as_view(), name='signup_api'),
     path('api/profile/', UserProfileUpdateView.as_view(), name='profile_api'),
     path('api/', include(router.urls)),
+    path('api/attractions/<int:pk>/restaurants/', RestaurantsByAttractionView.as_view(), name='attractions_restaurants'),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Signup.css';
+import SignupStyle from './Signup.module.css';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -46,41 +46,43 @@ const Signup = () => {
   };
 
   return (
+    <body class={SignupStyle.body}>
     <form onSubmit={handleSubmit} className="container">
-      <div class="group_no">
+      <div class={SignupStyle.group_no}>
         <h2>GROUP 16</h2>
       </div>
-      <div class="log">
+      <div class={SignupStyle.log}>
         <h1>Let's make</h1>
         <h1>memories!</h1>
       </div>
-      <div class="sub_log">
+      <div class={SignupStyle.sub_log}>
         <h3>This will create an account for ya</h3>
       </div>
 
-      <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
+      <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
       {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
       <p>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
 
-      <input type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+      <input class = {SignupStyle.input}  type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
       {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
 
-      <input type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} required />
+      <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} required />
       {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
       <li>Your password can’t be too similar to your other personal information.</li>
       <li>Your password must contain at least 8 characters.</li>
       <li>Your password can’t be a commonly used password.</li>
       <li>Your password can’t be entirely numeric.</li>
 
-      <input type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} required />
+      <input class = {SignupStyle.input}  type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} required />
       {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
 
-      <button type="submit">Sign Up</button>
+      <button type="submit" class = {SignupStyle.button}>Sign Up</button>
 
       <div className="container1">
         <span className="psw">You already have an account? <a href="/login"><b>Log in</b></a></span>
       </div>
     </form>
+    </body>
 
   );
 };

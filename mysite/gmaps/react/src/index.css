@@ -148,3 +148,8 @@ svg {
   width: 100px; 
   height: 100px; 
 }
+
+footer {
+  bottom: 0;
+  width: 100%;
+}
