@@ -4,7 +4,8 @@ import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Footer = ({ onLocationChange, myRestaurant = null, placesAttractions = [] }) => {
+
+const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate}) => {
     // Scroll to map
     //   const mapDivRef = useRef(null);
     //   const scrollToMap = () => {
@@ -45,8 +46,9 @@ const Footer = ({ onLocationChange, myRestaurant = null, placesAttractions = [] 
     }
 
     const redirectToItinerary = () => {
-        navigate('/itinerary', { state: { myRestaurant: myRestaurant, placesAttractions: placesAttractions } });
+        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
     }
+
 
     return (
         <footer>
@@ -54,7 +56,7 @@ const Footer = ({ onLocationChange, myRestaurant = null, placesAttractions = [] 
                 <ul id="nav-list">
                     <li><button><icons.Wallet2 /></button></li>
                     <li><button onClick={getCurrentLocation}><icons.GeoAlt /></button></li>
-                    <li><button><icons.RocketTakeoff onClick={redirectToItinerary}/></button></li>
+                    <li><button onClick={redirectToItinerary}><icons.RocketTakeoff /></button></li>
                     <li><button onClick={redirectToHome}><icons.HouseDoor /></button></li>
                     <li><button><icons.Gear onClick={reDirectToEditProfile} /></button></li>
                 </ul>

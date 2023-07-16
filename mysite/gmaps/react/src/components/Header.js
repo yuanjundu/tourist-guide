@@ -3,14 +3,7 @@ import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
-    // Select time
-    const [selectedDate, setSelectedDate] = useState('');
-    const handleSelectedDate = (event) => {
-        const dateValue = event.target.value;
-        setSelectedDate(dateValue);
-    }
-
+const Header = ({selectedDate, handleSelectedDate}) => {
     useEffect(() => {
         console.log(selectedDate);
     }, [selectedDate]);
@@ -23,6 +16,10 @@ const Header = () => {
     const redirectToLogin = () => {
         navigate('/login');
     };
+
+    const redirectToHistory = () => {
+        navigate('/history');
+    }
 
     const checkIfLoggedIn = () => {
         const token = localStorage.getItem('access');
@@ -63,7 +60,7 @@ const Header = () => {
             {isLoggedIn && (
                 <div id="account-selection" ref={accountSelectionRef}>
                     <ul>
-                        <li id="check-history">Itinerary history</li>
+                        <li id="check-history" onClick={redirectToHistory}>Itinerary history</li>
                         <li id="log-out on" onClick={handleLogout}>log out</li>
                     </ul>
                 </div>

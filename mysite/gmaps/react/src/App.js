@@ -15,53 +15,31 @@ import Footer from './components/Footer';
 function App() {
   // Fetch attractions
   const [attractions, setAttractions] = useState([]);
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [selectedAttractionForRestaurant, setSelectedAttractionForRestaurant] = useState(null);
+  const [places, setPlaces] = useState([]);
+  const [placeDetails, setPlaceDetails] = useState([]);
   const [placesAttractions, setPlacesAttractions] = useState([]);
-  const [myRestaurant, setMyRestaurant] = useState(null);
-
-
-
 
   //<------------------Test--------------------->
   useEffect(() => {
+    console.log(myLocation);
     console.log(placesAttractions);
-    console.log(myRestaurant);
   });
- //<------------------Test--------------------->
+  //<------------------Test--------------------->
 
 
-
-
-  useEffect(() => {
-    if (selectedAttractionForRestaurant) {
-      fetchRestaurantsByAttraction(selectedAttractionForRestaurant.id);
-    }
-  }, [selectedAttractionForRestaurant]);
-
-
-  // Get restaurant data
-  const fetchRestaurantsByAttraction = (attractionId) => {
-    fetch(`http://localhost:8000/api/attractions/${attractionId}/restaurants/?format=json`)
-      .then((response) => response.json())
-      .then((data) => setSelectedRestaurant(data));
-  };
+  // Select time
+  const today = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState(today);
+  const handleSelectedDate = (event) => {
+    const dateValue = event.target.value;
+    setSelectedDate(dateValue);
+  }
 
   useEffect(() => {
     fetch("http://localhost:8000/api/attractions/?format=json")
       .then((response) => response.json())
       .then((data) => setAttractions(data));
   }, []);
-
-
-  // Set my restaurant
-  const handleSetMyRestaurant = (restaurant) => {
-    setMyRestaurant(restaurant);
-  }
-
-
-  const [places, setPlaces] = useState([]);
-  const [placeDetails, setPlaceDetails] = useState([]);
 
 
   const handleAddAttraction = (attraction) => {
@@ -85,7 +63,6 @@ function App() {
     setPlacesAttractions([...placesAttractions, attraction]);
   };
 
-
   // Add places from map
   const handleAddPlace = () => {
     if (placeDetails !== null) {
@@ -107,8 +84,11 @@ function App() {
 
   const handleDeletePlace = (index) => {
     const undatedPlaces = [...places];
+    const newPlacesAttractions = [...placesAttractions];
     undatedPlaces.splice(index, 1);
+    newPlacesAttractions.splice(index, 1);
     setPlaces(undatedPlaces);
+    setPlacesAttractions(newPlacesAttractions);
   }
 
   // Scroll to map
@@ -126,7 +106,7 @@ function App() {
   return (
     <div className="App">
       {/* Fixed header on the screen top */}
-      <Header />
+      <Header selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} />
 
       <main >
         {/* Title */}
@@ -157,9 +137,8 @@ function App() {
 
       </main>
 
-
       {/* Fixed footer on the screen bottom */}
-      <Footer onLocationChange={handleLocationChange} myRestaurant={myRestaurant} placesAttractions={placesAttractions} />
+      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} />
 
     </div>
   );

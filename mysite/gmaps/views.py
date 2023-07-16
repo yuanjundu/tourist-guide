@@ -4,23 +4,30 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import UserRegisterForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.models import User
-from rest_framework import serializers, views, status, viewsets
-from rest_framework.response import Response
-from .models import Attractions, Restaurant, AttractionRestaurants
-from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MaxLengthValidator
+from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary
+from django.contrib.auth.password_validation import validate_password
+from django.shortcuts import get_object_or_404
+
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import serializers, views, status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
+
+from .algorithm import TSP, greedy_TSP
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -123,3 +130,76 @@ class RestaurantsByAttractionView(generics.ListAPIView):
         attraction = get_object_or_404(Attractions, pk=self.kwargs['pk'])
         restaurant_ids = AttractionRestaurants.objects.filter(attraction=attraction).values_list('restaurant', flat=True)
         return Restaurant.objects.filter(id__in=restaurant_ids) 
+    
+
+
+class TSPView(APIView):
+    """
+    View to solve the Traveling Salesman Problem for attractions
+    """
+
+    def post(self, request, format=None):
+        data = request.data
+        try:
+            date = data.get('selectedDate')
+            lat = data.get('latitude')
+            lon = data.get('longitude')
+            attractions = data.get('placesAttractions')
+            ordered_attractions = greedy_TSP(date, lat, lon, attractions)
+            return Response(ordered_attractions, status=status.HTTP_200_OK)
+        except KeyError:
+            return Response({'error': 'Invalid request, no placeAttractions found'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error('Unexpected error: %s', e, exc_info=True) 
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ItineraryView(APIView):
+    """
+    View to save itinerary history
+    """
+    
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        data = request.data
+        user = request.user
+        morning_attractions_data = data.get('morningAttractions')
+        afternoon_attractions_data = data.get('afternoonAttractions')
+        restaurant = data.get('selectedRestaurant')
+        selected_date = data.get('selectedDate')
+
+        # extract the ids from the morning and afternoon attractions data
+        morning_attractions = [attraction['id'] for attraction in morning_attractions_data]
+        afternoon_attractions = [attraction['id'] for attraction in afternoon_attractions_data]
+
+        restaurant_instance = Restaurant.objects.get(id=restaurant['id'])
+        itinerary = Itinerary.objects.create(user=user, selected_restaurant=restaurant_instance, saved_date=selected_date)
+        itinerary.morning_attractions.set(morning_attractions)
+        itinerary.afternoon_attractions.set(afternoon_attractions)
+        itinerary.save()
+
+        return Response({'message': 'Itinerary saved successfully'}, status=status.HTTP_200_OK)
+
+
+class ItineraryHistoryView(APIView):
+    """
+    View to fetch itinerary history
+    """
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = request.user
+        itineraries = Itinerary.objects.filter(user=user)
+        data = [itinerary.to_dict() for itinerary in itineraries]
+        return Response(data, status=status.HTTP_200_OK)
+    
+
+class DeleteItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id):
+        itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
+        itinerary.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

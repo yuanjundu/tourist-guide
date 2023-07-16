@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import './EditProfile.css';
+import styles from './EditProfile.module.css';  
 import Footer from '../components/Footer';
 
 const EditProfile = () => {
@@ -41,18 +41,19 @@ const EditProfile = () => {
     };
 
     return (
-        <div>
-            <div className="group_no">
-                <h2 className="settings">Edit Profile</h2>
+        <div className={styles.root}>
+            <div className={styles.group_no}>
+                <h2 className={styles.settings}>Edit Profile</h2>
                 <a>_______________________________________</a>
             </div>
-            <div className="log">
+            <div className={styles.log}>
                 <h3>You can edit your</h3>
                 <h3>profile here!</h3>
             </div>
-            <div className="container">
+            <div className={styles.container}>
                 <form onSubmit={handleSubmit}>
                     <input
+                        className={styles['input[type="text"]']}
                         type="text"
                         placeholder="Email"
                         name="email"
@@ -60,9 +61,10 @@ const EditProfile = () => {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
-                    <h1 className="line">_____________________________________________</h1>
+                    <h1 className={styles.line}>_____________________________________________</h1>
     
                     <input
+                        className={styles['input[type="text"]']}
                         type="text"
                         placeholder="firstName"
                         name="firstName"
@@ -70,9 +72,10 @@ const EditProfile = () => {
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
                     />
-                    <h1 className="line">_____________________________________________</h1>
+                    <h1 className={styles.line}>_____________________________________________</h1>
     
                     <input
+                        className={styles['input[type="text"]']}
                         type="text"
                         placeholder="lastName"
                         name="lastName"
@@ -80,9 +83,10 @@ const EditProfile = () => {
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
                     />
-                    <h1 className="line">_____________________________________________</h1>
+                    <h1 className={styles.line}>_____________________________________________</h1>
     
                     <input
+                        className={styles['input[type="password"]']}
                         type="password"
                         placeholder="Password"
                         name="psw"
@@ -90,9 +94,10 @@ const EditProfile = () => {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <h1 className="line">_____________________________________________</h1>
+                    <h1 className={styles.line}>_____________________________________________</h1>
     
                     <input
+                        className={styles['input[type="password"]']}
                         type="password"
                         placeholder="Confirm Password"
                         name="cpsw"
@@ -100,14 +105,15 @@ const EditProfile = () => {
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
                     />
-                    <h1 className="line">_____________________________________________</h1>
+                    <h1 className={styles.line}>_____________________________________________</h1>
     
-                    <button type="submit">Save changes</button>
+                    <button className={styles.button} type="submit">Save changes</button>
                 </form>
             </div>
             <Footer onLocationChange={()=>{}}/>
         </div>
     );
+
 };
 
 
