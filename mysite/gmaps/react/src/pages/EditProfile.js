@@ -1,43 +1,112 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './EditProfile.module.css';  
+import styles from './EditProfile.module.css';
 import Footer from '../components/Footer';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [errors, setErrors] = useState({});
+    const [passwordErrors, setPasswordErrors] = useState({});
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            alert("Passwords don't match!");
-        } else {
-            const token = localStorage.getItem('access');
-            axios.patch('http://localhost:8000/api/profile/', {
-                first_name: firstName,
-                last_name: lastName,
-                email: email,
-                password: password,
-                password2: confirmPassword,
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+    const [oldpsw, setOldpsw] = useState('');
+    const [psw, setPsw] = useState('');
+    const [cpsw, setCpsw] = useState('');
+
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+
+    //<------------------Test--------------------->
+    useEffect(() => {
+        console.log(isChangingPassword);
+    });
+    //<------------------Test--------------------->
+
+    const refreshToken = (callback) => {
+        // retrieve refresh token from storage
+        const refreshToken = localStorage.getItem('refresh');
+
+        axios.post('http://localhost:8000/api/token/refresh/', { refresh: refreshToken })
+            .then((response) => {
+                // store the new access token
+                localStorage.setItem('access', response.data.access);
+                // retry the failed request
+                callback();
             })
-                .then((response) => {
-                    // handle success
-                    console.log(response);
-                    alert("Profile updated successfully!");
-                })
-                .catch((error) => {
-                    // handle error
-                    console.log(error.response.data);
+            .catch((error) => {
+                console.log(error);
+                alert("An error occurred while refreshing the token.");
+            });
+    };
+
+    const updateUserProfile = (e) => {
+        e.preventDefault();
+        // Reset errors when submitting
+        setErrors({});
+        const token = localStorage.getItem('access');
+        axios.patch('http://localhost:8000/api/profile/', {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => {
+                // handle success
+                console.log(response);
+                alert("Profile updated successfully!");
+            })
+            .catch((error) => {
+                // handle error
+                if (error.response && error.response.status === 401) {
+                    refreshToken(() => updateUserProfile(e));  // retry after refreshing the token
+                } else if (error.response) {
+                    setErrors(error.response.data);
+                } else {
+                    console.log(error);
                     alert("An error occurred while updating your profile.");
-                });
+                }
+            });
+
+    };
+
+    const handlePasswordChange = (e) => {
+        e.preventDefault();
+        // Reset password errors when submitting
+        setPasswordErrors({});
+        const token = localStorage.getItem('access');
+        if (psw !== cpsw) {
+            alert("New passwords don't match.");
+            return;
         }
+        axios.post('http://localhost:8000/api/changepassword/', {
+            old_password: oldpsw,
+            new_password: psw,
+            new_password2: cpsw
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => {
+                // handle success
+                console.log(response);
+                alert(response.data.detail);
+            })
+            .catch((error) => {
+                // handle error
+                if (error.response && error.response.status === 401) {
+                    refreshToken(() => handlePasswordChange(e));  // retry after refreshing the token
+                } else if (error.response) {
+                    setPasswordErrors(error.response.data);
+                } else {
+                    console.log(error);
+                    alert("An error occurred while changing your password.");
+                }
+            });
     };
 
     return (
@@ -51,7 +120,7 @@ const EditProfile = () => {
                 <h3>profile here!</h3>
             </div>
             <div className={styles.container}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={updateUserProfile}>
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -61,8 +130,9 @@ const EditProfile = () => {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
+                    {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
                     <h1 className={styles.line}>_____________________________________________</h1>
-    
+
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -73,7 +143,7 @@ const EditProfile = () => {
                         onChange={e => setFirstName(e.target.value)}
                     />
                     <h1 className={styles.line}>_____________________________________________</h1>
-    
+
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -84,33 +154,58 @@ const EditProfile = () => {
                         onChange={e => setLastName(e.target.value)}
                     />
                     <h1 className={styles.line}>_____________________________________________</h1>
-    
-                    <input
-                        className={styles['input[type="password"]']}
-                        type="password"
-                        placeholder="Password"
-                        name="psw"
-                        required
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                    <h1 className={styles.line}>_____________________________________________</h1>
-    
-                    <input
-                        className={styles['input[type="password"]']}
-                        type="password"
-                        placeholder="Confirm Password"
-                        name="cpsw"
-                        required
-                        value={confirmPassword}
-                        onChange={e => setConfirmPassword(e.target.value)}
-                    />
-                    <h1 className={styles.line}>_____________________________________________</h1>
-    
+
                     <button className={styles.button} type="submit">Save changes</button>
                 </form>
+
+                <button onClick={() => setIsChangingPassword(true)} className={styles.button}  >Change Password</button>
+
+                {isChangingPassword && (
+                    <div className={styles.container}>
+                        <h2>Change Password</h2>
+                        <form onSubmit={handlePasswordChange}>
+                            <input
+                                className={styles['input[type="password"]']}
+                                type="password"
+                                placeholder="Old Password"
+                                name="oldpsw"
+                                required
+                                value={oldpsw}
+                                onChange={e => setOldpsw(e.target.value)}
+                            />
+                            {passwordErrors.old_password && passwordErrors.old_password.map((error, index) => <p key={index} className="error">{error}</p>)}
+                            <h1 className={styles.line}>_____________________________________________</h1>
+
+                            <input
+                                className={styles['input[type="password"]']}
+                                type="password"
+                                placeholder="New Password"
+                                name="psw"
+                                required
+                                value={psw}
+                                onChange={e => setPsw(e.target.value)}
+                            />
+                            {passwordErrors.new_password && passwordErrors.new_password.map((error, index) => <p key={index} className="error">{error}</p>)}
+                            <h1 className={styles.line}>_____________________________________________</h1>
+
+                            <input
+                                className={styles['input[type="password"]']}
+                                type="password"
+                                placeholder="Confirm New Password"
+                                name="cpsw"
+                                required
+                                value={cpsw}
+                                onChange={e => setCpsw(e.target.value)}
+                            />
+                            <h1 className={styles.line}>_____________________________________________</h1>
+
+                            <button className={styles.button} type="submit">Save Password</button>
+                            <button type="button" onClick={() => setIsChangingPassword(false)}>Cancel</button>
+                        </form>
+                    </div>
+                )}
             </div>
-            <Footer onLocationChange={()=>{}}/>
+            <Footer onLocationChange={() => { }} />
         </div>
     );
 

@@ -82,15 +82,72 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(validated_data.pop('password'))
 
             return super().update(instance, validated_data)
+        
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+
+    # Restrictions on username
+    username = serializers.CharField(
+        validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
+    )
+
+    # Restrictions on email
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        extra_kwargs = {}
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+        return Response({"detail": "Profile updated successfully."}, status=status.HTTP_200_OK)
+
 
 class UserProfileUpdateView(generics.UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
     http_method_names = ['patch', 'head', 'options']
 
     def get_object(self):
         return self.request.user
+    
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
+        new_password2 = request.data.get("new_password2")
+
+        if not user.check_password(old_password):
+            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password != new_password2:
+            return Response({"new_password": ["New passwords don't match."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate the password and catch the exception
+        errors = dict() 
+        try:
+            validate_password(password=new_password, user=user)
+        except django_exceptions.ValidationError as e:
+            errors['new_password'] = list(e.messages)
+
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
 
 
 class SignupView(views.APIView):
