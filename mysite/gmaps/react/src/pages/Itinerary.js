@@ -4,7 +4,9 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { refreshToken } from '../components/refreshToken';
 import styles from './Itinerary.module.css';
+
 
 const Itinerary = () => {
     const location = useLocation();
@@ -67,21 +69,6 @@ const Itinerary = () => {
     const handleSetMyRestaurant = (restaurant) => {
         setSelectedRestaurant(restaurant);
     };
-
-    const refreshToken = () => {
-        const refresh = localStorage.getItem('refresh');
-        axios.post('http://localhost:8000/api/token/refresh/', {
-            refresh: refresh
-        })
-        .then((response) => {
-            localStorage.setItem('access', response.data.access);
-            handleSaveItinerary();
-        })
-        .catch((error) => {
-            console.error('Could not refresh token', error);
-            // Redirect to login ???
-        });
-    }
 
     const handleSaveItinerary = () => {
         const token = localStorage.getItem('access');

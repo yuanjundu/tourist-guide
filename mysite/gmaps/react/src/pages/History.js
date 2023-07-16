@@ -4,27 +4,11 @@ import styles from './History.module.css';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { refreshToken } from '../components/refreshToken';
 
 const History = () => {
     const [history, setHistory] = useState([]);
-
-    function refreshToken(callback) {
-        // retrieve refresh token from storage
-        const refreshToken = localStorage.getItem('refresh');
-
-        axios.post('http://localhost:8000/api/token/refresh/', { refresh: refreshToken })
-            .then((response) => {
-                // store the new access token
-                localStorage.setItem('access', response.data.access);
-                // retry the failed request
-                callback();
-            })
-            .catch((error) => {
-                console.log(error);
-                alert("An error occurred while refreshing the token.");
-            });
-    }
-
+    
     const handleDelete = async (itineraryId) => {
         const token = localStorage.getItem('access');
         axios.delete(`http://localhost:8000/api/itinerary/${itineraryId}/delete/`, {

@@ -2,14 +2,51 @@ import React from "react";
 import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { refreshToken } from "./refreshToken";
+import axios from 'axios';
 
-const Header = ({selectedDate, handleSelectedDate}) => {
+const Header = ({ selectedDate, handleSelectedDate }) => {
     useEffect(() => {
         console.log(selectedDate);
     }, [selectedDate]);
 
     // Check if logged in
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [user, setUser] = useState({ firstName: '', lastName: '' });
+
+    const getUserInfo = () => {
+        const accessToken = localStorage.getItem('access');
+    
+        axios.get('http://localhost:8000/api/user/profile/', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((response) => {
+                console.log(response);
+                setUser(response.data);
+    
+                // Store user data in localStorage
+                localStorage.setItem('user', JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    refreshToken(() => getUserInfo());  // retry after refreshing the token
+                } else {
+                    console.log(error);
+                    alert("An error occurred while fetching the user info.");
+                }
+            });
+    };
+    
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            getUserInfo();
+        }
+    }, [isLoggedIn]);
+
 
     const navigate = useNavigate();
 
@@ -25,15 +62,24 @@ const Header = ({selectedDate, handleSelectedDate}) => {
         const token = localStorage.getItem('access');
         if (token) {
             setIsLoggedIn(true);
+    
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                setUser(JSON.parse(userData));
+            } else {
+                getUserInfo();  // Fetch from API if no user data in localStorage
+            }
         } else {
             setIsLoggedIn(false);
         }
     };
+    
 
     const handleLogout = () => {
-        // remove tokens
+        // remove tokens and user data
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
+        localStorage.removeItem('user');
         setIsLoggedIn(false);
     };
 
@@ -54,8 +100,16 @@ const Header = ({selectedDate, handleSelectedDate}) => {
             <input type='date' value={selectedDate} onChange={handleSelectedDate} />
             {/* <button id="date-select"><icons.CalendarDate /></button> */}
             <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
-                {isLoggedIn ? <icons.PersonCircle /> : <icons.BoxArrowInRight />}
+                {isLoggedIn ? (
+                    <div>
+                        <span>Hello {user?.first_name} {user?.last_name}</span>
+                        <icons.PersonCircle />
+                    </div>
+                ) : (
+                    <icons.BoxArrowInRight />
+                )}
             </button>
+
 
             {isLoggedIn && (
                 <div id="account-selection" ref={accountSelectionRef}>

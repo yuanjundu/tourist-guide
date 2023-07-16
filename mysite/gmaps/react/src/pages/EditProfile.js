@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './EditProfile.module.css';
 import Footer from '../components/Footer';
+import { refreshToken } from '../components/refreshToken';
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
@@ -16,6 +18,12 @@ const EditProfile = () => {
 
     const [isChangingPassword, setIsChangingPassword] = useState(false);
 
+    const navigate = useNavigate();
+
+    const redirectToHome = () => {
+        navigate('/');
+    };
+
 
     //<------------------Test--------------------->
     useEffect(() => {
@@ -23,29 +31,13 @@ const EditProfile = () => {
     });
     //<------------------Test--------------------->
 
-    const refreshToken = (callback) => {
-        // retrieve refresh token from storage
-        const refreshToken = localStorage.getItem('refresh');
-
-        axios.post('http://localhost:8000/api/token/refresh/', { refresh: refreshToken })
-            .then((response) => {
-                // store the new access token
-                localStorage.setItem('access', response.data.access);
-                // retry the failed request
-                callback();
-            })
-            .catch((error) => {
-                console.log(error);
-                alert("An error occurred while refreshing the token.");
-            });
-    };
 
     const updateUserProfile = (e) => {
         e.preventDefault();
         // Reset errors when submitting
         setErrors({});
         const token = localStorage.getItem('access');
-        axios.patch('http://localhost:8000/api/profile/', {
+        axios.patch('http://localhost:8000/api/updateprofile/', {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -58,6 +50,7 @@ const EditProfile = () => {
                 // handle success
                 console.log(response);
                 alert("Profile updated successfully!");
+                redirectToHome();
             })
             .catch((error) => {
                 // handle error
@@ -72,6 +65,30 @@ const EditProfile = () => {
             });
 
     };
+
+    useEffect(() => {
+        const token = localStorage.getItem('access');
+        axios.get('http://localhost:8000/api/user/profile/', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setEmail(response.data.email);
+            setFirstName(response.data.first_name);
+            setLastName(response.data.last_name);
+        })
+        .catch((error) => {
+            if (error.response && error.response.status === 401) {
+                refreshToken().then(() => {
+                    updateUserProfile();
+                });
+            } else {
+                console.log(error);
+                alert("An error occurred while fetching your profile information.");
+            }
+        });
+    }, []);
 
     const handlePasswordChange = (e) => {
         e.preventDefault();
@@ -95,6 +112,8 @@ const EditProfile = () => {
                 // handle success
                 console.log(response);
                 alert(response.data.detail);
+                redirectToHome();
+
             })
             .catch((error) => {
                 // handle error
@@ -121,6 +140,7 @@ const EditProfile = () => {
             </div>
             <div className={styles.container}>
                 <form onSubmit={updateUserProfile}>
+                    <h1>Email</h1>
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -133,6 +153,7 @@ const EditProfile = () => {
                     {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
                     <h1 className={styles.line}>_____________________________________________</h1>
 
+                    <h1>First name</h1>
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -144,6 +165,7 @@ const EditProfile = () => {
                     />
                     <h1 className={styles.line}>_____________________________________________</h1>
 
+                    <h1>Last name</h1>
                     <input
                         className={styles['input[type="text"]']}
                         type="text"

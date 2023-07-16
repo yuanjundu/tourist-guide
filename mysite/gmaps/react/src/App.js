@@ -116,6 +116,7 @@ function App() {
           <hr className="divider" />
         </div>
 
+
         {/* Recommendations */}
         <div id="recommendations">
           <div id="recommendation-box">
@@ -130,7 +131,6 @@ function App() {
         <div ref={mapDivRef}>
           <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} />
         </div>
-
 
         {/* Placebar */}
         <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
