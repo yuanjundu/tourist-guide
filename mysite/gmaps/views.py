@@ -1,103 +1,277 @@
 import os
 import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import UserRegisterForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.core import exceptions as django_exceptions
+from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.core.validators import MaxLengthValidator
+from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary
+from django.contrib.auth.password_validation import validate_password
+from django.shortcuts import get_object_or_404
 
-def map_view(request):
-    file_path = os.path.expanduser('~/app/mysite/gmaps/JSON/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import serializers, views, status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
-    context = {'data': data}
-    return render(request, 'map.html', context)
+from .algorithm import TSP, greedy_TSP
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('map_view')
-        else:
-            print("Form is not valid")
-            print(form.errors)
-    else:
-        form = UserRegisterForm()
-        print("Not a POST request")
+import logging
 
-    file_path = os.path.expanduser('~/app/mysite/gmaps/JSON/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
+logger = logging.getLogger(__name__)
 
-    return render(request, 'map.html', {'form': form, 'data': data})
+
+class UserSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(write_only=True)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+
+    # Restrictions on username
+    username = serializers.CharField(
+        validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
+    )
+
+    # Restrictions on email
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def validate(self, attrs):
+        password = attrs.get('password')
+        password2 = attrs.get('password2')
+        username = attrs.get('username')
+
+        if password != password2:
+            raise serializers.ValidationError("The two password fields didn't match.")
+
+        # Validate the password and catch the exception
+        errors = dict() 
+        try:
+            validate_password(password=password, user=User(username=username))
+        except django_exceptions.ValidationError as e:
+            errors['password'] = list(e.messages)
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return super(UserSerializer, self).validate(attrs)
+
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        return User.objects.create_user(**validated_data)
+    
+    def update(self, instance, validated_data):
+        if 'password2' in validated_data:
+            validated_data.pop('password2')
+
+        if 'password' in validated_data:
+            instance.set_password(validated_data.pop('password'))
+
+            return super().update(instance, validated_data)
+        
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+
+    # Restrictions on username
+    username = serializers.CharField(
+        validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
+    )
+
+    # Restrictions on email
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        extra_kwargs = {}
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+        return instance
+
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    http_method_names = ['patch', 'head', 'options']
+
+    def get_object(self):
+        return self.request.user
+    
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response({"detail": "Profile updated successfully."}, status=status.HTTP_200_OK)
+    
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
+        new_password2 = request.data.get("new_password2")
+
+        if not user.check_password(old_password):
+            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password != new_password2:
+            return Response({"new_password": ["New passwords don't match."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate the password and catch the exception
+        errors = dict() 
+        try:
+            validate_password(password=new_password, user=user)
+        except django_exceptions.ValidationError as e:
+            errors['new_password'] = list(e.messages)
+
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SignupView(views.APIView):
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print(serializer.errors) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class AttractionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attractions
+        fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
+
+class AttractionsViewSet(viewsets.ModelViewSet):
+    queryset = Attractions.objects.all()
+    serializer_class = AttractionsSerializer
 
 def default(request):
-    return render(request, 'main.html')
+    return redirect('http://localhost:3000/')
 
-def loginPage(request):
-    return render(request, 'login.html')
+class RestaurantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
 
-def signup(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect(loginPage)
-        else:
-            print(form.errors)
-#            messages.error(request, 'There was an error with your registration.')
-            return render(request, 'signup.html', {'form': form})
-    else:
-        form = UserRegisterForm()
-        print("Not a POST request")
+class RestaurantsByAttractionView(generics.ListAPIView):
+    serializer_class = RestaurantsSerializer
 
-    return render(request, 'signup.html', {'form': form})
+    def get_queryset(self):
+        attraction = get_object_or_404(Attractions, pk=self.kwargs['pk'])
+        restaurant_ids = AttractionRestaurants.objects.filter(attraction=attraction).values_list('restaurant', flat=True)
+        return Restaurant.objects.filter(id__in=restaurant_ids) 
+    
 
-def user_login(request):
-    if request.method == 'POST':
-        username_or_email = request.POST.get('username_or_email')
-        password = request.POST.get('password')
 
-        User = get_user_model()
+class TSPView(APIView):
+    """
+    View to solve the Traveling Salesman Problem for attractions
+    """
+
+    def post(self, request, format=None):
+        data = request.data
         try:
-            # Check if a user exists with this email address.
-            user = User.objects.get(email=username_or_email)
-        except User.DoesNotExist:
-            # If not, try to get a user with this username.
-            try:
-                user = User.objects.get(username=username_or_email)
-            except User.DoesNotExist:
-                user = None
-
-        if user is not None:
-            if user.check_password(password):
-                login(request, user)
-                return redirect(default)
-            else:
-                messages.info(request, 'Incorrect password')
-        else:
-            messages.info(request, 'Username or email address not found')
-        return render(request, 'login.html')
-
-def logout_user(request):
-    logout(request)
-    file_path = os.path.expanduser('~/app/mysite/gmaps/JSON/ny.geojson')
-    with open(file_path, 'r') as f:
-        data = json.load(f)
-    context = {'data': data, 'user': request.user}
-    return render(request, 'map.html', context)
+            date = data.get('selectedDate')
+            lat = data.get('latitude')
+            lon = data.get('longitude')
+            attractions = data.get('placesAttractions')
+            ordered_attractions = greedy_TSP(date, lat, lon, attractions)
+            return Response(ordered_attractions, status=status.HTTP_200_OK)
+        except KeyError:
+            return Response({'error': 'Invalid request, no placeAttractions found'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error('Unexpected error: %s', e, exc_info=True) 
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def my_space(request):
-    return render(request, 'myspace.html', {})
+class ItineraryView(APIView):
+    """
+    View to save itinerary history
+    """
+    
+    permission_classes = [IsAuthenticated]
 
-def settings(request):
-    return render(request, 'settings.html', {})
+    def post(self, request, format=None):
+        data = request.data
+        user = request.user
+        morning_attractions_data = data.get('morningAttractions')
+        afternoon_attractions_data = data.get('afternoonAttractions')
+        restaurant = data.get('selectedRestaurant')
+        selected_date = data.get('selectedDate')
 
+        # extract the ids from the morning and afternoon attractions data
+        morning_attractions = [attraction['id'] for attraction in morning_attractions_data]
+        afternoon_attractions = [attraction['id'] for attraction in afternoon_attractions_data]
+
+        restaurant_instance = Restaurant.objects.get(id=restaurant['id'])
+        itinerary = Itinerary.objects.create(user=user, selected_restaurant=restaurant_instance, saved_date=selected_date)
+        itinerary.morning_attractions.set(morning_attractions)
+        itinerary.afternoon_attractions.set(afternoon_attractions)
+        itinerary.save()
+
+        return Response({'message': 'Itinerary saved successfully'}, status=status.HTTP_200_OK)
+
+
+class ItineraryHistoryView(APIView):
+    """
+    View to fetch itinerary history
+    """
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = request.user
+        itineraries = Itinerary.objects.filter(user=user)
+        data = [itinerary.to_dict() for itinerary in itineraries]
+        return Response(data, status=status.HTTP_200_OK)
+    
+
+class DeleteItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id):
+        itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
+        itinerary.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
