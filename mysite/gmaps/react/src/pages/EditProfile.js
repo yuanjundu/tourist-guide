@@ -55,7 +55,9 @@ const EditProfile = () => {
             .catch((error) => {
                 // handle error
                 if (error.response && error.response.status === 401) {
-                    refreshToken(() => updateUserProfile(e));  // retry after refreshing the token
+                    refreshToken().then(() => {
+                        updateUserProfile(e);
+                    });
                 } else if (error.response) {
                     setErrors(error.response.data);
                 } else {
@@ -63,8 +65,9 @@ const EditProfile = () => {
                     alert("An error occurred while updating your profile.");
                 }
             });
-
+    
     };
+    
 
     useEffect(() => {
         const token = localStorage.getItem('access');
@@ -177,10 +180,10 @@ const EditProfile = () => {
                     />
                     <h1 className={styles.line}>_____________________________________________</h1>
 
-                    <button className={styles.button} type="submit">Save changes</button>
+                    <button className={styles.blackbutton} type="submit">Save changes</button>
                 </form>
 
-                <button onClick={() => setIsChangingPassword(true)} className={styles.button}  >Change Password</button>
+                <button onClick={() => setIsChangingPassword(true)} className={styles.pwdbutton}  >Change Password</button>
 
                 {isChangingPassword && (
                     <div className={styles.container}>
@@ -221,8 +224,8 @@ const EditProfile = () => {
                             />
                             <h1 className={styles.line}>_____________________________________________</h1>
 
-                            <button className={styles.button} type="submit">Save Password</button>
-                            <button type="button" onClick={() => setIsChangingPassword(false)}>Cancel</button>
+                            <button className={styles.blackbutton} type="submit">Save Password</button>
+                            <button className={styles.pwdbutton} type="button" onClick={() => setIsChangingPassword(false)} >Cancel</button>
                         </form>
                     </div>
                 )}

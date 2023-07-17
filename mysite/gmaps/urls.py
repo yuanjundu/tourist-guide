@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path, include
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView, TSPView, ItineraryView, ItineraryHistoryView, DeleteItineraryView, ChangePasswordView, UserProfileView
+from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView, TSPView, ItineraryView, ItineraryHistoryView, DeleteItineraryView, ChangePasswordView, UserProfileView, ShareItineraryView, JoinItineraryView, CommunityItineraryListView, ExitItineraryView, ExitItineraryView
 router = routers.DefaultRouter()
 router.register(r'attractions', AttractionsViewSet)
 
@@ -17,7 +17,12 @@ urlpatterns = [
     path('api/saveitinerary/', ItineraryView.as_view(), name='save_itinerary'), 
     path('api/history/', ItineraryHistoryView.as_view()),
     path('api/itinerary/<int:id>/delete/', DeleteItineraryView.as_view(), name='delete_itinerary'),
+    path('api/itinerary/<int:id>/share/', ShareItineraryView.as_view()),  # can both share and delete
+    path('api/community_itinerary/<int:id>/join/', JoinItineraryView.as_view()),
+    path('api/community_itinerary/', CommunityItineraryListView.as_view()),
+    path('api/community_itinerary/<int:id>/exit/', ExitItineraryView.as_view(), name='exit-itinerary'),
     path('api/', include(router.urls)),
     path('api/attractions/<int:pk>/restaurants/', RestaurantsByAttractionView.as_view(), name='attractions_restaurants'),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
+

@@ -99,11 +99,19 @@ class Itinerary(models.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "user": self.user.username,
+            "user": self.user.id,
             "morning_attractions": [attraction.to_dict() for attraction in self.morning_attractions.all()],
             "afternoon_attractions": [attraction.to_dict() for attraction in self.afternoon_attractions.all()],
             "selected_restaurant": self.selected_restaurant.to_dict() if self.selected_restaurant else None,
             "saved_date": self.saved_date.isoformat() if self.saved_date else None
         }
 
+class CommunityItinerary(models.Model):
+    itinerary = models.OneToOneField(Itinerary, on_delete=models.CASCADE)
+    shared_on = models.DateTimeField(auto_now_add=True)
+    joined_users = models.ManyToManyField(User, through='UserItinerary', related_name='joined_itineraries')
 
+class UserItinerary(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    community_itinerary = models.ForeignKey(CommunityItinerary, on_delete=models.CASCADE)
+    joined_on = models.DateTimeField(auto_now_add=True)

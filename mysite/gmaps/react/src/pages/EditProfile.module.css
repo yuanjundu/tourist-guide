@@ -57,21 +57,6 @@
   background-color: transparent;
 }
 
-.root form button {
-  background-color: black;
-  color: white;
-  padding: 35px 20px;
-  margin: 15px 0;
-  border: none;
-  cursor: pointer;
-  width: 80%;
-  left: 10%;
-  margin-top: 7%;
-  margin-left: 12%;
-  font-size: 40px;
-  font-weight: bold;
-}
-
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
@@ -114,8 +99,23 @@ span.psw {
   }
 }
 
-.button {
+.blackbutton {
   background-color: black;
+  color: white;
+  padding: 35px 20px;
+  margin: 15px 0;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  left: 10%;
+  margin-top: 7%;
+  margin-left: 12%;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.pwdbutton {
+  background-color:BLUE;
   color: white;
   padding: 35px 20px;
   margin: 15px 0;

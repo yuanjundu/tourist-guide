@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import EditProfile from "./pages/EditProfile";
 import Itinerary from "./pages/Itinerary";
 import History from "./pages/History";
+import Community from "./pages/Community"
 
 const AppRoutes = [
   {
@@ -30,6 +31,10 @@ const AppRoutes = [
   {
     path: "history",
     element: <History />,
+  },
+  {
+    path: "community",
+    element: <Community />,
   },
   
 ];

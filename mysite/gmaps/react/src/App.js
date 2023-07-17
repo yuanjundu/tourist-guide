@@ -6,6 +6,7 @@ import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetch } from 'whatwg-fetch';
+import axios from 'axios';
 import './App.css';
 import './index.css';
 
@@ -35,11 +36,21 @@ function App() {
     setSelectedDate(dateValue);
   }
 
+
   useEffect(() => {
-    fetch("http://localhost:8000/api/attractions/?format=json")
-      .then((response) => response.json())
-      .then((data) => setAttractions(data));
-  }, []);
+    const localAttractions = localStorage.getItem('attractions');
+    if (localAttractions) {
+        setAttractions(JSON.parse(localAttractions));
+    } else {
+        fetch("http://localhost:8000/api/attractions/?format=json")
+        .then((response) => response.json())
+        .then((data) => {
+            setAttractions(data);
+            localStorage.setItem('attractions', JSON.stringify(data)); // 'response' is replaced with 'data'
+        });
+    }
+}, []);
+
 
 
   const handleAddAttraction = (attraction) => {

@@ -12,9 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MaxLengthValidator
-from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary
+from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary, UserItinerary, CommunityItinerary
 from django.contrib.auth.password_validation import validate_password
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers, views, status, viewsets
@@ -45,7 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
+        fields = ['id', 'username', 'email', 'password', 'password2', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -251,7 +252,7 @@ class ItineraryView(APIView):
         itinerary.afternoon_attractions.set(afternoon_attractions)
         itinerary.save()
 
-        return Response({'message': 'Itinerary saved successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Itinerary saved successfully', 'itineraryId': itinerary.id}, status=status.HTTP_200_OK)
 
 
 class ItineraryHistoryView(APIView):
@@ -275,3 +276,88 @@ class DeleteItineraryView(APIView):
         itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
         itinerary.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ShareItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
+
+        if CommunityItinerary.objects.filter(itinerary=itinerary).exists():
+            return Response({"message": "This itinerary is already shared."}, status=status.HTTP_400_BAD_REQUEST)
+
+        shared_itinerary = CommunityItinerary(itinerary=itinerary, shared_on=timezone.now())
+        shared_itinerary.save()
+
+        # Add the creator as a joined user
+        user_itinerary = UserItinerary(user=request.user, community_itinerary=shared_itinerary, joined_on=timezone.now())
+        user_itinerary.save()
+
+        return Response({"message": "Itinerary shared successfully."}, status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+
+        # Check if the user owns the itinerary
+        if community_itinerary.itinerary.user != request.user:
+            return Response({"message": "You are not allowed to delete this itinerary."}, status=status.HTTP_403_FORBIDDEN)
+
+        community_itinerary.delete()
+
+        return Response({"message": "Itinerary deleted successfully."}, status=status.HTTP_200_OK)
+    
+class ItinerarySerializer(serializers.ModelSerializer):
+    morning_attractions = AttractionsSerializer(many=True, read_only=True)
+    afternoon_attractions = AttractionsSerializer(many=True, read_only=True)
+    selected_restaurant = RestaurantsSerializer(read_only=True)
+    class Meta:
+        model = Itinerary
+        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'selected_restaurant', 'saved_date']
+
+class CommunityItinerarySerializer(serializers.ModelSerializer):
+    itinerary = ItinerarySerializer()
+    user = UserSerializer(read_only=True, source='itinerary.user')
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
+    # joined_users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = CommunityItinerary
+        fields = ['id', 'itinerary', 'shared_on', 'joined_users', 'user']
+
+class JoinItineraryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        logger.info(f"Received request with headers: {request.headers}")
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+
+        if UserItinerary.objects.filter(user=request.user, community_itinerary=community_itinerary).exists():
+            return Response({"message": "You have already joined this itinerary."}, status=status.HTTP_400_BAD_REQUEST)
+
+        joined_itinerary = UserItinerary(user=request.user, community_itinerary=community_itinerary, joined_on=timezone.now())
+        joined_itinerary.save()
+
+        return Response({"message": "Joined the itinerary successfully."}, status=status.HTTP_200_OK)
+    
+class CommunityItineraryListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        shared_itineraries = CommunityItinerary.objects.all()
+        print(shared_itineraries)
+        serializer = CommunityItinerarySerializer(shared_itineraries, many=True)
+        return Response(serializer.data)
+
+class ExitItineraryView(APIView):
+    """
+    View to exit a community itinerary
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id, format=None):
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+        user_itinerary = get_object_or_404(UserItinerary, user=request.user, community_itinerary=community_itinerary)
+
+        user_itinerary.delete()
+        return Response({"message": "Successfully exited the itinerary."}, status=status.HTTP_200_OK)
+    

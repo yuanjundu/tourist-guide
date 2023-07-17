@@ -72,7 +72,7 @@ const Itinerary = () => {
 
     const handleSaveItinerary = () => {
         const token = localStorage.getItem('access');
-    
+
         axios.post('http://localhost:8000/api/saveitinerary/', {
             morningAttractions,
             afternoonAttractions,
@@ -83,22 +83,38 @@ const Itinerary = () => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then((response) => {
-            // handle success
-            console.log(response);
-            alert("Itinerary saved successfully!");
-        })
-        .catch((error) => {
-            // handle error
-            if (error.response.status === 401) {
-                refreshToken();
-            } else {
-                console.log(error.response.data);
-                alert("An error occurred while saving your itinerary.");
-            }
-        });
+            .then((response) => {
+                // handle success
+                console.log(response.data);
+                alert("Itinerary saved successfully!");
+
+                // get the existing history
+                const history = JSON.parse(localStorage.getItem('history')) || [];
+                // add the new itinerary to the history
+                const newItinerary = {
+                    id: response.data.itineraryId, // Assuming your response data includes the id of the new itinerary
+                    user: 'test', // Replace this with the actual user information
+                    morning_attractions: morningAttractions,
+                    afternoon_attractions: afternoonAttractions,
+                    selected_restaurant: selectedRestaurant,
+                    saved_date: selectedDate
+                };
+                history.push(newItinerary);
+                // save the updated history back to localStorage
+                localStorage.setItem('history', JSON.stringify(history));
+            })
+            .catch((error) => {
+                // handle error
+                if (error.response.status === 401) {
+                    refreshToken();
+                } else {
+                    console.log(error.response.data);
+                    alert("An error occurred while saving your itinerary.");
+                }
+            });
     };
-    
+
+
 
     return (
         <div className={styles.container}>
@@ -108,14 +124,14 @@ const Itinerary = () => {
             {morningAttractions.map((attraction, index) => (
                 <div className={styles.attraction} key={index}>{attraction.name}</div>
             ))}
-    
+
             <h2 className={styles.header}>Lunch</h2>
             {restaurants.map((restaurant, index) => (
                 <div className={`${styles.lunch} ${selectedRestaurant === restaurant ? styles.selected : ''}`} key={index} onClick={() => handleSetMyRestaurant(restaurant)}>
                     {restaurant.name}
                 </div>
             ))}
-    
+
             <h2 className={styles.header}>Afternoon</h2>
             {afternoonAttractions.map((attraction, index) => (
                 <div className={styles.attraction} key={index}>{attraction.name}</div>
@@ -125,7 +141,7 @@ const Itinerary = () => {
 
             <Footer onLocationChange={() => { }} />
         </div>
-    );  
+    );
 };
 
 export default Itinerary;

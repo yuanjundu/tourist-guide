@@ -21,7 +21,7 @@ function Map({ placeDetails, setPlaceDetails }) {
 
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "AIzaSyDMTnLlJMThssazGhjRyY6fwjaci2lpat8",
+        googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
         libraries,
     });
 

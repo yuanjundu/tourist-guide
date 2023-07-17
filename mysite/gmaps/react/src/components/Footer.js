@@ -49,12 +49,16 @@ const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selected
         navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
     }
 
+    const redirectToCommunity = () => {
+        navigate('/community');
+    }
+
 
     return (
         <footer>
             <nav>
                 <ul id="nav-list">
-                    <li><button><icons.Wallet2 /></button></li>
+                    <li><button onClick={redirectToCommunity}><icons.PeopleFill /></button></li>
                     <li><button onClick={getCurrentLocation}><icons.GeoAlt /></button></li>
                     <li><button onClick={redirectToItinerary}><icons.RocketTakeoff /></button></li>
                     <li><button onClick={redirectToHome}><icons.HouseDoor /></button></li>
