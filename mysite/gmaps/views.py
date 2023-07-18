@@ -397,7 +397,7 @@ class BusynessDayView(APIView):
     """
     Predict the busyness for a given zone and the next 24 hours
     """
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, zone_id, timestamp):
         print(zone_id, timestamp)
