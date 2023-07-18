@@ -1,6 +1,8 @@
 import os
 import json
-from django.http import JsonResponse
+import numpy as np
+import pandas as pd
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -25,7 +27,9 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
+import joblib
 
+import traceback
 import logging
 
 logger = logging.getLogger(__name__)
@@ -361,3 +365,54 @@ class ExitItineraryView(APIView):
         user_itinerary.delete()
         return Response({"message": "Successfully exited the itinerary."}, status=status.HTTP_200_OK)
     
+class BusynessView(APIView):
+    """
+    Predict the busyness for a given zone and time
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, zone_id, timestamp):
+        print(zone_id, timestamp)
+        try:
+            model_path = f'gmaps/pkl/{zone_id}.pkl'
+            if not os.path.exists(model_path):
+                raise Http404
+
+            model = joblib.load(model_path)
+            timestamp = np.array([int(timestamp)]).reshape(-1, 1)
+            busyness = model.predict(timestamp)[0]
+            return Response({"busyness": busyness}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, pk=self.kwargs['pk'])
+        return obj
+
+
+class BusynessDayView(APIView):
+    """
+    Predict the busyness for a given zone and the next 24 hours
+    """
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, zone_id, timestamp):
+        print(zone_id, timestamp)
+        try:
+            model_path = f'gmaps/pkl/{zone_id}.pkl'
+            if not os.path.exists(model_path):
+                raise Http404
+
+            model = joblib.load(model_path)
+            timestamps = np.array([int(timestamp) + i*3600 for i in range(24)]).reshape(-1, 1)
+            busyness = model.predict(timestamps).tolist()
+            print(busyness)
+            response_data = [{"timestamp": ts, "busyness": bs} for ts, bs in zip(timestamps.flatten(), busyness)]
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

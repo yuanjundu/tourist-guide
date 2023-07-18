@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
+import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -17,6 +19,56 @@ const Itinerary = () => {
     const [afternoonAttractions, setAfternoonAttractions] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+    const [busynessData, setBusynessData] = useState([]);
+
+
+    const fetchBusynessForDay = async (zoneId, startOfDay) => {
+        try {
+            const token = localStorage.getItem('access');
+            const response = await axios.get(
+                `http://localhost:8000/api/busyness/${zoneId}/${Math.floor(startOfDay / 1000)}/day/`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.status === 200) {
+                if(Array.isArray(response.data)) {
+                    const busynessValues = response.data.map(item => item.busyness); 
+                    setBusynessData(busynessValues);
+                }
+            } else {
+                console.error('Error occurred:', response.data.error);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                const newToken = await refreshToken();
+                localStorage.setItem('access', newToken);
+                return fetchBusynessForDay(zoneId, startOfDay);
+            } else {
+                console.error('Error occurred:', error);
+            }
+        }
+    };
+
+   // Assume each attraction takes 2 hours, and the day starts at 8 AM
+   const startOfDay = new Date(selectedDate).setHours(8, 0, 0, 0);  // Set to 8 AM of selected date
+   const timePerAttraction = 2 * 60 * 60 * 1000;  // 2 hours in milliseconds
+
+    useEffect(() => {
+        if (morningAttractions.length > 0) {
+            morningAttractions.forEach((attraction, index) => {
+                const startOfAttraction = startOfDay + index * timePerAttraction;
+                fetchBusynessForDay(attraction.zone, startOfAttraction);
+
+                console.log(attraction.zone);
+                console.log(startOfAttraction);
+            });
+            console.log(busynessData);
+        }
+    }, [morningAttractions]);
 
 
 
@@ -115,6 +167,10 @@ const Itinerary = () => {
     };
 
 
+    const data = busynessData.map((value, index) => ({
+        name: `Attraction ${index + 1}`,
+        busyness: value,
+    }));
 
     return (
         <div className={styles.container}>
