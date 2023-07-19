@@ -36,16 +36,18 @@ logger = logging.getLogger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # write_only: this field is used for write operations but not included in serialized output
     password2 = serializers.CharField(write_only=True)
+
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
-    # Restrictions on username
+    # Username must contain only ASCII characters and have a maximum length of 150
     username = serializers.CharField(
         validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
     )
 
-    # Restrictions on email
+    # Email field is required and will be validated
     email = serializers.EmailField()
 
     class Meta:
@@ -93,7 +95,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
-    # Restrictions on username
+    # Username must contain only ASCII characters and have a maximum length of 150
     username = serializers.CharField(
         validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
     )
@@ -162,6 +164,9 @@ class ChangePasswordView(APIView):
         return Response({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
 
 class UserProfileView(APIView):
+    """
+    View to return serilized data of users
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -171,6 +176,9 @@ class UserProfileView(APIView):
 
 
 class SignupView(views.APIView):
+    """
+    View to sign up
+    """
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
 
@@ -201,6 +209,9 @@ class RestaurantsSerializer(serializers.ModelSerializer):
         fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
 
 class RestaurantsByAttractionView(generics.ListAPIView):
+    """
+    View to return restaurants related to an attraction
+    """
     serializer_class = RestaurantsSerializer
 
     def get_queryset(self):
@@ -274,6 +285,9 @@ class ItineraryHistoryView(APIView):
     
 
 class DeleteItineraryView(APIView):
+    """
+    View to delete itinerary in history
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, id):
@@ -282,6 +296,9 @@ class DeleteItineraryView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class ShareItineraryView(APIView):
+    """
+    View to share and delete itinerary in community
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, id):
@@ -329,6 +346,9 @@ class CommunityItinerarySerializer(serializers.ModelSerializer):
         fields = ['id', 'itinerary', 'shared_on', 'joined_users', 'user']
 
 class JoinItineraryView(APIView):
+    """
+    View to join itinerary
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, id):
@@ -344,6 +364,9 @@ class JoinItineraryView(APIView):
         return Response({"message": "Joined the itinerary successfully."}, status=status.HTTP_200_OK)
     
 class CommunityItineraryListView(APIView):
+    """
+    View to list itinerary in community
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
