@@ -125,7 +125,7 @@ const Itinerary = () => {
     const handleSaveItinerary = () => {
         const token = localStorage.getItem('access');
 
-        axios.post('http://localhost:8000/api/saveitinerary/', {
+        axios.post('http://localhost:8000/api/save_itinerary/', {
             morningAttractions,
             afternoonAttractions,
             selectedRestaurant,

@@ -33,6 +33,7 @@ const Community = () => {
 
     useEffect(() => {
         fetchSharedItineraries();   
+        console.log(sharedItineraries);
     }, [fetchSharedItineraries]);
 
     const handleJoin = async (itineraryId) => {

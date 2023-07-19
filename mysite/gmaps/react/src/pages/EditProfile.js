@@ -37,7 +37,7 @@ const EditProfile = () => {
         // Reset errors when submitting
         setErrors({});
         const token = localStorage.getItem('access');
-        axios.patch('http://localhost:8000/api/updateprofile/', {
+        axios.patch('http://localhost:8000/api/update_profile/', {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -102,7 +102,7 @@ const EditProfile = () => {
             alert("New passwords don't match.");
             return;
         }
-        axios.post('http://localhost:8000/api/changepassword/', {
+        axios.post('http://localhost:8000/api/change_password/', {
             old_password: oldpsw,
             new_password: psw,
             new_password2: cpsw

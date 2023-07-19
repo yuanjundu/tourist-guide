@@ -322,7 +322,7 @@ class CommunityItinerarySerializer(serializers.ModelSerializer):
     itinerary = ItinerarySerializer()
     user = UserSerializer(read_only=True, source='itinerary.user')
     # user = serializers.PrimaryKeyRelatedField(read_only=True)
-    # joined_users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    joined_users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = CommunityItinerary
