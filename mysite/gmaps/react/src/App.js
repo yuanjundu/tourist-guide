@@ -102,6 +102,9 @@ function App() {
     setPlacesAttractions(newPlacesAttractions);
   }
 
+  // State to store map instance
+  const [mapInstance, setMapInstance] = useState(null);
+
   // Scroll to map
   const mapDivRef = useRef(null);
   const scrollToMap = () => {
@@ -139,17 +142,17 @@ function App() {
 
 
         {/* Google maps */}
-        <div ref={mapDivRef}>
-          <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} />
+        <div ref={mapDivRef} id='mapcon'>
+          <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance}/>
         </div>
 
         {/* Placebar */}
-        <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
+        <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
 
       </main>
 
       {/* Fixed footer on the screen bottom */}
-      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} />
+      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
 
     </div>
   );

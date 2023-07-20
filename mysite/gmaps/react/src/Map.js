@@ -5,7 +5,7 @@ import Itinerary from './Placebar';
 export const clickPlaceInfo = createContext();
 const libraries = ['places'];
 
-function Map({ placeDetails, setPlaceDetails }) {
+function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
     // Map reference
     const mapRef = useRef(null);
     // Search box reference
@@ -30,6 +30,7 @@ function Map({ placeDetails, setPlaceDetails }) {
         mapRef.current = map;
         mapRef.current.addListener('click', handleMapClick);
         console.log('Map loaded:', map);
+        setMapInstance(map);
     };
 
     // Control the search box loads
@@ -98,14 +99,13 @@ function Map({ placeDetails, setPlaceDetails }) {
             );
 
             // Adjust the viewport of map
-            if (place.geometry.viewport) {
-                bounds.union(place.geometry.viewport);
+            if (places && places.length === 1) {
+                mapRef.current.setZoom(15);
+                mapRef.current.panTo(place.geometry.location);
             } else {
-                bounds.extend(place.geometry.location);
+                mapRef.current.setZoom(12);
+                mapRef.current.panTo(place.geometry.location);
             }
-
-            mapRef.current.fitBounds(bounds);
-
         });
 
         // // If only one place searched, then it can be added to itinerary
@@ -153,32 +153,33 @@ function Map({ placeDetails, setPlaceDetails }) {
 
     return (
         <>
+
             <GoogleMap
                 ref={mapRef}
-                center={{ lat: 40.768, lng: -73.976 }}
-                zoom={11}
+                center={{ lat: 40.7590322, lng: -74.0516319 }}
+                zoom={12}
                 mapContainerClassName='map-container'
                 onLoad={handleMapLoad}
                 options={{
                     mapTypeControl: true,
                     mapTypeControlOptions: { style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU },
-                    // TO DO
-                    // restriction: {
-                    //     latLngBounds: {
-                    //         north: 40.8822,
-                    //         south: 40.6797,
-                    //         west: -74.0479,
-                    //         east: -73.9070
-                    //       },
-                    //     strictBounds: false
-                    //   }
+                    restriction: {
+                        latLngBounds: {
+                            north: 40.8822,
+                            south: 40.6797,
+                            west: -74.0479,
+                            east: -73.9070
+                          },
+                        strictBounds: false
+                    }
                 }}
             >
             <StandaloneSearchBox onLoad={handleSearchBoxLoad}   onPlacesChanged={handlePlacesChanged} >
                 <input type="text" id="search-box" placeholder="Search for a place"  />
             </StandaloneSearchBox>
             </GoogleMap>
-            {/* <clickPlaceInfo.Provider value={{placeDetails}}><Itinerary /></clickPlaceInfo.Provider> */}
+
+            {/* <clickPlaceInfo.Provier value={{placeDetails}}><Itinerary /></clickPlaceInfo.Provier> */}
         </>
     );
 };

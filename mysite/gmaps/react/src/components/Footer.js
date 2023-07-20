@@ -1,20 +1,21 @@
 import React from "react";
-import Map from '../Map';
+import { getMapInstance } from '../Map';
 import * as icons from 'react-bootstrap-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate}) => {
+const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate, mapInstance}) => {
     // Scroll to map
     //   const mapDivRef = useRef(null);
     //   const scrollToMap = () => {
     //     mapDivRef.current.scrollIntoView({ behavior: 'smooth' });
     //   }
-
+    // const mapInstance = useContext(getMapInstance);
+    console.log(mapInstance)
     useEffect(() => {
         getCurrentLocation();
-    }, []);
+    }, [mapInstance]);
 
     const getCurrentLocation = () => {
         if (navigator.geolocation) {
@@ -30,6 +31,19 @@ const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selected
         onLocationChange(location);
         console.log('Current latitude:', latitude);
         console.log('Current longitude:', longitude);
+
+        if(mapInstance){
+            const myLocationMarkers = [];
+            myLocationMarkers.forEach(marker => marker.setMap(null))
+            myLocationMarkers.push(
+                new window.google.maps.Marker({
+                    map: mapInstance,
+                    position: {lat: latitude, lng: longitude}
+                })
+            )
+        }else{
+            console.log('no map right now')
+        }
       };
     
     const navigate = useNavigate();
