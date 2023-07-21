@@ -29,6 +29,8 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
     
                 // Store user data in localStorage
                 localStorage.setItem('user', JSON.stringify(response.data));
+                localStorage.setItem('userId', JSON.stringify(response.data.id))
+
             })
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
@@ -46,7 +48,6 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
             getUserInfo();
         }
     }, [isLoggedIn]);
-
 
     const navigate = useNavigate();
 
@@ -80,6 +81,7 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
         localStorage.removeItem('user');
+        localStorage.removeItem('userId');
         setIsLoggedIn(false);
     };
 

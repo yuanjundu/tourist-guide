@@ -1,6 +1,8 @@
 import os
 import json
-from django.http import JsonResponse
+import numpy as np
+import pandas as pd
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -12,9 +14,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MaxLengthValidator
-from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary
+from .models import Attractions, Restaurant, AttractionRestaurants, Itinerary, UserItinerary, CommunityItinerary
 from django.contrib.auth.password_validation import validate_password
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers, views, status, viewsets
@@ -24,28 +27,32 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
+import joblib
 
+import traceback
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # write_only: this field is used for write operations but not included in serialized output
     password2 = serializers.CharField(write_only=True)
+
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
-    # Restrictions on username
+    # Username must contain only ASCII characters and have a maximum length of 150
     username = serializers.CharField(
         validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
     )
 
-    # Restrictions on email
+    # Email field is required and will be validated
     email = serializers.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
+        fields = ['id', 'username', 'email', 'password', 'password2', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -88,7 +95,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
-    # Restrictions on username
+    # Username must contain only ASCII characters and have a maximum length of 150
     username = serializers.CharField(
         validators=[ASCIIUsernameValidator(), MaxLengthValidator(150)]
     )
@@ -157,6 +164,9 @@ class ChangePasswordView(APIView):
         return Response({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
 
 class UserProfileView(APIView):
+    """
+    View to return serilized data of users
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -166,6 +176,9 @@ class UserProfileView(APIView):
 
 
 class SignupView(views.APIView):
+    """
+    View to sign up
+    """
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
 
@@ -196,6 +209,9 @@ class RestaurantsSerializer(serializers.ModelSerializer):
         fields = ['id', 'housenumber', 'street', 'postcode', 'name', 'opening_hours', 'phone', 'website', 'geom', 'image', 'zone', 'tag']
 
 class RestaurantsByAttractionView(generics.ListAPIView):
+    """
+    View to return restaurants related to an attraction
+    """
     serializer_class = RestaurantsSerializer
 
     def get_queryset(self):
@@ -251,7 +267,7 @@ class ItineraryView(APIView):
         itinerary.afternoon_attractions.set(afternoon_attractions)
         itinerary.save()
 
-        return Response({'message': 'Itinerary saved successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Itinerary saved successfully', 'itineraryId': itinerary.id}, status=status.HTTP_200_OK)
 
 
 class ItineraryHistoryView(APIView):
@@ -269,9 +285,157 @@ class ItineraryHistoryView(APIView):
     
 
 class DeleteItineraryView(APIView):
+    """
+    View to delete itinerary in history
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, id):
         itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
         itinerary.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ShareItineraryView(APIView):
+    """
+    View to share and delete itinerary in community
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        itinerary = get_object_or_404(Itinerary, id=id, user=request.user)
+
+        if CommunityItinerary.objects.filter(itinerary=itinerary).exists():
+            return Response({"message": "This itinerary is already shared."}, status=status.HTTP_400_BAD_REQUEST)
+
+        shared_itinerary = CommunityItinerary(itinerary=itinerary, shared_on=timezone.now())
+        shared_itinerary.save()
+
+        # Add the creator as a joined user
+        user_itinerary = UserItinerary(user=request.user, community_itinerary=shared_itinerary, joined_on=timezone.now())
+        user_itinerary.save()
+
+        return Response({"message": "Itinerary shared successfully."}, status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+
+        # Check if the user owns the itinerary
+        if community_itinerary.itinerary.user != request.user:
+            return Response({"message": "You are not allowed to delete this itinerary."}, status=status.HTTP_403_FORBIDDEN)
+
+        community_itinerary.delete()
+
+        return Response({"message": "Itinerary deleted successfully."}, status=status.HTTP_200_OK)
+    
+class ItinerarySerializer(serializers.ModelSerializer):
+    morning_attractions = AttractionsSerializer(many=True, read_only=True)
+    afternoon_attractions = AttractionsSerializer(many=True, read_only=True)
+    selected_restaurant = RestaurantsSerializer(read_only=True)
+    class Meta:
+        model = Itinerary
+        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'selected_restaurant', 'saved_date']
+
+class CommunityItinerarySerializer(serializers.ModelSerializer):
+    itinerary = ItinerarySerializer()
+    user = UserSerializer(read_only=True, source='itinerary.user')
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
+    joined_users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = CommunityItinerary
+        fields = ['id', 'itinerary', 'shared_on', 'joined_users', 'user']
+
+class JoinItineraryView(APIView):
+    """
+    View to join itinerary
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        logger.info(f"Received request with headers: {request.headers}")
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+
+        if UserItinerary.objects.filter(user=request.user, community_itinerary=community_itinerary).exists():
+            return Response({"message": "You have already joined this itinerary."}, status=status.HTTP_400_BAD_REQUEST)
+
+        joined_itinerary = UserItinerary(user=request.user, community_itinerary=community_itinerary, joined_on=timezone.now())
+        joined_itinerary.save()
+
+        return Response({"message": "Joined the itinerary successfully."}, status=status.HTTP_200_OK)
+    
+class CommunityItineraryListView(APIView):
+    """
+    View to list itinerary in community
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        shared_itineraries = CommunityItinerary.objects.all()
+        print(shared_itineraries)
+        serializer = CommunityItinerarySerializer(shared_itineraries, many=True)
+        return Response(serializer.data)
+
+class ExitItineraryView(APIView):
+    """
+    View to exit a community itinerary
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id, format=None):
+        community_itinerary = get_object_or_404(CommunityItinerary, id=id)
+        user_itinerary = get_object_or_404(UserItinerary, user=request.user, community_itinerary=community_itinerary)
+
+        user_itinerary.delete()
+        return Response({"message": "Successfully exited the itinerary."}, status=status.HTTP_200_OK)
+    
+class BusynessView(APIView):
+    """
+    Predict the busyness for a given zone and time
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, zone_id, timestamp):
+        print(zone_id, timestamp)
+        try:
+            model_path = f'gmaps/pkl/{zone_id}.pkl'
+            if not os.path.exists(model_path):
+                raise Http404
+
+            model = joblib.load(model_path)
+            timestamp = np.array([int(timestamp)]).reshape(-1, 1)
+            busyness = model.predict(timestamp)[0]
+            return Response({"busyness": busyness}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, pk=self.kwargs['pk'])
+        return obj
+
+
+class BusynessDayView(APIView):
+    """
+    Predict the busyness for a given zone and the next 24 hours
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, zone_id, timestamp):
+        print(zone_id, timestamp)
+        try:
+            model_path = f'gmaps/pkl/{zone_id}.pkl'
+            if not os.path.exists(model_path):
+                raise Http404
+
+            model = joblib.load(model_path)
+            timestamps = np.array([int(timestamp) + i*3600 for i in range(24)]).reshape(-1, 1)
+            busyness = model.predict(timestamps).tolist()
+            print(busyness)
+            response_data = [{"timestamp": ts, "busyness": bs} for ts, bs in zip(timestamps.flatten(), busyness)]
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

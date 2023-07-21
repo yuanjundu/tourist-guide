@@ -6,6 +6,7 @@ import * as icons from 'react-bootstrap-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetch } from 'whatwg-fetch';
+import axios from 'axios';
 import './App.css';
 import './index.css';
 
@@ -35,11 +36,21 @@ function App() {
     setSelectedDate(dateValue);
   }
 
+
   useEffect(() => {
-    fetch("http://localhost:8000/api/attractions/?format=json")
-      .then((response) => response.json())
-      .then((data) => setAttractions(data));
-  }, []);
+    const localAttractions = localStorage.getItem('attractions');
+    if (localAttractions) {
+        setAttractions(JSON.parse(localAttractions));
+    } else {
+        fetch("http://localhost:8000/api/attractions/?format=json")
+        .then((response) => response.json())
+        .then((data) => {
+            setAttractions(data);
+            localStorage.setItem('attractions', JSON.stringify(data)); // 'response' is replaced with 'data'
+        });
+    }
+}, []);
+
 
 
   const handleAddAttraction = (attraction) => {
@@ -91,6 +102,9 @@ function App() {
     setPlacesAttractions(newPlacesAttractions);
   }
 
+  // State to store map instance
+  const [mapInstance, setMapInstance] = useState(null);
+
   // Scroll to map
   const mapDivRef = useRef(null);
   const scrollToMap = () => {
@@ -128,17 +142,17 @@ function App() {
 
 
         {/* Google maps */}
-        <div ref={mapDivRef}>
-          <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} />
+        <div ref={mapDivRef} id='mapcon'>
+          <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance}/>
         </div>
 
         {/* Placebar */}
-        <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
+        <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
 
       </main>
 
       {/* Fixed footer on the screen bottom */}
-      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} />
+      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
 
     </div>
   );

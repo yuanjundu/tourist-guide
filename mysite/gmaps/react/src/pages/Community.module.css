@@ -1,4 +1,4 @@
-.historyContainer {
+.communityContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,16 +28,28 @@
     float: right;
 }
 
-.attractionSection {
-    margin: 15px 0;
-}
-
-.shareButton {
-    background-color: #0055ff;
+.joinButton {
+    background-color: #008000;
     color: #ffffff;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
     float: right;
+    margin-right: 10px;
+}
+
+.exitButton {
+    background-color: #ff8c00;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    margin-right: 10px;
+}
+
+.attractionSection {
+    margin: 15px 0;
 }

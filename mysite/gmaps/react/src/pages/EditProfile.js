@@ -37,7 +37,7 @@ const EditProfile = () => {
         // Reset errors when submitting
         setErrors({});
         const token = localStorage.getItem('access');
-        axios.patch('http://localhost:8000/api/updateprofile/', {
+        axios.patch('http://localhost:8000/api/update_profile/', {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -55,7 +55,9 @@ const EditProfile = () => {
             .catch((error) => {
                 // handle error
                 if (error.response && error.response.status === 401) {
-                    refreshToken(() => updateUserProfile(e));  // retry after refreshing the token
+                    refreshToken().then(() => {
+                        updateUserProfile(e);
+                    });
                 } else if (error.response) {
                     setErrors(error.response.data);
                 } else {
@@ -63,8 +65,9 @@ const EditProfile = () => {
                     alert("An error occurred while updating your profile.");
                 }
             });
-
+    
     };
+    
 
     useEffect(() => {
         const token = localStorage.getItem('access');
@@ -99,7 +102,7 @@ const EditProfile = () => {
             alert("New passwords don't match.");
             return;
         }
-        axios.post('http://localhost:8000/api/changepassword/', {
+        axios.post('http://localhost:8000/api/change_password/', {
             old_password: oldpsw,
             new_password: psw,
             new_password2: cpsw
@@ -177,10 +180,10 @@ const EditProfile = () => {
                     />
                     <h1 className={styles.line}>_____________________________________________</h1>
 
-                    <button className={styles.button} type="submit">Save changes</button>
+                    <button className={styles.blackbutton} type="submit">Save changes</button>
                 </form>
 
-                <button onClick={() => setIsChangingPassword(true)} className={styles.button}  >Change Password</button>
+                <button onClick={() => setIsChangingPassword(true)} className={styles.pwdbutton}  >Change Password</button>
 
                 {isChangingPassword && (
                     <div className={styles.container}>
@@ -221,8 +224,8 @@ const EditProfile = () => {
                             />
                             <h1 className={styles.line}>_____________________________________________</h1>
 
-                            <button className={styles.button} type="submit">Save Password</button>
-                            <button type="button" onClick={() => setIsChangingPassword(false)}>Cancel</button>
+                            <button className={styles.blackbutton} type="submit">Save Password</button>
+                            <button className={styles.pwdbutton} type="button" onClick={() => setIsChangingPassword(false)} >Cancel</button>
                         </form>
                     </div>
                 )}
