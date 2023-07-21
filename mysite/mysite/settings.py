@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+#GDAL_LIBRARY_PATH = "C:\\Users\\danor\\anaconda3\\envs\\nyc_aenv\\Library\\bin\\gdal.dll"
+GDAL_LIBRARY_PATH = "C:\\Users\\danor\\anaconda3\\envs\\nyc_aenv\\Lib\\site-packages\\Fiona.libs\\gdal-7ff3af391af054340a2b8fc92b9e5452.dll"
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -67,6 +70,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
 ]
 
 
