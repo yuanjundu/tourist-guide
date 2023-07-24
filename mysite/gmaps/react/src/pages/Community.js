@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './Community.module.css';
 
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 
 const Community = () => {
@@ -143,7 +143,9 @@ const Community = () => {
 
                 </div>
             ))}
-            <Footer onLocationChange={() => { }} />
+            <div className='nav-box-mobile'>
+                <Navigation onLocationChange={() => { }} />
+            </div>
         </div>
     );
 };

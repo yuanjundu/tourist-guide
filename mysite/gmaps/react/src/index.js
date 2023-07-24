@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppRoutes from './AppRoutes';
 import './index.css';
+import './desktop-index.css'
 
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));

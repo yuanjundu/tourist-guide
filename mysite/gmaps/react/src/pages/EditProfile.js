@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './EditProfile.module.css';
-import Footer from '../components/Footer';
+import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import { useNavigate } from 'react-router-dom';
 
@@ -230,7 +230,9 @@ const EditProfile = () => {
                     </div>
                 )}
             </div>
-            <Footer onLocationChange={() => { }} />
+            <div className='nav-box-mobile'>
+                <Navigation onLocationChange={() => { }} />
+            </div>
         </div>
     );
 
