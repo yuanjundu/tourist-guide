@@ -6,31 +6,32 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Navigation = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate, mapInstance}) => {
-    // Scroll to map
-    //   const mapDivRef = useRef(null);
-    //   const scrollToMap = () => {
-    //     mapDivRef.current.scrollIntoView({ behavior: 'smooth' });
-    //   }
-    // const mapInstance = useContext(getMapInstance);
-    console.log(mapInstance)
+    
+    console.log(placesAttractions);
+
     useEffect(() => {
         getCurrentLocation();
     }, [mapInstance]);
 
     const getCurrentLocation = () => {
-        if (Navigation.geolocation) {
-            Navigation.geolocation.getCurrentPosition(showPosition);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            console.log(typeof onLocationChange);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
     };
-
+    
     const showPosition = (position) => {
         const { latitude, longitude } = position.coords;
         const location = { latitude, longitude };
-        onLocationChange(location);
+        if(typeof onLocationChange === 'function') {
+            onLocationChange(location);
+        }
         console.log('Current latitude:', latitude);
         console.log('Current longitude:', longitude);
+        console.log('In showPosition, type of onLocationChange:', typeof onLocationChange);
+
 
         if(mapInstance){
             const myLocationMarkers = [];
@@ -60,7 +61,7 @@ const Navigation = ({ onLocationChange, myLocation, placesAttractions = [], sele
     }
 
     const redirectToItinerary = () => {
-        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
+        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate, mapInstance} });
     }
 
     const redirectToCommunity = () => {

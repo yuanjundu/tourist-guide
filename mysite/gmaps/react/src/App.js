@@ -23,8 +23,11 @@ function App() {
 
   //<------------------Test--------------------->
   useEffect(() => {
-    console.log(myLocation);
-    console.log(placesAttractions);
+    // console.log(typeof handleLocationChange);
+    // console.log(mapInstance);
+    // console.log(selectedDate);
+    // console.log(myLocation);
+    // console.log(placesAttractions);
   });
   //<------------------Test--------------------->
 

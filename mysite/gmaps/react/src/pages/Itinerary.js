@@ -12,7 +12,7 @@ import styles from './Itinerary.module.css';
 
 const Itinerary = () => {
     const location = useLocation();
-    const { myLocation, myRestaurant, placesAttractions, selectedDate } = location.state || {};
+    const { myLocation, placesAttractions, selectedDate } = location.state || {};
     const { latitude = 0, longitude = 0 } = myLocation || {};
     const [orderedAttractions, setOrderedAttractions] = useState([]);
     const [morningAttractions, setMorningAttractions] = useState([]);
@@ -78,16 +78,14 @@ const Itinerary = () => {
 
     //<------------------Test--------------------->
     useEffect(() => {
-        // console.log(myLocation);
-        // console.log(placesAttractions);
-        // console.log(myRestaurant);
+        console.log(location.state);
         console.log(selectedDate);
         console.log('selectedLunchRestaurant', selectedLunchRestaurant);
         console.log('selectedDinnerRestaurant', selectedDinnerRestaurant);
         console.log('lunchRestaurants', lunchRestaurants);
         console.log('dinnerRestaurants', dinnerRestaurants);
-
-    });
+    }, [location.state]);
+    
     //<------------------Test--------------------->
 
 
@@ -128,7 +126,6 @@ const Itinerary = () => {
     }, [orderedAttractions]);
 
 
-
     const handleSetLunchRestaurant = (restaurant) => {
         setSelectedLunchRestaurant(restaurant);
     };
@@ -136,7 +133,6 @@ const Itinerary = () => {
     const handleSetDinnerRestaurant = (restaurant) => {
         setSelectedDinnerRestaurant(restaurant);
     };
-
 
     const handleSaveItinerary = () => {
         const token = localStorage.getItem('access');
