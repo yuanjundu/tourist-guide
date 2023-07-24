@@ -5,7 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import styles from './Itinerary.module.css';
 
@@ -195,7 +195,9 @@ const Itinerary = () => {
 
             <button onClick={handleSaveItinerary} className={styles.saveHistory}>Save Itinerary</button>
 
-            <Footer onLocationChange={() => { }} />
+            <div className='nav-box-mobile'>
+                <Navigation onLocationChange={() => { }} />
+            </div>
         </div>
     );
 };

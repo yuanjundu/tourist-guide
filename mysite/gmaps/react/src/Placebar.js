@@ -1,10 +1,16 @@
 import React, { useState, useContext } from 'react';
+import * as icons from 'react-bootstrap-icons';
 
 function Placebar({ places = [], handleAddPlace, handleDeletePlace }) {
   return (
     <div>
-      <button id='add-place' onClick={handleAddPlace}>Add this place</button>
-      <hr className="divider" />
+      <div id='add-place'>
+        <button onClick={handleAddPlace}>
+          <p>Add this place</p>
+          <icons.PlusCircle />
+        </button>
+      </div>
+      <hr className="divider" id='bottom-divider'/>
       {places.map((place, index) => (
         <div key={index}>
           {place}

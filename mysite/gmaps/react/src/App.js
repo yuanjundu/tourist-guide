@@ -9,9 +9,10 @@ import { fetch } from 'whatwg-fetch';
 import axios from 'axios';
 import './App.css';
 import './index.css';
+import './desktop-index.css';
 
 import Header from './components/Header';
-import Footer from './components/Footer';
+import Navigation from './components/Navigation';
 
 function App() {
   // Fetch attractions
@@ -130,29 +131,38 @@ function App() {
           <hr className="divider" />
         </div>
 
+        <div id='content'>
+          {/* Recommendations */}
+          <div className="left-container">
+            <div id='recommendations'>
+              <div id="recommendation-box">
+                {attractions.map((attraction) => (
+                  <Attraction key={attraction.id} attraction={attraction} onAddAttraction={handleAddAttraction} />
+                ))}
+              </div>
+            </div>
 
-        {/* Recommendations */}
-        <div id="recommendations">
-          <div id="recommendation-box">
-            {attractions.map((attraction) => (
-              <Attraction key={attraction.id} attraction={attraction} onAddAttraction={handleAddAttraction} />
-            ))}
+            <div id='place-bar-desktop'>
+              <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
+          </div>
+          </div>
+
+          {/* Google maps */}
+          <div ref={mapDivRef} id='mapcon'>
+            <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance}/>
+          </div>
+
+          {/* Placebar */}
+          <div id='place-bar-mobile'>
+            <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
+          </div>
+
+          {/* Fixed Navigation on the screen bottom */}
+          <div className='nav-box-mobile'>
+            <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
           </div>
         </div>
-
-
-        {/* Google maps */}
-        <div ref={mapDivRef} id='mapcon'>
-          <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance}/>
-        </div>
-
-        {/* Placebar */}
-        <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
-
       </main>
-
-      {/* Fixed footer on the screen bottom */}
-      <Footer onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
 
     </div>
   );

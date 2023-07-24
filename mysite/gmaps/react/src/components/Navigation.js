@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate, mapInstance}) => {
+const Navigation = ({ onLocationChange, myLocation, placesAttractions = [], selectedDate, mapInstance}) => {
     // Scroll to map
     //   const mapDivRef = useRef(null);
     //   const scrollToMap = () => {
@@ -18,8 +18,8 @@ const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selected
     }, [mapInstance]);
 
     const getCurrentLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+        if (Navigation.geolocation) {
+            Navigation.geolocation.getCurrentPosition(showPosition);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
@@ -69,18 +69,16 @@ const Footer = ({ onLocationChange, myLocation, placesAttractions = [], selected
 
 
     return (
-        <footer>
-            <nav>
-                <ul id="nav-list">
-                    <li><button onClick={redirectToCommunity}><icons.PeopleFill /></button></li>
-                    <li><button onClick={getCurrentLocation}><icons.GeoAlt /></button></li>
-                    <li><button onClick={redirectToItinerary}><icons.RocketTakeoff /></button></li>
-                    <li><button onClick={redirectToHome}><icons.HouseDoor /></button></li>
-                    <li><button><icons.Gear onClick={reDirectToEditProfile} /></button></li>
-                </ul>
-            </nav>
-        </footer>
+        <nav>
+            <ul id="nav-list">
+                <li><button onClick={redirectToCommunity}><icons.PeopleFill /><p className='nav-items'>Community</p></button></li>
+                <li><button onClick={getCurrentLocation}><icons.GeoAlt /><p className='nav-items'>Location</p></button></li>
+                <li><button onClick={redirectToItinerary}><icons.RocketTakeoff /><p className='nav-items'>Itineraries</p></button></li>
+                <li><button onClick={redirectToHome}><icons.HouseDoor /><p className='nav-items'>Home</p></button></li>
+                <li><button onClick={reDirectToEditProfile}><icons.Gear /><p className='nav-items'>Settings</p></button></li>
+            </ul>
+        </nav>
     )
 }
 
-export default Footer
+export default Navigation
