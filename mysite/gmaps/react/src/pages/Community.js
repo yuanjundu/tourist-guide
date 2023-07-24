@@ -32,7 +32,7 @@ const Community = () => {
     }, []);
 
     useEffect(() => {
-        fetchSharedItineraries();   
+        fetchSharedItineraries();
         console.log(sharedItineraries);
     }, [fetchSharedItineraries]);
 
@@ -126,15 +126,21 @@ const Community = () => {
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
-                        <h3>Restaurant:</h3>
-                        <p>{itinerary.itinerary.selected_restaurant?.name}</p>
+                        <h3>Lunch Restaurant:</h3>
+                        <p>{itinerary.itinerary.lunch_restaurant?.name}</p>
                     </div>
+
                     <div className={styles.attractionSection}>
                         <h3>Afternoon Attractions:</h3>
                         {itinerary.itinerary.afternoon_attractions?.map((attraction, index) => (
                             <p key={index}>{attraction.name}</p>
                         ))}
                     </div>
+                    <div className={styles.attractionSection}>
+                        <h3>Dinner Restaurant:</h3>
+                        <p>{itinerary.itinerary.dinner_restaurant?.name}</p>
+                    </div>
+
                 </div>
             ))}
             <Footer onLocationChange={() => { }} />

@@ -4,40 +4,48 @@
     align-items: center;
     justify-content: space-around;
     padding: 20px;
+    background-color: #fafafa;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 .header {
     font-size: 2em;
     font-weight: bold;
     margin-bottom: 20px;
+    color: #333;
 }
 
 .attraction {
-    border: 1px solid gray;
+    border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color: orange;
+    background-color: #ffe066;
+    border-radius: 10px;
 }
 
-.lunch {
-    border: 1px solid gray;
+.restaurantSelector {
+    border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-}
-
-.lunch.selected {
-    background-color: orange;
+    border-radius: 10px;
+    width: 100%;
+    height: 40px;
 }
 
 .saveHistory {
-    border: 1px solid gray;
-    padding: 10px;
-    margin-bottom: 10px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     background-color: rgb(30, 207, 30);
+    color: white;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
 }

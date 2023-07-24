@@ -90,7 +90,8 @@ class Itinerary(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     morning_attractions = models.ManyToManyField(Attractions, related_name="morning_itineraries")
     afternoon_attractions = models.ManyToManyField(Attractions, related_name="afternoon_itineraries")
-    selected_restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True)
+    lunch_restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True, related_name='lunch_itineraries')
+    dinner_restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True, related_name='dinner_itineraries')
     saved_date = models.DateField(null=True, blank=True) 
 
     class Meta:
@@ -102,9 +103,11 @@ class Itinerary(models.Model):
             "user": self.user.id,
             "morning_attractions": [attraction.to_dict() for attraction in self.morning_attractions.all()],
             "afternoon_attractions": [attraction.to_dict() for attraction in self.afternoon_attractions.all()],
-            "selected_restaurant": self.selected_restaurant.to_dict() if self.selected_restaurant else None,
+            "lunch_restaurant": self.lunch_restaurant.to_dict() if self.lunch_restaurant else None,
+            "dinner_restaurant": self.dinner_restaurant.to_dict() if self.dinner_restaurant else None,
             "saved_date": self.saved_date.isoformat() if self.saved_date else None
         }
+
 
 class CommunityItinerary(models.Model):
     itinerary = models.OneToOneField(Itinerary, on_delete=models.CASCADE)

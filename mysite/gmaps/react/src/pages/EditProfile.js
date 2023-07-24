@@ -37,7 +37,7 @@ const EditProfile = () => {
         // Reset errors when submitting
         setErrors({});
         const token = localStorage.getItem('access');
-        axios.patch('http://localhost:8000/api/update_profile/', {
+        axios.patch('http://localhost:8000/api/profile/update', {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -71,7 +71,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('access');
-        axios.get('http://localhost:8000/api/user/profile/', {
+        axios.get('http://localhost:8000/api/profile/', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

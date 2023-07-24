@@ -17,12 +17,13 @@ const History = () => {
                 setHistory(JSON.parse(localHistory));
             } else {
                 const token = localStorage.getItem('access');
-                axios.get('http://localhost:8000/api/history/', {
+                axios.get('http://localhost:8000/api/itinerary/history/', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
                     .then((response) => {
+                        console.log(response.data);
                         // Store the history data in localStorage
                         localStorage.setItem('history', JSON.stringify(response.data));
                         setHistory(response.data);
@@ -105,14 +106,18 @@ const History = () => {
 
                     </div>
                     <div className={styles.attractionSection}>
-                        <h3>Restaurant:</h3>
-                        <p>{itinerary.selected_restaurant?.name}</p>
+                        <h3>Lunch Restaurant:</h3>
+                        <p>{itinerary.lunch_restaurant?.name}</p>
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Afternoon Attractions:</h3>
                         {itinerary.afternoon_attractions?.map((attraction, index) => (
                             <p key={index}>{attraction.name}</p>
                         ))}
+                    </div>
+                    <div className={styles.attractionSection}>
+                        <h3>Dinner Restaurant:</h3>
+                        <p>{itinerary.dinner_restaurant?.name}</p>
                     </div>
                 </div>
             ))}

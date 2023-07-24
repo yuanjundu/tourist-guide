@@ -181,6 +181,7 @@ class SignupView(views.APIView):
     """
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
+        print(request.data)
 
         if serializer.is_valid():
             user = serializer.save()
@@ -246,7 +247,7 @@ class ItineraryView(APIView):
     """
     View to save itinerary history
     """
-    
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
@@ -254,20 +255,24 @@ class ItineraryView(APIView):
         user = request.user
         morning_attractions_data = data.get('morningAttractions')
         afternoon_attractions_data = data.get('afternoonAttractions')
-        restaurant = data.get('selectedRestaurant')
+        lunch_restaurant_id = data.get('selectedLunchRestaurant')
+        dinner_restaurant_id = data.get('selectedDinnerRestaurant')
         selected_date = data.get('selectedDate')
 
         # extract the ids from the morning and afternoon attractions data
         morning_attractions = [attraction['id'] for attraction in morning_attractions_data]
         afternoon_attractions = [attraction['id'] for attraction in afternoon_attractions_data]
 
-        restaurant_instance = Restaurant.objects.get(id=restaurant['id'])
-        itinerary = Itinerary.objects.create(user=user, selected_restaurant=restaurant_instance, saved_date=selected_date)
+        lunch_restaurant_instance = Restaurant.objects.get(id=lunch_restaurant_id)
+        dinner_restaurant_instance = Restaurant.objects.get(id=dinner_restaurant_id)
+        itinerary = Itinerary.objects.create(user=user, lunch_restaurant=lunch_restaurant_instance, dinner_restaurant=dinner_restaurant_instance, saved_date=selected_date)
+        itinerary.save()
         itinerary.morning_attractions.set(morning_attractions)
         itinerary.afternoon_attractions.set(afternoon_attractions)
-        itinerary.save()
-
+        
         return Response({'message': 'Itinerary saved successfully', 'itineraryId': itinerary.id}, status=status.HTTP_200_OK)
+
+
 
 
 class ItineraryHistoryView(APIView):
@@ -280,9 +285,14 @@ class ItineraryHistoryView(APIView):
     def get(self, request, format=None):
         user = request.user
         itineraries = Itinerary.objects.filter(user=user)
-        data = [itinerary.to_dict() for itinerary in itineraries]
+        
+        # Use ItinerarySerializer to serialize each itinerary
+        serializer = ItinerarySerializer(itineraries, many=True)
+        data = serializer.data
+        
         return Response(data, status=status.HTTP_200_OK)
-    
+
+
 
 class DeleteItineraryView(APIView):
     """
@@ -330,10 +340,13 @@ class ShareItineraryView(APIView):
 class ItinerarySerializer(serializers.ModelSerializer):
     morning_attractions = AttractionsSerializer(many=True, read_only=True)
     afternoon_attractions = AttractionsSerializer(many=True, read_only=True)
-    selected_restaurant = RestaurantsSerializer(read_only=True)
+    lunch_restaurant = RestaurantsSerializer(read_only=True)
+    dinner_restaurant = RestaurantsSerializer(read_only=True)
+    
     class Meta:
         model = Itinerary
-        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'selected_restaurant', 'saved_date']
+        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'lunch_restaurant', 'dinner_restaurant', 'saved_date']
+
 
 class CommunityItinerarySerializer(serializers.ModelSerializer):
     itinerary = ItinerarySerializer()

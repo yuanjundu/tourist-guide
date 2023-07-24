@@ -18,7 +18,7 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
     const getUserInfo = () => {
         const accessToken = localStorage.getItem('access');
     
-        axios.get('http://localhost:8000/api/user/profile/', {
+        axios.get('http://localhost:8000/api/profile/', {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
