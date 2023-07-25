@@ -21,6 +21,7 @@ function App() {
   const [placeDetails, setPlaceDetails] = useState([]);
   const [placesAttractions, setPlacesAttractions] = useState([]);
 
+
   //<------------------Test--------------------->
   useEffect(() => {
     // console.log(typeof handleLocationChange);
@@ -44,19 +45,33 @@ function App() {
   useEffect(() => {
     const localAttractions = localStorage.getItem('attractions');
     if (localAttractions) {
-        setAttractions(JSON.parse(localAttractions));
+      setAttractions(JSON.parse(localAttractions));
     } else {
-        fetch("http://localhost:8000/api/attractions/?format=json")
+      fetch("http://localhost:8000/api/attractions/?format=json")
         .then((response) => response.json())
         .then((data) => {
-            setAttractions(data);
-            localStorage.setItem('attractions', JSON.stringify(data)); // 'response' is replaced with 'data'
+          const updatedData = data.map(attraction => ({ ...attraction, isSelected: false }));
+          setAttractions(data);
+          localStorage.setItem('attractions', JSON.stringify(data));
         });
     }
-}, []);
+  }, []);
 
 
-
+  const handleToggleSelection = (attractionToToggle) => {
+    setAttractions(attractions.map(attraction =>
+      attraction.id === attractionToToggle.id ? { ...attraction, isSelected: !attraction.isSelected } : attraction
+    ));
+  
+    // If the attraction is currently selected, remove it from the Placebar
+    if (attractionToToggle.isSelected) {
+      const indexToRemove = placesAttractions.findIndex(attraction => attraction.id === attractionToToggle.id);
+      if (indexToRemove !== -1) {
+        handleDeletePlace(indexToRemove);
+      }
+    }
+  };
+  
   const handleAddAttraction = (attraction) => {
     // Restrict the number of attractions
     if (places.length >= 4) {
@@ -77,6 +92,7 @@ function App() {
     setPlaces([...places, newPlace]);
     setPlacesAttractions([...placesAttractions, attraction]);
   };
+  
 
   // Add places from map
   const handleAddPlace = () => {
@@ -98,13 +114,20 @@ function App() {
   };
 
   const handleDeletePlace = (index) => {
-    const undatedPlaces = [...places];
-    const newPlacesAttractions = [...placesAttractions];
-    undatedPlaces.splice(index, 1);
-    newPlacesAttractions.splice(index, 1);
-    setPlaces(undatedPlaces);
-    setPlacesAttractions(newPlacesAttractions);
+    const updatedPlaces = [...places];
+    const updatedPlacesAttractions = [...placesAttractions];
+    
+    // Unselect the respective attraction in the attractions list
+    const attractionToUnselect = updatedPlacesAttractions[index];
+    handleToggleSelection(attractionToUnselect);
+  
+    updatedPlaces.splice(index, 1);
+    updatedPlacesAttractions.splice(index, 1);
+  
+    setPlaces(updatedPlaces);
+    setPlacesAttractions(updatedPlacesAttractions);
   }
+  
 
   // State to store map instance
   const [mapInstance, setMapInstance] = useState(null);
@@ -140,24 +163,30 @@ function App() {
             <div id='recommendations'>
               <div id="recommendation-box">
                 {attractions.map((attraction) => (
-                  <Attraction key={attraction.id} attraction={attraction} onAddAttraction={handleAddAttraction} />
+                  <Attraction
+                    key={attraction.id}
+                    attraction={attraction}
+                    onAddAttraction={handleAddAttraction}
+                    isSelected={attraction.isSelected}
+                    onToggleSelection={handleToggleSelection}
+                  />
                 ))}
               </div>
             </div>
 
             <div id='place-bar-desktop'>
-              <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
-          </div>
+              <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
+            </div>
           </div>
 
           {/* Google maps */}
           <div ref={mapDivRef} id='mapcon'>
-            <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance}/>
+            <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
           </div>
 
           {/* Placebar */}
           <div id='place-bar-mobile'>
-            <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace}/>
+            <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
           </div>
 
           {/* Fixed Navigation on the screen bottom */}
