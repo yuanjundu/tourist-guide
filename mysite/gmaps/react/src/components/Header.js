@@ -101,9 +101,6 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
     return (
         <header>
             <input type='date' value={selectedDate} onChange={handleSelectedDate} />
-            <div id="nav-box-desktop">
-                <Navigation />
-            </div>
             {/* <button id="date-select"><icons.CalendarDate /></button> */}
             <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
                 {isLoggedIn ? (

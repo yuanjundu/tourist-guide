@@ -230,7 +230,7 @@ const Itinerary = () => {
 
             <button onClick={handleSaveItinerary} className={styles.saveHistory}>Save Itinerary</button>
 
-            <div className='nav-box-mobile'>
+            <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
         </div>

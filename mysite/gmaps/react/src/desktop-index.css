@@ -22,6 +22,9 @@
         padding: 2px;
         background-color: #fff;
         z-index: 1;
+        padding-top: 10px;
+        padding-bottom: 11px;
+        height: 40px;
       }
       
       main {
@@ -197,8 +200,13 @@
         font-weight: 500;
       }
     
-      .nav-box-mobile {
-        display: none;
+      .nav-box {
+        position: fixed;
+        display: flex;
+        top: 0;
+        z-index: 2;
+        justify-content: center;
+        width: 100%;
       }  
     
       nav {
@@ -235,10 +243,6 @@
       #nav-list p {
         display: inline-block;
         font-size: 15px;
-      }
-    
-      #nav-box-desktop {
-        text-align: center;
       }
       
       svg {

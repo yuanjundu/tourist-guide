@@ -143,7 +143,7 @@ const Community = () => {
 
                 </div>
             ))}
-            <div className='nav-box-mobile'>
+            <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
         </div>

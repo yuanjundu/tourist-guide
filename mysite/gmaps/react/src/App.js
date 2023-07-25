@@ -161,7 +161,7 @@ function App() {
           </div>
 
           {/* Fixed Navigation on the screen bottom */}
-          <div className='nav-box-mobile'>
+          <div className='nav-box'>
             <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
           </div>
         </div>
