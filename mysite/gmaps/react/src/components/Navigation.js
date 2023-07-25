@@ -61,7 +61,7 @@ const Navigation = ({ onLocationChange, myLocation, placesAttractions = [], sele
     }
 
     const redirectToItinerary = () => {
-        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate, mapInstance} });
+        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
     }
 
     const redirectToCommunity = () => {
