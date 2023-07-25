@@ -99,7 +99,7 @@
         border-radius: 5px;
       }
       
-      #recommendation-box {
+      /* #recommendation-box {
         border-radius: 50px;
         padding-top: 0;
         display: flex;
@@ -110,16 +110,16 @@
         overflow-x: auto;
         align-items: center;
         white-space: nowrap;
-      }
+      } */
       
-      #recommendation-box span {
+      /* #recommendation-box span {
         display: inline-block;
         width: auto;
         height: 160px;
         padding-right: 200px;
         margin: 0 10px;
         background-color: gray;
-      }
+      } */
       
       ul {
         list-style: none;
@@ -255,10 +255,58 @@
       }
       
       /* size of image */
-      .attraction-image {
+      /* .attraction-image {
         width: 100px; 
         height: 100px; 
-      }
+      } */
+
+      #recommendations {
+        max-height: calc(100vh - 550px); 
+        overflow-y: auto; /* Allows vertical scrolling if content overflows */
+    }
+    
+
+      #recommendation-box {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #ebebeb;
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    .attraction {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        width: 120px; /* Constrain the width of the attraction container */
+        word-break: break-word; /* Break words if they are too long to fit */
+    }
+
+    .attraction img {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .attraction h2 {
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .attraction p {
+        color: #757575;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 10px;
+        text-align: center;
+    }
           
 }
 
