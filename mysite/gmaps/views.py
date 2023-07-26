@@ -28,6 +28,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
 import joblib
+import pickle
 
 import traceback
 import logging
@@ -401,53 +402,57 @@ class ExitItineraryView(APIView):
         user_itinerary.delete()
         return Response({"message": "Successfully exited the itinerary."}, status=status.HTTP_200_OK)
     
+from datetime import datetime
+def get_day_and_closest_quarter_minute(date_str):
+    """
+    Calculate the day of the year and the total minutes for the closest quarter hour.
+    Parameters:
+        date_str (str): A date-time string in the format "dd-mm-yyyy HH:MM:SS".
+    Returns:
+        day_of_year (int): An integer representing the day of the year (1 to 365/366).
+        total_minutes (int): An integer representing the total minutes in the day, 
+                             including the closest minute to 15 minutes.
+    """
+    # Convert the input string to a datetime object
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y %H:%M:%S")
+    # Get the day of the year (1 to 365/366)
+    day_of_year = date_obj.timetuple().tm_yday
+    # Calculate the closest minute to 15 minutes
+    minute = date_obj.minute
+    closest_quarter_minute = round(minute / 15) * 15
+    # Calculate the total minutes
+    total_minutes = closest_quarter_minute + (date_obj.hour * 60)
+    # Create a new datetime object with the closest quarter minute
+    closest_datetime = date_obj.replace(minute=closest_quarter_minute, second=0)
+    return day_of_year, total_minutes
+    
 class BusynessView(APIView):
     """
     Predict the busyness for a given zone and time
     """
     permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        zone_id = request.data.get('zone_id')
+        date_str = request.data.get('date_str')
 
-    def get(self, request, zone_id, timestamp):
-        print(zone_id, timestamp)
         try:
-            model_path = f'gmaps/pkl/{zone_id}.pkl'
+            model_path = 'gmaps/pkl/busyness_model.pkl'
             if not os.path.exists(model_path):
                 raise Http404
 
             model = joblib.load(model_path)
-            timestamp = np.array([int(timestamp)]).reshape(-1, 1)
-            busyness = model.predict(timestamp)[0]
-            return Response({"busyness": busyness}, status=status.HTTP_200_OK)
 
-        except Exception as e:
-            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            day_of_year, total_minutes = get_day_and_closest_quarter_minute(date_str)
+            
+            new_data = pd.DataFrame({
+                'LocationID': [zone_id],  
+                'day_of_year': [day_of_year], 
+                'minute_of_day': [total_minutes]
+            })
 
-    def get_object(self, queryset=None):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset, pk=self.kwargs['pk'])
-        return obj
-
-
-class BusynessDayView(APIView):
-    """
-    Predict the busyness for a given zone and the next 24 hours
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, zone_id, timestamp):
-        print(zone_id, timestamp)
-        try:
-            model_path = f'gmaps/pkl/{zone_id}.pkl'
-            if not os.path.exists(model_path):
-                raise Http404
-
-            model = joblib.load(model_path)
-            timestamps = np.array([int(timestamp) + i*3600 for i in range(24)]).reshape(-1, 1)
-            busyness = model.predict(timestamps).tolist()
-            print(busyness)
-            response_data = [{"timestamp": ts, "busyness": bs} for ts, bs in zip(timestamps.flatten(), busyness)]
-            return Response(response_data, status=status.HTTP_200_OK)
+            busyness =  model.predict(new_data)
+            return Response({"busyness": busyness.tolist()}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")

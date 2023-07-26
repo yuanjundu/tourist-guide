@@ -261,7 +261,7 @@
       } */
 
       #recommendations {
-        max-height: calc(100vh - 550px); 
+        max-height: calc(100vh - 400px); 
         overflow-y: auto; /* Allows vertical scrolling if content overflows */
     }
     
