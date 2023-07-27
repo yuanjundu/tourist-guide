@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import SignupStyle from './Signup.module.css';
+import SignupStyle from './login.module.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -34,8 +34,8 @@ const Login = () => {
   };
 
   return (
-    <body class = {SignupStyle.body}>
-    <form onSubmit={handleSubmit}>
+    <body class={SignupStyle.body}>
+    <form onSubmit={handleSubmit} className="container">
       <div class={SignupStyle.group_no}>
         <h2>GROUP 16</h2>
       </div>
@@ -44,24 +44,19 @@ const Login = () => {
         <h1>you in!</h1>
       </div>
       <div class={SignupStyle.sub_log}>
-        <h3>Enter your details to log in your account.</h3>
+        <h3>Enter your details to log in.</h3>
       </div>
-      <label>
-        Username:
-        <input class = {SignupStyle.input}  type="text" value={username} onChange={e => setUsername(e.target.value)} />
-        {errors.username && <p>{errors.username}</p>}
-      </label>
+      <div class={SignupStyle.container}>
+      <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
+      {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
 
-      <label>
-        Password:
-        <input class = {SignupStyle.input}  type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        {errors.password && <p>{errors.password}</p>}
-      </label>
-
-      <input class = {SignupStyle.input}  type="submit" value="Submit" />
-
-      <div class="container1">
-        <span class="psw">Don't have an account? <a href="/signup/"><b>Sign up</b></a></span>
+      <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+      {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
+      
+      <button type="submit" class = {SignupStyle.button}>Log in</button>
+      </div>
+      <div class={SignupStyle.container1}>
+        <span className={SignupStyle.psw}>Don't have an account? <a href="/signup"><b>Sign up</b></a></span>
       </div>
     </form>
     </body>

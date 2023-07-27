@@ -61,25 +61,23 @@ const Signup = () => {
 
       <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
       {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
-      <p>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
+      <li class={SignupStyle.p}>Max 150 characters. Letters, digits, @ . + - _ only.</li>
 
       <input class = {SignupStyle.input}  type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
       {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
 
       <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} required />
       {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
-      <li>Your password can’t be too similar to your other personal information.</li>
-      <li>Your password must contain at least 8 characters.</li>
-      <li>Your password can’t be a commonly used password.</li>
-      <li>Your password can’t be entirely numeric.</li>
-
+      
       <input class = {SignupStyle.input}  type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} required />
       {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
-
+      <li class={SignupStyle.p}>Your password can't be too similar to personal information.</li>
+      <li class={SignupStyle.p}>At least 8 characters.</li>
+      <li class={SignupStyle.p}>Can't be just numeric.</li>
       <button type="submit" class = {SignupStyle.button}>Sign Up</button>
 
-      <div className="container1">
-        <span className="psw">You already have an account? <a href="/login"><b>Log in</b></a></span>
+      <div class={SignupStyle.container1}>
+        <span className={SignupStyle.psw}>You already have an account? <a href="/login"><b>Log in</b></a></span>
       </div>
     </form>
     </body>
