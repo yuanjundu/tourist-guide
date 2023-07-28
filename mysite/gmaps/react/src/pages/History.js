@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './History.module.css';
 
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 
 const History = () => {
@@ -143,7 +143,7 @@ const History = () => {
 
                 </div>
             ))}
-            <Footer onLocationChange={() => { }} />
+            <Navigation onLocationChange={() => { }} />
         </div>
     );
 };
