@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     padding: 20px;
     background-color: #f7f7f7;
 }
@@ -11,31 +11,29 @@
     display: inline-block;
     font-size: 1em;
     font-weight: bold;
-    margin-left: 35%;
-    margin-bottom: 30%;
-    width: 40%;
+    margin: 1em auto;
+    width: 70%;
 }
 
 .img{
-    width: 115%;
-    height: 40%;
-    margin-left: -10%;
+    width: 100vw;
+    height: 50vh;
 }
 
 .title {
-    margin-top: -85%;
-    float: left;
-    margin-right: 50%;
+    position: absolute; 
+    top: 20%; 
+    left: 10%; 
 }
 
 .itinerary{
-    font-size: 44px;
+    font-size: 65px;
     font-weight: bolder;
     color: white;
 }
 
 .day{
-    font-size: 20px;
+    font-size: 40px;
     font-weight: bolder;
     margin-top: -30%;
     color: white;
@@ -44,73 +42,66 @@
 .container2{
     background-color: white;
     border-radius: 10%;
-    margin-top: 30%;
-    padding-left: 5%;
+    margin-top: 2em;
+    padding: 1em;
     width: 95%;
 }
 
-.description{
-    width: 65%;
-    margin-top: -30%;
-    margin-left: 35%;
-    font-size: 12px;
-}
-.img2{
-    object-fit: cover;
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    margin-top: 10%;
-    margin-bottom: -40%;
+.description, .attraction {
+    width: 70%;
+    margin: 1em auto;
+    font-size: 1em;
 }
 
-.img3{
+.img2, .img3, .img4{
     object-fit: cover;
     border-radius: 50%;
     height: 100px;
     width: 100px;
-    margin-top: 10%;
-    margin-bottom: -40%;
-}
-
-.img4{
-    object-fit: cover;
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    margin-top: 10%;
-    margin-bottom: -40%;
+    margin: 1em auto;
 }
 
 .attraction {
     border: 1px solid gray;
+    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color: orange;
-}
-
-.lunch {
-    border: 1px solid gray;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.lunch.selected {
-    background-color: orange;
+    background-color: #000dffa4;
+    color:white;
 }
 
 .saveHistory {
     border: 1px solid #f7f7f7;
     border-radius: 10%;
     padding: 10px;
-    margin-top: 10%;
-    margin-left: 30%;
-    margin-bottom: 10%;
+    margin: 1em auto;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     background-color: #f7f7f7;
+}
+
+.restaurantSelector {
+    font-size: 1em; 
+    background-color: #fff200a4; 
+    color: black; 
+    padding: 10px;  
+    border-radius: 5px; 
+    width: 70%;  
+    margin: 1em auto; 
+}
+
+.saveButton {
+    background-color: #5e96ef;
+    color: white; 
+    font-size: 1em;
+    padding: 15px 30px; 
+    border-radius: 5px;  
+    border: none; 
+    cursor: pointer; 
+}
+
+.saveButton:hover {
+    background-color: #274ae6;
 }
