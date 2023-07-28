@@ -1,6 +1,7 @@
 from rest_framework import routers
 from django.views.generic import TemplateView
-from django.urls import path, include
+from django.views.generic.base import RedirectView
+from django.urls import path, include, url
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView, TSPView, ItineraryView, ItineraryHistoryView, DeleteItineraryView, ChangePasswordView, UserProfileView, ShareItineraryView, JoinItineraryView, CommunityItineraryListView, ExitItineraryView, ExitItineraryView, BusynessView
@@ -30,6 +31,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/attractions/<int:pk>/restaurants/', RestaurantsByAttractionView.as_view(), name='attractions_restaurants'),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', TemplateView.as_view(template_name='index.html')),
+    url(r'^(?:.*)/?$', RedirectView.as_view(url='/')),
 ]
 
