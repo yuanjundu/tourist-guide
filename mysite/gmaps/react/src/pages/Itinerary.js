@@ -28,7 +28,7 @@ const Itinerary = () => {
 
     const fetchOptimalOrder = async () => {
         const token = localStorage.getItem('access');
-        axios.post("http://localhost:8000/api/gene/?format=json", {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/gene/?format=json`, {
             selectedDate,
             latitude,
             longitude,
@@ -57,7 +57,7 @@ const Itinerary = () => {
     }, []);
 
     const fetchRestaurantsByAttraction = (attractionId, setRestaurantsFunction) => {
-        fetch(`http://localhost:8000/api/attractions/${attractionId}/restaurants/?format=json`)
+        fetch(`${process.env.REACT_APP_API_URL}/api/attractions/${attractionId}/restaurants/?format=json`)
             .then((response) => response.json())
             .then((data) => setRestaurantsFunction(data));
     };
@@ -84,7 +84,7 @@ const Itinerary = () => {
         const token = localStorage.getItem('access');
         const user = JSON.parse(localStorage.getItem('user'));
     
-        axios.post('http://localhost:8000/api/itinerary/save/', {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/itinerary/save/`, {
             morningAttractions,
             afternoonAttractions,
             selectedLunchRestaurant,

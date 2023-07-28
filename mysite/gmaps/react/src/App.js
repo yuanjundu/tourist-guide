@@ -47,7 +47,7 @@ function App() {
     if (localAttractions) {
       setAttractions(JSON.parse(localAttractions));
     } else {
-      fetch("http://localhost:8000/api/attractions/?format=json")
+      fetch(`${process.env.REACT_APP_API_URL}/api/attractions/?format=json`)
         .then((response) => response.json())
         .then((data) => {
           const updatedData = data.map(attraction => ({ ...attraction, isSelected: false }));

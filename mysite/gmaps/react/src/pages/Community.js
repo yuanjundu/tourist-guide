@@ -13,7 +13,7 @@ const Community = () => {
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
-        axios.get('http://localhost:8000/api/community_itinerary/', {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/community_itinerary/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,14 +38,14 @@ const Community = () => {
 
     const handleJoin = async (itineraryId) => {
         const token = localStorage.getItem('access');
-        axios.post(`http://localhost:8000/api/community_itinerary/${itineraryId}/join/`, {}, {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/community_itinerary/${itineraryId}/join/`, {}, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
             .then(() => {
                 alert("Joined the itinerary successfully!");
-                axios.get('http://localhost:8000/api/community_itinerary/')
+                axios.get(`${process.env.REACT_APP_API_URL}/api/community_itinerary/`)
                     .then(response => {
                         setSharedItineraries(response.data);
                     });
@@ -61,7 +61,7 @@ const Community = () => {
 
     const handleDelete = (itineraryId) => {
         const token = localStorage.getItem('access');
-        axios.delete(`http://localhost:8000/api/itinerary/${itineraryId}/share/`, {
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/itinerary/${itineraryId}/share/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -81,7 +81,7 @@ const Community = () => {
 
     const handleExit = (itineraryId) => {
         const token = localStorage.getItem('access');
-        axios.delete(`http://localhost:8000/api/community_itinerary/${itineraryId}/exit/`, {
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/community_itinerary/${itineraryId}/exit/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

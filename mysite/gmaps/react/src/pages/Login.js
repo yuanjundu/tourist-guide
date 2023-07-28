@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
 
     axios
-      .post('http://localhost:8000/api/token/', {
+      .post(`${process.env.REACT_APP_API_URL}/api/token/`, {
         username: username,
         password: password
       })

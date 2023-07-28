@@ -37,7 +37,7 @@ const EditProfile = () => {
         // Reset errors when submitting
         setErrors({});
         const token = localStorage.getItem('access');
-        axios.patch('http://localhost:8000/api/profile/update', {
+        axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/update`, {
             first_name: firstName,
             last_name: lastName,
             email: email,
@@ -71,7 +71,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('access');
-        axios.get('http://localhost:8000/api/profile/', {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/profile/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -102,7 +102,7 @@ const EditProfile = () => {
             alert("New passwords don't match.");
             return;
         }
-        axios.post('http://localhost:8000/api/password/change/', {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/password/change/`, {
             old_password: oldpsw,
             new_password: psw,
             new_password2: cpsw

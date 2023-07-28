@@ -14,7 +14,7 @@ const ResetPasswordConfirm = () => {
       e.preventDefault();
   
       axios
-        .post(`http://localhost:8000/api/password/reset/${uid}/${token}/`, {
+        .post(`${process.env.REACT_APP_API_URL}/api/password/reset/${uid}/${token}/`, {
           password: password,
           password2: password2
         })

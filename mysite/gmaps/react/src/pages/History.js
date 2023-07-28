@@ -17,7 +17,7 @@ const History = () => {
                 setHistory(JSON.parse(localHistory));
             } else {
                 const token = localStorage.getItem('access');
-                axios.get('http://localhost:8000/api/itinerary/history/', {
+                axios.get(`${process.env.REACT_APP_API_URL}/api/itinerary/history/`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -43,7 +43,7 @@ const History = () => {
 
     const handleDelete = async (itineraryId) => {
         const token = localStorage.getItem('access');
-        axios.delete(`http://localhost:8000/api/itinerary/${itineraryId}/delete/`, {
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/itinerary/${itineraryId}/delete/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -70,7 +70,7 @@ const History = () => {
 
     const handleShare = async (itineraryId) => {
         const token = localStorage.getItem('access');
-        axios.post(`http://localhost:8000/api/itinerary/${itineraryId}/share/`, {}, {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/itinerary/${itineraryId}/share/`, {}, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
