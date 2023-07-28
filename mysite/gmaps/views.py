@@ -33,9 +33,10 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
+from .algorithm import genetic_algorithm, get_busyness_locations, get_day_and_closest_quarter_minute
 import joblib
 import pickle
-
+from datetime import datetime
 import traceback
 import logging
 
@@ -456,29 +457,7 @@ class ExitItineraryView(APIView):
         user_itinerary.delete()
         return Response({"message": "Successfully exited the itinerary."}, status=status.HTTP_200_OK)
     
-from datetime import datetime
-def get_day_and_closest_quarter_minute(date_str):
-    """
-    Calculate the day of the year and the total minutes for the closest quarter hour.
-    Parameters:
-        date_str (str): A date-time string in the format "dd-mm-yyyy HH:MM:SS".
-    Returns:
-        day_of_year (int): An integer representing the day of the year (1 to 365/366).
-        total_minutes (int): An integer representing the total minutes in the day, 
-                             including the closest minute to 15 minutes.
-    """
-    # Convert the input string to a datetime object
-    date_obj = datetime.strptime(date_str, "%d-%m-%Y %H:%M:%S")
-    # Get the day of the year (1 to 365/366)
-    day_of_year = date_obj.timetuple().tm_yday
-    # Calculate the closest minute to 15 minutes
-    minute = date_obj.minute
-    closest_quarter_minute = round(minute / 15) * 15
-    # Calculate the total minutes
-    total_minutes = closest_quarter_minute + (date_obj.hour * 60)
-    # Create a new datetime object with the closest quarter minute
-    closest_datetime = date_obj.replace(minute=closest_quarter_minute, second=0)
-    return day_of_year, total_minutes
+
     
 class BusynessView(APIView):
     """
@@ -511,3 +490,34 @@ class BusynessView(APIView):
         except Exception as e:
             print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class GeneView(APIView):
+    """
+    Use Genetic algorithm to find optimal path
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        selected_date = data.get('selectedDate')
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
+        places_attractions = data.get('placesAttractions')
+
+        # Extract the ids from the places_attractions list
+        places_attractions_ids = [place['id'] for place in places_attractions]
+
+        locations = Attractions.objects.filter(id__in=places_attractions_ids)
+        locations_data = AttractionsSerializer(locations, many=True).data
+
+        # get busyness data for the attractions
+        busyness_locations = get_busyness_locations(locations_data, selected_date)
+
+        optimal_order = genetic_algorithm(len(places_attractions), busyness_locations)
+
+        # print(optimal_order)
+
+        optimal_order_data = [next(attraction for attraction in locations_data if attraction['id'] == location_id) for location_id in optimal_order.values()]
+
+        return JsonResponse(optimal_order_data, safe=False)
+

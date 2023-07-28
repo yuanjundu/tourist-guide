@@ -3,7 +3,7 @@ from django.urls import path, include
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView, TSPView, ItineraryView, ItineraryHistoryView, DeleteItineraryView, ChangePasswordView, UserProfileView, ShareItineraryView, JoinItineraryView, CommunityItineraryListView, ExitItineraryView, ExitItineraryView, BusynessView
-from .views import PasswordResetRequestView, PasswordResetConfirmView
+from .views import PasswordResetRequestView, PasswordResetConfirmView, GeneView
 router = routers.DefaultRouter()
 router.register(r'attractions', AttractionsViewSet)
 
@@ -16,7 +16,8 @@ urlpatterns = [
     path('api/password/change/', ChangePasswordView.as_view(), name='auth_change_password'),
     path('api/password/reset/', PasswordResetRequestView.as_view(), name='password-reset-request'),
     path('api/password/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
-    path('api/tsp/', TSPView.as_view(), name='tsp'), 
+    path('api/tsp/', TSPView.as_view(), name='tsp'),
+    path('api/gene/', GeneView.as_view(), name='gene'),
     path('api/itinerary/save/', ItineraryView.as_view(), name='save_itinerary'), 
     path('api/itinerary/history/', ItineraryHistoryView.as_view()),
     path('api/itinerary/<int:id>/delete/', DeleteItineraryView.as_view(), name='delete_itinerary'),
