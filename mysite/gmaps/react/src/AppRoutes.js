@@ -6,6 +6,8 @@ import EditProfile from "./pages/EditProfile";
 import Itinerary from "./pages/Itinerary";
 import History from "./pages/History";
 import Community from "./pages/Community"
+import ResetPassword from "./pages/ResetPassword";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 
 const AppRoutes = [
   {
@@ -35,6 +37,14 @@ const AppRoutes = [
   {
     path: "community",
     element: <Community />,
+  },
+  {
+    path: "resetPassword",
+    element: <ResetPassword />
+  },
+  {
+    path: "password/reset/:uid/:token",
+    element: <ResetPasswordConfirm />
   },
   
 ];

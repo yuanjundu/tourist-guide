@@ -1,5 +1,6 @@
 import os
 import json
+from xml.dom import ValidationErr
 import numpy as np
 import pandas as pd
 from django.http import JsonResponse, Http404
@@ -10,6 +11,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.core import exceptions as django_exceptions
 from django.contrib.auth.validators import ASCIIUsernameValidator
@@ -93,6 +99,9 @@ class UserSerializer(serializers.ModelSerializer):
         
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    """
+    View to update user profile
+    """
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
@@ -135,6 +144,9 @@ class UserProfileUpdateView(generics.UpdateAPIView):
     
 
 class ChangePasswordView(APIView):
+    """
+    View to change password
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -192,6 +204,47 @@ class SignupView(views.APIView):
         print(serializer.errors) 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+class PasswordResetRequestView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+        username = request.data.get("username")
+        user = User.objects.filter(email=email, username=username).first()
+        if not user:
+            return Response({"detail": "User with this username and email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        mail_subject = 'Reset your password.'
+        reset_url = f'http://localhost:3000/password/reset/{uid}/{token}/'
+        message = f'Hi {user.username},\n\nYou requested a password reset. Please go to the following page and choose a new password:\n\n{reset_url}\n\nIf you didn\'t request this, please ignore this email.\n\nYour password won\'t change until you access the link and create a new one.'
+        send_mail(mail_subject, message, 'veritast2223@gmail.com', [email])
+        return Response({"detail": "Password reset email has been sent."})
+
+
+class PasswordResetConfirmView(APIView):
+    def post(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and default_token_generator.check_token(user, token):
+            password = request.data.get("password")
+            password2 = request.data.get("password2")
+            if password != password2:
+                return Response({"password": ["Passwords don't match."]}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                validate_password(password)
+            except ValidationErr as e:
+                return Response({"password": list(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
+            user.set_password(password)
+            user.save()
+            return Response({"detail": "Password has been reset."})
+        else:
+            return Response({"detail": "The reset password link is no longer valid."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 class AttractionsSerializer(serializers.ModelSerializer):
     class Meta:

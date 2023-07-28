@@ -102,7 +102,7 @@ const EditProfile = () => {
             alert("New passwords don't match.");
             return;
         }
-        axios.post('http://localhost:8000/api/change_password/', {
+        axios.post('http://localhost:8000/api/password/change/', {
             old_password: oldpsw,
             new_password: psw,
             new_password2: cpsw

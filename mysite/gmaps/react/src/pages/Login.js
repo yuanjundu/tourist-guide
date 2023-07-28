@@ -53,6 +53,10 @@ const Login = () => {
       <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
       {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
       
+      <div>
+        <a href= "/resetPassword"> Forget your password? </a>
+      </div>
+
       <button type="submit" class = {SignupStyle.button}>Log in</button>
       </div>
       <div class={SignupStyle.container1}>
