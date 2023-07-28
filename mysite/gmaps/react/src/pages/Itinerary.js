@@ -5,24 +5,23 @@ import axios from 'axios';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
-import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 import { refreshToken } from '../components/refreshToken';
 import styles from './Itinerary.module.css';
-
+import background from './assets/background.jpg'
+import morning from './assets/morning.jpg'
+import lunch from './assets/lunch.jpg'
+import evening from './assets/evening.jpg'
 
 const Itinerary = () => {
     const location = useLocation();
-    const { myLocation, placesAttractions, selectedDate } = location.state || {};
+    const { myLocation, myRestaurant, placesAttractions, selectedDate } = location.state || {};
     const { latitude = 0, longitude = 0 } = myLocation || {};
     const [orderedAttractions, setOrderedAttractions] = useState([]);
     const [morningAttractions, setMorningAttractions] = useState([]);
     const [afternoonAttractions, setAfternoonAttractions] = useState([]);
-
-    const [lunchRestaurants, setLunchRestaurants] = useState([]);
-    const [selectedLunchRestaurant, setSelectedLunchRestaurant] = useState(null);
-    const [dinnerRestaurants, setDinnerRestaurants] = useState([]);
-    const [selectedDinnerRestaurant, setSelectedDinnerRestaurant] = useState(null);
-
+    const [restaurants, setRestaurants] = useState([]);
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null);
     const [busynessData, setBusynessData] = useState([]);
 
 
@@ -39,8 +38,8 @@ const Itinerary = () => {
             );
 
             if (response.status === 200) {
-                if (Array.isArray(response.data)) {
-                    const busynessValues = response.data.map(item => item.busyness);
+                if(Array.isArray(response.data)) {
+                    const busynessValues = response.data.map(item => item.busyness); 
                     setBusynessData(busynessValues);
                 }
             } else {
@@ -57,9 +56,9 @@ const Itinerary = () => {
         }
     };
 
-    // Assume each attraction takes 2 hours, and the day starts at 8 AM
-    const startOfDay = new Date(selectedDate).setHours(8, 0, 0, 0);  // Set to 8 AM of selected date
-    const timePerAttraction = 2 * 60 * 60 * 1000;  // 2 hours in milliseconds
+   // Assume each attraction takes 2 hours, and the day starts at 8 AM
+   const startOfDay = new Date(selectedDate).setHours(8, 0, 0, 0);  // Set to 8 AM of selected date
+   const timePerAttraction = 2 * 60 * 60 * 1000;  // 2 hours in milliseconds
 
     useEffect(() => {
         if (morningAttractions.length > 0) {
@@ -78,14 +77,11 @@ const Itinerary = () => {
 
     //<------------------Test--------------------->
     useEffect(() => {
-        console.log(location.state);
+        // console.log(myLocation);
+        // console.log(placesAttractions);
+        // console.log(myRestaurant);
         console.log(selectedDate);
-        console.log('selectedLunchRestaurant', selectedLunchRestaurant);
-        console.log('selectedDinnerRestaurant', selectedDinnerRestaurant);
-        console.log('lunchRestaurants', lunchRestaurants);
-        console.log('dinnerRestaurants', dinnerRestaurants);
-    }, [location.state]);
-    
+    });
     //<------------------Test--------------------->
 
 
@@ -109,39 +105,33 @@ const Itinerary = () => {
         fetchOptimalOrder();
     }, []);
 
-    const fetchRestaurantsByAttraction = (attractionId, setRestaurantsFunction) => {
-        fetch(`http://localhost:8000/api/attractions/${attractionId}/restaurants/?format=json`)
-            .then((response) => response.json())
-            .then((data) => setRestaurantsFunction(data));
-    };
 
     useEffect(() => {
         if (orderedAttractions && orderedAttractions.length > 0) {
             const midPoint = Math.floor(orderedAttractions.length / 2);
             setMorningAttractions(orderedAttractions.slice(0, midPoint));
             setAfternoonAttractions(orderedAttractions.slice(midPoint));
-            fetchRestaurantsByAttraction(orderedAttractions[midPoint].id, setLunchRestaurants);
-            fetchRestaurantsByAttraction(orderedAttractions[orderedAttractions.length - 1].id, setDinnerRestaurants);
+            fetchRestaurantsByAttraction(orderedAttractions[midPoint].id);
         }
     }, [orderedAttractions]);
 
-
-    const handleSetLunchRestaurant = (restaurant) => {
-        setSelectedLunchRestaurant(restaurant);
+    const fetchRestaurantsByAttraction = (attractionId) => {
+        fetch(`http://localhost:8000/api/attractions/${attractionId}/restaurants/?format=json`)
+            .then((response) => response.json())
+            .then((data) => setRestaurants(data));
     };
 
-    const handleSetDinnerRestaurant = (restaurant) => {
-        setSelectedDinnerRestaurant(restaurant);
+    const handleSetMyRestaurant = (restaurant) => {
+        setSelectedRestaurant(restaurant);
     };
 
     const handleSaveItinerary = () => {
         const token = localStorage.getItem('access');
 
-        axios.post('http://localhost:8000/api/itinerary/save', {
+        axios.post('http://localhost:8000/api/save_itinerary/', {
             morningAttractions,
             afternoonAttractions,
-            selectedLunchRestaurant,
-            selectedDinnerRestaurant,
+            selectedRestaurant,
             selectedDate
         }, {
             headers: {
@@ -155,22 +145,13 @@ const Itinerary = () => {
 
                 // get the existing history
                 const history = JSON.parse(localStorage.getItem('history')) || [];
-
-                // get the selected lunch and dinner restaurant data
-                const selectedLunchRestaurantData = lunchRestaurants.find(restaurant => restaurant.id === Number(selectedLunchRestaurant));
-                const selectedDinnerRestaurantData = dinnerRestaurants.find(restaurant => restaurant.id === Number(selectedDinnerRestaurant));
-
-                console.log("selectedLunchRestaurantData" + selectedLunchRestaurantData);
-                console.log("selectedDinnerRestaurantData" + selectedDinnerRestaurantData);
-
                 // add the new itinerary to the history
                 const newItinerary = {
-                    id: response.data.itineraryId,
-                    user: 'test',
+                    id: response.data.itineraryId, // Assuming your response data includes the id of the new itinerary
+                    user: 'test', // Replace this with the actual user information
                     morning_attractions: morningAttractions,
                     afternoon_attractions: afternoonAttractions,
-                    lunch_restaurant: selectedLunchRestaurantData,
-                    dinner_restaurant: selectedDinnerRestaurantData,
+                    selected_restaurant: selectedRestaurant,
                     saved_date: selectedDate
                 };
                 history.push(newItinerary);
@@ -179,7 +160,7 @@ const Itinerary = () => {
             })
             .catch((error) => {
                 // handle error
-                if (error.response && error.response.status === 401) {
+                if (error.response.status === 401) {
                     refreshToken();
                 } else {
                     console.log(error.response.data);
@@ -197,42 +178,43 @@ const Itinerary = () => {
     return (
         <div className={styles.container}>
             <Header />
-
-            <h2 className={styles.header}>Morning</h2>
-            {morningAttractions.map((attraction, index) => (
-                <div className={styles.attraction} key={index}>{attraction.name}</div>
-            ))}
-
-            <h2 className={styles.header}>Lunch</h2>
-            <select className={styles.restaurantSelector} value={selectedLunchRestaurant} onChange={(e) => handleSetLunchRestaurant(e.target.value)}>
-                <option value="">Select Restaurant</option>
-                {lunchRestaurants.map((restaurant, index) => (
-                    <option key={index} value={restaurant.id}>
-                        {restaurant.name}
-                    </option>
-                ))}
-            </select>
-
-            <h2 className={styles.header}>Afternoon</h2>
-            {afternoonAttractions.map((attraction, index) => (
-                <div className={styles.attraction} key={index}>{attraction.name}</div>
-            ))}
-
-            <h2 className={styles.header}>Dinner</h2>
-            <select className={styles.restaurantSelector} value={selectedDinnerRestaurant} onChange={(e) => handleSetDinnerRestaurant(e.target.value)}>
-                <option value="">Select Restaurant</option>
-                {dinnerRestaurants.map((restaurant, index) => (
-                    <option key={index} value={restaurant.id}>
-                        {restaurant.name}
-                    </option>
-                ))}
-            </select>
-
-            <button onClick={handleSaveItinerary} className={styles.saveHistory}>Save Itinerary</button>
-
-            <div className='nav-box'>
-                <Navigation onLocationChange={() => { }} />
+            <div className={styles.image}>
+                <img className={styles.img} src={background}></img>
             </div>
+            <div className={styles.title}>
+                <p className={styles.itinerary}>Itinerary</p>
+                <p className={styles.day}>for the day!</p>
+            </div>
+
+            <div className={styles.container2}>
+
+                <img className={styles.img2} src={morning}></img>
+                <p className={styles.header}>10:00-12:00 Morning</p>
+                <p className={styles.description}>Amidst Central Park's lush greenery, a leisurely stroll unveils urban serenity.</p>
+                {morningAttractions.map((attraction, index) => (
+                    <div className={styles.attraction} key={index}>{attraction.name}</div>
+                ))}
+
+            
+                <img className={styles.img3} src={lunch}></img>
+                <h2 className={styles.header}>14:00-16:00 Lunch</h2>
+                <p className={styles.description}>Indulge in classic lunch experience with mouthwatering deli sandwiches and a side of city charm.</p>
+                {restaurants.map((restaurant, index) => (
+                    <div className={`${styles.lunch} ${selectedRestaurant === restaurant ? styles.selected : ''}`} key={index} onClick={() => handleSetMyRestaurant(restaurant)}>
+                        {restaurant.name}
+                    </div>
+                ))}
+
+                <img className={styles.img4} src={evening}></img>
+                <h2 className={styles.header}>18:00-20:00 Evening</h2>
+                <p className={styles.description}>A vibrant kaleidoscope of lights, entertainment, and bustling energy in the heart of Manhattan.</p>
+                {afternoonAttractions.map((attraction, index) => (
+                    <div className={styles.attraction} key={index}>{attraction.name}</div>
+                ))}
+                
+                <button onClick={handleSaveItinerary} className={styles.saveHistory}>Change Itinerary</button>
+            </div>
+            <Footer onLocationChange={() => { }} />
         </div>
     );
 };

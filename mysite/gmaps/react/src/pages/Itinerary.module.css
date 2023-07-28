@@ -4,48 +4,113 @@
     align-items: center;
     justify-content: space-around;
     padding: 20px;
-    background-color: #fafafa;
-    border-radius: 15px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
 }
 
 .header {
-    font-size: 2em;
+    display: inline-block;
+    font-size: 1em;
     font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
+    margin-left: 35%;
+    margin-bottom: 30%;
+    width: 40%;
+}
+
+.img{
+    width: 115%;
+    height: 40%;
+    margin-left: -10%;
+}
+
+.title {
+    margin-top: -85%;
+    float: left;
+    margin-right: 50%;
+}
+
+.itinerary{
+    font-size: 44px;
+    font-weight: bolder;
+    color: white;
+}
+
+.day{
+    font-size: 20px;
+    font-weight: bolder;
+    margin-top: -30%;
+    color: white;
+}
+
+.container2{
+    background-color: white;
+    border-radius: 10%;
+    margin-top: 30%;
+    padding-left: 5%;
+    width: 95%;
+}
+
+.description{
+    width: 65%;
+    margin-top: -30%;
+    margin-left: 35%;
+    font-size: 12px;
+}
+.img2{
+    object-fit: cover;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-top: 10%;
+    margin-bottom: -40%;
+}
+
+.img3{
+    object-fit: cover;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-top: 10%;
+    margin-bottom: -40%;
+}
+
+.img4{
+    object-fit: cover;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-top: 10%;
+    margin-bottom: -40%;
 }
 
 .attraction {
-    border: 1px solid #ddd;
+    border: 1px solid gray;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color: #ffe066;
-    border-radius: 10px;
+    background-color: orange;
 }
 
-.restaurantSelector {
-    border: 1px solid #ddd;
+.lunch {
+    border: 1px solid gray;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-radius: 10px;
-    width: 100%;
-    height: 40px;
+}
+
+.lunch.selected {
+    background-color: orange;
 }
 
 .saveHistory {
-    border: none;
-    padding: 10px 20px;
-    margin-top: 20px;
+    border: 1px solid #f7f7f7;
+    border-radius: 10%;
+    padding: 10px;
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-bottom: 10%;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color: rgb(30, 207, 30);
-    color: white;
-    border-radius: 10px;
-    font-size: 1em;
-    font-weight: bold;
+    background-color: #f7f7f7;
 }
