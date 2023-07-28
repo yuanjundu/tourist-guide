@@ -74,8 +74,8 @@ function App() {
   
   const handleAddAttraction = (attraction) => {
     // Restrict the number of attractions
-    if (places.length >= 4) {
-      alert("You could choose at most 4 attractions!");
+    if (places.length >= 5) {
+      alert("You could choose at most 5 attractions!");
       return;
     }
     const newPlace = (
