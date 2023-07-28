@@ -13,11 +13,11 @@ urlpatterns = [
     path('api/signup/', SignupView.as_view(), name='signup_api'),
     path('api/profile/update', UserProfileUpdateView.as_view(), name='profile_api'),
     path('api/profile/', UserProfileView.as_view(), name='user-profile'),
-    path('api/password/change', ChangePasswordView.as_view(), name='auth_change_password'),
+    path('api/password/change/', ChangePasswordView.as_view(), name='auth_change_password'),
     path('api/password/reset/', PasswordResetRequestView.as_view(), name='password-reset-request'),
     path('api/password/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
     path('api/tsp/', TSPView.as_view(), name='tsp'), 
-    path('api/itinerary/save', ItineraryView.as_view(), name='save_itinerary'), 
+    path('api/itinerary/save/', ItineraryView.as_view(), name='save_itinerary'), 
     path('api/itinerary/history/', ItineraryHistoryView.as_view()),
     path('api/itinerary/<int:id>/delete/', DeleteItineraryView.as_view(), name='delete_itinerary'),
     path('api/itinerary/<int:id>/share/', ShareItineraryView.as_view()),  # can both share and delete

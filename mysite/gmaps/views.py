@@ -238,11 +238,12 @@ class PasswordResetConfirmView(APIView):
             except ValidationErr as e:
                 return Response({"password": list(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
             user.set_password(password)
+            # Invalidate the token by changing the last login time
+            user.last_login = timezone.now()
             user.save()
             return Response({"detail": "Password has been reset."})
         else:
             return Response({"detail": "The reset password link is no longer valid."}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
