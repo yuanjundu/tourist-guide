@@ -70,6 +70,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://34.229.205.53",
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    "http://34.229.205.53:8000",
+]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
