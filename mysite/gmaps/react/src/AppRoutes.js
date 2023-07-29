@@ -1,4 +1,4 @@
-import * as React from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App'; 
 import Signup from './pages/Signup'; 
 import Login from './pages/Login'; 
@@ -9,44 +9,18 @@ import Community from "./pages/Community"
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 
-const AppRoutes = [
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "signup",
-    element: <Signup />,
-  },
-  {
-    path: "login",
-    element: <Login />,
-  },
-  {
-    path: "editprofile",
-    element: <EditProfile />,
-  },
-  {
-    path: "itinerary",
-    element: <Itinerary />,
-  },
-  {
-    path: "history",
-    element: <History />,
-  },
-  {
-    path: "community",
-    element: <Community />,
-  },
-  {
-    path: "resetPassword",
-    element: <ResetPassword />
-  },
-  {
-    path: "password/reset/:uid/:token",
-    element: <ResetPasswordConfirm />
-  },
-  
-];
-
-export default AppRoutes;
+export default function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
+      <Route path="editprofile" element={<EditProfile />} />
+      <Route path="itinerary" element={<Itinerary />} />
+      <Route path="history" element={<History />} />
+      <Route path="community" element={<Community />} />
+      <Route path="resetPassword" element={<ResetPassword />} />
+      <Route path="password/reset/:uid/:token" element={<ResetPasswordConfirm />} />
+    </Routes>
+  );
+}
