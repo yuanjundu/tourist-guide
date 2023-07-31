@@ -78,14 +78,82 @@
     white-space: nowrap;
   }
   
-  #recommendation-box span {
-    display: inline-block;
-    width: auto;
-    height: 160px;
-    padding-right: 200px;
-    margin: 0 10px;
-    background-color: gray;  
-  }
+  .attraction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    width: 200px;
+    height: 140px;
+}
+
+.attraction img {
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.attraction h3 {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.attraction p {
+    color: #757575;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.attraction:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Add shadow when hovered */
+}
+
+.attraction {
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.attraction:hover {
+  transform: scale(1.03);
+}
+
+.tick-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid lightgray;
+  border-radius: 50%;
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+}
+
+.attraction.selected .tick-container {
+  opacity: 1; 
+}
+
+.tick-icon {
+  color: green;
+}
   
   ul {
     list-style: none;
@@ -101,8 +169,6 @@
     margin: 10px;;
     text-align: center;
     height: 40px;
-    font-size: 15px;
-  
   }
 
   #place-bar-desktop {

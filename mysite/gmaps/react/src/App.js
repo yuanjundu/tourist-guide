@@ -20,7 +20,7 @@ function App() {
   const [places, setPlaces] = useState([]);
   const [placeDetails, setPlaceDetails] = useState([]);
   const [placesAttractions, setPlacesAttractions] = useState([]);
-
+  const [attractionMarkers, setAttractionMarkers] = useState([]);
 
   //<------------------Test--------------------->
   useEffect(() => {
@@ -68,6 +68,15 @@ function App() {
       const indexToRemove = placesAttractions.findIndex(attraction => attraction.id === attractionToToggle.id);
       if (indexToRemove !== -1) {
         handleDeletePlace(indexToRemove);
+        
+        // Remove the unselected markers
+        const markerToRemove = attractionMarkers[indexToRemove];
+        if(markerToRemove){
+          markerToRemove[0].setMap(null);
+          const updatedMarkers = [...attractionMarkers];
+          updatedMarkers.splice(indexToRemove, 1);
+          setAttractionMarkers(updatedMarkers);
+        }
       }
     }
   };
@@ -94,23 +103,25 @@ function App() {
   };
   
 
-  // Add places from map
-  const handleAddPlace = () => {
-    if (placeDetails !== null) {
-      const newPlace = (
-        <div className="add-places">
-          <icons.Geo />
-          <span className="details">
-            <p className="place-details">{placeDetails}</p>
-          </span>
-          <button className="add-details">I'm Here</button>
-        </div>
-      );
-
-      setPlaces([...places, newPlace]);
-    } else {
-      alert("Please select a place first.");
-    }
+  // Show markers of selected attractions
+  const handleShowAttraction= (attraction) => {
+    const newMarkers = []
+    const geocoder = new window.google.maps.Geocoder;
+    geocoder.geocode({address: attraction.name}, (results, status) => {
+      if(status === window.google.maps.GeocoderStatus.OK && results.length > 0){
+        const location = results[0].geometry.location;
+        // console.log(location)
+        newMarkers.push(
+          new window.google.maps.Marker({
+            map: mapInstance,
+            position: location
+          })
+        );
+        setAttractionMarkers([...attractionMarkers, newMarkers])
+        console.log(newMarkers)
+        console.log(attractionMarkers)
+      }
+    })
   };
 
   const handleDeletePlace = (index) => {
@@ -167,6 +178,7 @@ function App() {
                     key={attraction.id}
                     attraction={attraction}
                     onAddAttraction={handleAddAttraction}
+                    onShowAttraction={handleShowAttraction}
                     isSelected={attraction.isSelected}
                     onToggleSelection={handleToggleSelection}
                   />
@@ -175,7 +187,7 @@ function App() {
             </div>
 
             <div id='place-bar-desktop'>
-              <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
+              <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
             </div>
           </div>
 
@@ -186,7 +198,7 @@ function App() {
 
           {/* Placebar */}
           <div id='place-bar-mobile'>
-            <Placebar places={places} handleAddPlace={handleAddPlace} handleDeletePlace={handleDeletePlace} />
+            <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
           </div>
 
           {/* Fixed Navigation on the screen bottom */}

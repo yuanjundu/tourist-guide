@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import * as icons from 'react-bootstrap-icons';
 
-function Placebar({ places = [], handleAddPlace, handleDeletePlace }) {
+function Placebar({ places = [], handleShowAttraction, handleDeletePlace }) {
   return (
     <div>
-      <div id='add-place'>
-        <button onClick={handleAddPlace}>
-          <p>Add this place</p>
+      {/* <div id='add-place'>
+        <button onClick={handleShowAttraction}>
+          <p>Show on map</p>
           <icons.PlusCircle />
         </button>
-      </div>
+      </div> */}
       <hr className="divider" id='bottom-divider'/>
       {places.map((place, index) => (
         <div key={index}>
