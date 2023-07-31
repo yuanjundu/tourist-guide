@@ -11,8 +11,9 @@ import styles from './Itinerary.module.css';
 import background from './assets/background.jpg'
 import morning from './assets/morning.jpg'
 import lunch from './assets/lunch.jpg'
-import dinner from './assets/lunch.jpg'
 import evening from './assets/evening.jpg'
+import dinner from './assets/dinner.jpg'
+
 
 const Itinerary = () => {
     const location = useLocation();
@@ -148,16 +149,23 @@ const Itinerary = () => {
             </div>
             <div className={styles.container2}>
 
-                <img className={styles.img2} src={morning}></img>
-                <p className={styles.header}>10:00-12:00 Morning</p>
-                <p className={styles.description}>Amidst Central Park's lush greenery, a leisurely stroll unveils urban serenity.</p>
-                {morningAttractions.map((attraction, index) => (
-                    <div className={styles.attraction} key={index}>{attraction.name}</div>
-                ))}
+                <div className={styles.container3}>
+                    
+                    <img className={styles.img2} src={morning}></img>                    
+                    <p className={styles.header}>10:00-12:00 Morning</p>
+                    <p className={styles.description}>Amidst Central Park's lush greenery, a leisurely stroll unveils urban serenity.</p>
+                    
+                    
+                    {morningAttractions.map((attraction, index) => (
+                        <div className={styles.attraction} key={index}>{attraction.name}</div>
+                    ))}
+                </div>
+
 
                 <img className={styles.img3} src={lunch}></img>
                 <h2 className={styles.header}>14:00-16:00 Lunch</h2>
                 <p className={styles.description}>Indulge in classic lunch experience with mouthwatering deli sandwiches and a side of city charm.</p>
+                <div className={styles.restcontainer}>
                 <select className={styles.restaurantSelector} value={selectedLunchRestaurant} onChange={(e) => handleSetLunchRestaurant(e.target.value)}>
                     <option value="">Select Restaurant</option>
                     {lunchRestaurants.map((restaurant, index) => (
@@ -166,6 +174,7 @@ const Itinerary = () => {
                         </option>
                     ))}
                 </select>
+                </div>
 
                 <img className={styles.img4} src={evening}></img>
                 <h2 className={styles.header}>18:00-20:00 Evening</h2>
@@ -177,15 +186,16 @@ const Itinerary = () => {
                 <img className={styles.img3} src={dinner}></img>
                 <h2 className={styles.header}>20:00-22:00 Dinner</h2>
                 <p className={styles.description}>Treat yourself to a gourmet dinner in an upscale ambience while taking in the night views of the city.</p>
-                <select className={styles.restaurantSelector} value={selectedDinnerRestaurant} onChange={(e) => handleSetDinnerRestaurant(e.target.value)}>
-                    <option value="">Select Restaurant</option>
-                    {dinnerRestaurants.map((restaurant, index) => (
-                        <option key={index} value={restaurant.id}>
-                            {restaurant.name}
-                        </option>
-                    ))}
-                </select>
-
+                <div className={styles.restcontainer}>
+                    <select className={styles.restaurantSelector} value={selectedDinnerRestaurant} onChange={(e) => handleSetDinnerRestaurant(e.target.value)}>
+                        <option value="">Select Restaurant</option>
+                        {dinnerRestaurants.map((restaurant, index) => (
+                            <option key={index} value={restaurant.id}>
+                                {restaurant.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <button className={styles.saveButton} onClick={handleSaveItinerary}>Save Itinerary</button>
 
             </div>

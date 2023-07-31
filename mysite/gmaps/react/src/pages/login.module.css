@@ -77,7 +77,15 @@
   font-weight: bold;
 }
 
+.forgot{
+  margin-top: -20%;
+  margin-left: 20%;
+  padding-bottom: 12%;
+}
 
+.forgotpassword{
+  color: black;
+}
 
 /* Center the avatar image inside this container */
 .imgcontainer {
@@ -109,6 +117,10 @@ span.psw {
   color: grey;
 }
 
+.psw2{
+  color: black;
+}
+
 a:link {
   color: black;
   font-weight: bolder;
@@ -118,18 +130,125 @@ a:link {
 }
 
 /* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
+@media screen and (min-width: 767px){
+
+  .body {
+    background-color: #f7f7f7;
+  }
+  
+  .group_no {
+    width: 15%;
+    text-align: left;
+    margin-left: 85%;
+    font-size: 24px;
+    padding-top: 1%;
+  }
+  
+  .log {
+    width: 30%;
+    text-align: left;
+    font-size: 44px;
+    line-height: 20px;
+    margin-top: -3%;
+  }
+  
+  .p{
+    margin-left: 12%;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .sub_log {
+    width: 70%;
+    position: relative;
+    text-align: left;
+    margin-left: 17%;
+    margin-top: -2%;
+    font-size: 12px;
+    color: grey;
+    margin-bottom: 3%;
+  }
+  
+  /* Full-width inputs */
+  .input {
+    width: 45%;
+    padding: 5px;
+    margin-left: 10%;
+    display: inline-block;
+    border: 1px solid grey;
+    font-size: 14px;
+    background-color: transparent;
+    margin-top: 1%
+  }
+  
+  /* Set a style for all buttons */
+  .button {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 15px;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    margin-top: 2%;
+    margin-left: 11%;
+    margin-bottom: 7%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .forgot{
+    margin-left: 70%;
+    padding-bottom: 12%;
+    display: inline-block;
+    position: absolute;
+    margin-top: -23%;
+  }
+  
+  .forgotpassword{
+    color: black;
+  }
+  
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  /* Avatar image */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 2%;
+    margin-top: 5%;
+  }
+  
+  .container1{
+    position: absolute;
+    padding-bottom: 12%;
+    margin-left: 70%;
+    margin-top: -21%;
+  }
+  
+  /* The "Forgot password" text */
   span.psw {
-    display: block;
-    float: none;
+    font-size: 18px;
+    color: grey;
   }
-
-  .cancelbtn {
-    width: 100%;
+  
+  .psw2{
+    color: black;
   }
-}
-
-.error {
-  color: red;
-  font-weight: bold;
+  
+  a:link {
+    color: black;
+    font-weight: bolder;
+    font-size: 20px;
+    background-color: transparent;
+    text-decoration: none;
+  }
 }

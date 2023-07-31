@@ -44,23 +44,26 @@ const Login = () => {
         <h1>you in!</h1>
       </div>
       <div class={SignupStyle.sub_log}>
-        <h3>Enter your details to log in.</h3>
+        <h3>Enter your details below to log into your account.</h3>
       </div>
+      
       <div class={SignupStyle.container}>
       <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
       {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
 
       <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
       {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
-      
-      <div>
-        <a href= "/resetPassword"> Forget your password? </a>
-      </div>
 
       <button type="submit" class = {SignupStyle.button}>Log in</button>
       </div>
+      
+      
+      <div className={SignupStyle.forgot}>
+        <a className={SignupStyle.forgotpassword}href= "/resetPassword"> Forget your password? </a>
+      </div>
+
       <div class={SignupStyle.container1}>
-        <span className={SignupStyle.psw}>Don't have an account? <a href="/signup"><b>Sign up</b></a></span>
+        <span className={SignupStyle.psw}>Don't have an account? <a className={SignupStyle.psw2} href="/signup"><b>Sign up</b></a></span>
       </div>
     </form>
     </body>

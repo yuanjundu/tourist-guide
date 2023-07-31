@@ -2,11 +2,13 @@
   background-color: #f7f7f7;
 }
 
+
 .group_no {
-  width: 90%;
-  padding: 1%;
-  font-size: 50px;
-  color: gray;
+  width: 25%;
+  text-align: left;
+  margin-left: 70%;
+  font-size: 12px;
+  padding-top: 7%;
 }
 
 .settings {
@@ -15,14 +17,19 @@
 }
 
 .log {
-  width: 80%;
+  width: 70%;
   height: 20%;
   position: relative;
   text-align: left;
   margin-left: 15%;
   margin-top: 20%;
-  font-size: 76px;
-  line-height: 40px;
+  font-size: 24px;
+  line-height: 10px;
+}
+
+.p{
+  margin-left: 12%;
+  font-size: 11px;
 }
 
 .sub_log {
@@ -31,12 +38,11 @@
   position: relative;
   text-align: left;
   margin-left: 15%;
-  margin-bottom: 10%;
-  font-size: 36px;
-  line-height: 40px;
+  margin-top: 10%;
+  font-size: 12px;
   color: grey;
+  margin-bottom: 10%;
 }
-
 .line {
   margin-left: 20%;
   margin: 1%;
@@ -47,14 +53,22 @@
 
 .root input[type="text"],
 .root input[type="password"] {
-  width: 90%;
-  padding: 12px 20px;
-  margin: 5%;
+  width: 75%;
+  padding: 5px;
+  margin: 2%;
   margin-left: 10%;
+  margin-top: 5%;
   display: inline-block;
-  border: 1px solid white;
-  font-size: 32px;
+  border: 1px solid grey;
+  font-size: 14px;
   background-color: transparent;
+}
+
+
+.change{
+  margin-left: 20%;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .imgcontainer {
@@ -69,6 +83,7 @@ img.avatar {
 
 .container {
   padding: 2%;
+  margin-bottom: 10%;
 }
 
 .container1 {
@@ -89,42 +104,186 @@ span.psw {
   text-decoration: none;
 }
 
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .cancelbtn {
-    width: 100%;
-  }
-}
+
 
 .blackbutton {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 15px;
+    border: none;
+    cursor: pointer;
+    width: 70%;
+    left: 10%;
+    margin-top: 17%;
+    margin-left: 13%;
+    margin-bottom: 3%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+.pwdbutton {
   background-color: black;
   color: white;
-  padding: 35px 20px;
-  margin: 15px 0;
+  padding: 10px;
+  margin: 15px;
   border: none;
   cursor: pointer;
-  width: 80%;
+  width: 70%;
   left: 10%;
-  margin-top: 7%;
-  margin-left: 12%;
-  font-size: 40px;
+  margin-top: 10%;
+  margin-left: 13%;
+  margin-bottom: 30%;
+  font-size: 20px;
   font-weight: bold;
 }
 
-.pwdbutton {
-  background-color:BLUE;
-  color: white;
-  padding: 35px 20px;
-  margin: 15px 0;
-  border: none;
-  cursor: pointer;
-  width: 80%;
-  left: 10%;
-  margin-top: 7%;
-  margin-left: 12%;
-  font-size: 40px;
-  font-weight: bold;
+
+@media screen and (min-width: 767px){
+
+  .body {
+    background-color: #f7f7f7;
+  }
+  
+  .group_no {
+    width: 15%;
+    text-align: left;
+    margin-left: 85%;
+    font-size: 24px;
+    padding-top: 1%;
+  }
+  
+  .log {
+    width: 30%;
+    text-align: left;
+    font-size: 44px;
+    line-height: 20px;
+    margin-top: -3%;
+    margin-left: 35%;
+  }
+  
+  .p{
+    margin-left: 12%;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .sub_log {
+    width: 70%;
+    position: relative;
+    text-align: left;
+    margin-left: 40%;
+    margin-top: -2%;
+    font-size: 12px;
+    color: grey;
+    margin-bottom: 3%;
+  }
+  
+  
+  /* Full-width inputs */
+  .root input[type="text"],
+  .root input[type="password"] {
+    width: 45%;
+    padding: 5px;
+    margin-left: 30%;
+    display: inline-block;
+    border: 1px solid grey;
+    font-size: 14px;
+    background-color: transparent;
+    margin-top: 1%
+  }
+  
+  /* Set a style for all buttons */
+  .blackbutton {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 15px;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    margin-top: 2%;
+    margin-left: 30%;
+    margin-bottom: 1%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .pwdbutton {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    margin-top: 2%;
+    margin-left: 30%;
+    margin-bottom: 2%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .forgot{
+    margin-left: 70%;
+    padding-bottom: 12%;
+    display: inline-block;
+    position: absolute;
+    margin-top: -23%;
+  }
+  
+  .forgotpassword{
+    color: black;
+  }
+  
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  /* Avatar image */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 2%;
+    margin-top: 5%;
+    margin-bottom: 1%;
+  }
+  
+  .change{
+    margin-left: 40%;
+    font-size: 44px;
+    font-weight: bold;
+  }
+
+  .container1{
+    position: absolute;
+    padding-bottom: 12%;
+    margin-left: 70%;
+    margin-top: -21%;
+  }
+  
+  /* The "Forgot password" text */
+  span.psw {
+    font-size: 18px;
+    color: grey;
+  }
+  
+  .psw2{
+    color: black;
+  }
+  
+  a:link {
+    color: black;
+    font-weight: bolder;
+    font-size: 20px;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import SignupStyle from './login.module.css';
+import SignupStyle from './ResetPassword.module.css';
 
 const ResetPasswordConfirm = () => {
     const [password, setPassword] = useState('');

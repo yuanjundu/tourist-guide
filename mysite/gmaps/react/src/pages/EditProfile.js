@@ -133,17 +133,19 @@ const EditProfile = () => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.group_no}>
-                <h2 className={styles.settings}>Edit Profile</h2>
-                <a>_______________________________________</a>
+             <div class={styles.group_no}>
+                <h2>GROUP 16</h2>
             </div>
-            <div className={styles.log}>
-                <h3>You can edit your</h3>
-                <h3>profile here!</h3>
+            <div class={styles.log}>
+                <h1>Edit Profile</h1>
             </div>
+            <div class={styles.sub_log}>
+                <h3>Enter your details below to edit your info.</h3>
+            </div>
+
             <div className={styles.container}>
                 <form onSubmit={updateUserProfile}>
-                    <h1>Email</h1>
+
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -154,9 +156,9 @@ const EditProfile = () => {
                         onChange={e => setEmail(e.target.value)}
                     />
                     {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
-                    <h1 className={styles.line}>_____________________________________________</h1>
+                    
 
-                    <h1>First name</h1>
+                    
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -166,9 +168,9 @@ const EditProfile = () => {
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
                     />
-                    <h1 className={styles.line}>_____________________________________________</h1>
+                    
 
-                    <h1>Last name</h1>
+                    
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -178,7 +180,7 @@ const EditProfile = () => {
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
                     />
-                    <h1 className={styles.line}>_____________________________________________</h1>
+                    
 
                     <button className={styles.blackbutton} type="submit">Save changes</button>
                 </form>
@@ -187,7 +189,7 @@ const EditProfile = () => {
 
                 {isChangingPassword && (
                     <div className={styles.container}>
-                        <h2>Change Password</h2>
+                        <h2 className={styles.change}>Change Password</h2>
                         <form onSubmit={handlePasswordChange}>
                             <input
                                 className={styles['input[type="password"]']}
@@ -199,7 +201,7 @@ const EditProfile = () => {
                                 onChange={e => setOldpsw(e.target.value)}
                             />
                             {passwordErrors.old_password && passwordErrors.old_password.map((error, index) => <p key={index} className="error">{error}</p>)}
-                            <h1 className={styles.line}>_____________________________________________</h1>
+                            
 
                             <input
                                 className={styles['input[type="password"]']}
@@ -211,7 +213,7 @@ const EditProfile = () => {
                                 onChange={e => setPsw(e.target.value)}
                             />
                             {passwordErrors.new_password && passwordErrors.new_password.map((error, index) => <p key={index} className="error">{error}</p>)}
-                            <h1 className={styles.line}>_____________________________________________</h1>
+                            
 
                             <input
                                 className={styles['input[type="password"]']}
@@ -222,7 +224,7 @@ const EditProfile = () => {
                                 value={cpsw}
                                 onChange={e => setCpsw(e.target.value)}
                             />
-                            <h1 className={styles.line}>_____________________________________________</h1>
+                            
 
                             <button className={styles.blackbutton} type="submit">Save Password</button>
                             <button className={styles.pwdbutton} type="button" onClick={() => setIsChangingPassword(false)} >Cancel</button>

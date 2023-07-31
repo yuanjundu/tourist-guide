@@ -77,7 +77,7 @@ const Signup = () => {
       <button type="submit" class = {SignupStyle.button}>Sign Up</button>
 
       <div class={SignupStyle.container1}>
-        <span className={SignupStyle.psw}>You already have an account? <a href="/login"><b>Log in</b></a></span>
+        <span className={SignupStyle.psw}>You already have an account? <a className={SignupStyle.psw2} href="/login"><b>Log in</b></a></span>
       </div>
     </form>
     </body>
