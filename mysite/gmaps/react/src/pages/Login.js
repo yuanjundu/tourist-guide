@@ -63,7 +63,7 @@ const Login = () => {
       </div>
 
       <div class={SignupStyle.container1}>
-        <span className={SignupStyle.psw}>Don't have an account? <a className={SignupStyle.psw2} href="/signup"><b>Sign up</b></a></span>
+        <span className={SignupStyle.psw}>Don't have an account? <a className={SignupStyle.psw2} href="/register"><b>Sign up</b></a></span>
       </div>
     </form>
     </body>

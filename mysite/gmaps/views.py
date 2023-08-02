@@ -207,6 +207,9 @@ class SignupView(views.APIView):
     
 
 class PasswordResetRequestView(APIView):
+    '''
+    View to request password reset email
+    '''
     def post(self, request):
         email = request.data.get("email")
         username = request.data.get("username")
@@ -223,6 +226,9 @@ class PasswordResetRequestView(APIView):
 
 
 class PasswordResetConfirmView(APIView):
+    '''
+    View to reset password
+    '''
     def post(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -256,9 +262,6 @@ class AttractionsSerializer(serializers.ModelSerializer):
 class AttractionsViewSet(viewsets.ModelViewSet):
     queryset = Attractions.objects.all()
     serializer_class = AttractionsSerializer
-
-def default(request):
-    return redirect('http://localhost:3000/')
 
 class RestaurantsSerializer(serializers.ModelSerializer):
     class Meta:

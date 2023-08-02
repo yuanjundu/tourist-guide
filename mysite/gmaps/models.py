@@ -34,7 +34,6 @@ class Place(models.Model):
         }
 
 
-
 class Museum(Place):
     class Meta:
         db_table = 'museum'

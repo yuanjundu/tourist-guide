@@ -13,6 +13,6 @@ export const refreshToken = (callback) => {
         })
         .catch((error) => {
             console.log(error);
-            alert("An error occurred while refreshing the token.");
+            // alert("An error occurred while refreshing the token.");
         });
 };

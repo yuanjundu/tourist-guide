@@ -13,7 +13,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="signup" element={<Signup />} />
+      <Route path="register" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="editprofile" element={<EditProfile />} />
       <Route path="itinerary" element={<Itinerary />} />
