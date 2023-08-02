@@ -131,6 +131,16 @@ function App() {
     // Unselect the respective attraction in the attractions list
     const attractionToUnselect = updatedPlacesAttractions[index];
     handleToggleSelection(attractionToUnselect);
+
+    // Remove the unselected markers
+    const markerToRemove = attractionMarkers[index];
+    console.log('TO REMOVE:', markerToRemove)
+    if(markerToRemove){
+      markerToRemove[0].setMap(null);
+      const updatedMarkers = [...attractionMarkers];
+      updatedMarkers.splice(index, 1);
+      setAttractionMarkers(updatedMarkers);
+    }
   
     updatedPlaces.splice(index, 1);
     updatedPlacesAttractions.splice(index, 1);
