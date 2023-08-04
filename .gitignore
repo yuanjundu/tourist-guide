@@ -4,3 +4,5 @@ build/
 node_modules/
 media/
 .vscode/
+venv/
+nycenv/
