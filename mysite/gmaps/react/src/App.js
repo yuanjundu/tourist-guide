@@ -163,7 +163,7 @@ function App() {
       <main >
         {/* Title */}
         <div id="headline">
-          <h1>Tourist Guide</h1>
+          <h1>Hi Shubh!</h1>
           <p id="intro">Discover, Navigate and Immerse yourself in the wonders of travelling</p>
           <hr className="divider" />
         </div>

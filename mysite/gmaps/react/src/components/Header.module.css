@@ -1,0 +1,50 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 65%;
+    display: initial;
+    padding: 0px;
+    background-color: #fff;
+}
+
+.hey{
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 0%;
+    width: 60%;
+    margin-right: 10%;
+}
+
+button {
+    border: none;
+    background: none;
+    box-shadow: none;
+    margin-left: 20%;
+}
+
+.headercontainer{
+    margin-top: 30%;
+    float: right;
+    display: inline-flex;
+    background-color: transparent;
+    margin-bottom: -15%;
+}
+
+svg {
+    font-size: 40px;
+}
+
+.headercontainer2{
+    margin-top: 2%;
+    background-color: transparent;
+    border: 1px solid black;
+    text-align: left;
+    width: 35%;
+    margin-right: 5%;
+}
+
+.headeroptions{
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 5%;
+}

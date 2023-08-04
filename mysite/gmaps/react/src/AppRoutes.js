@@ -8,6 +8,8 @@ import History from "./pages/History";
 import Community from "./pages/Community"
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import LunchRestaurants from "./pages/LunchRestaurants";
+import DinnerRestaurants from "./pages/DinnerRestaurants";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +19,8 @@ export default function AppRoutes() {
       <Route path="login" element={<Login />} />
       <Route path="editprofile" element={<EditProfile />} />
       <Route path="itinerary" element={<Itinerary />} />
+      <Route path="lunchrestaurants" element={<LunchRestaurants />} />
+      <Route path="dinnerrestaurants" element={<DinnerRestaurants />} />
       <Route path="history" element={<History />} />
       <Route path="community" element={<Community />} />
       <Route path="resetPassword" element={<ResetPassword />} />

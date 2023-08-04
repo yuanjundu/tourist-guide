@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { refreshToken } from "./refreshToken";
 import axios from 'axios';
 import Navigation from "./Navigation";
+import styles from './Header.module.css';
 
 const Header = ({ selectedDate, handleSelectedDate }) => {
     useEffect(() => {
@@ -100,12 +101,12 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
 
     return (
         <header>
-            <input type='date' value={selectedDate} onChange={handleSelectedDate} />
-            {/* <button id="date-select"><icons.CalendarDate /></button> */}
+            
+            
             <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
                 {isLoggedIn ? (
-                    <div>
-                        <span>Hello {user?.first_name} {user?.last_name}</span>
+                    <div className={styles.headercontainer}>
+                        {/* <p className={styles.hey}>Hey {user?.username}</p> */}
                         <icons.PersonCircle />
                     </div>
                 ) : (
@@ -115,10 +116,10 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
 
 
             {isLoggedIn && (
-                <div id="account-selection" ref={accountSelectionRef}>
+                <div className={styles.headercontainer2} id="account-selection" ref={accountSelectionRef}>
                     <ul>
-                        <li id="check-history" onClick={redirectToHistory}>Itinerary history</li>
-                        <li id="log-out on" onClick={handleLogout}>log out</li>
+                        <li className={styles.headeroptions} id="check-history" onClick={redirectToHistory}>Itinerary history</li>
+                        <li className={styles.headeroptions} id="log-out on" onClick={handleLogout}>Log out</li>
                     </ul>
                 </div>
             )}

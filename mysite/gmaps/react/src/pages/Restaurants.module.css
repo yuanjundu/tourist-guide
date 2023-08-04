@@ -1,0 +1,72 @@
+.container{
+    background-color: #f7f7f7;
+}
+
+.resttitle{
+    font-size: 26px;
+    text-align: center;
+    padding-top: 5%;
+    margin-left: 2.5%;
+    width: 95%;
+}
+
+.resttitle1{
+    font-size: 14px;
+    margin-top: -10%;
+    text-align: center;
+    padding-top: 5%;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.cards{
+    width: 35%;
+    display: inline-block;
+    margin-left: 7%;
+    margin-top: 10%;
+    border: 1px solid black;
+    padding-left: 3%;
+    font-size: 12px;
+    
+}
+
+.allcards{
+    width: 100%;
+    color: black;
+    
+}
+
+.divcardname{
+    height: 25%;
+}
+
+.cardname1{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cardname{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.divdetailname{
+    font-size: 10px;
+}
+
+.cardname a:link{
+    font-size: 10px;
+    color: black;
+
+}
+
+.finaliselunch{
+    padding: 5%;
+    margin: 5%;
+    margin-left: 30%;
+    margin-top: 10%;
+    width: 40%;
+    color: #f7f7f7;
+    background-color: grey;
+
+}
