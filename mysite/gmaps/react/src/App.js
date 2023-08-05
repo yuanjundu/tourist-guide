@@ -10,7 +10,8 @@ import axios from 'axios';
 import './App.css';
 import './index.css';
 import './desktop-index.css';
-
+import styles from './pages/HeadDesign.module.css';
+import background from './pages/assets/background.jpg'
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 
@@ -166,19 +167,26 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={styles.container}>
+      <div className={styles.image}>
+        <img className={styles.img} src={background}></img>
+      </div>
       {/* Fixed header on the screen top */}
       <Header selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} />
 
       <main >
         {/* Title */}
-        <div id="headline">
-          <h1>Tourist Guide</h1>
-          <p id="intro">Discover, Navigate and Immerse yourself in the wonders of travelling</p>
-          <hr className="divider" />
+        <div id='headline' className={styles.titleContainer}>
+          <h1 className={styles.title}>Tourist Guide</h1>
+          <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
         </div>
 
-        <div id='content'>
+        {/* <div className={styles.dateSeletor}>
+          <p>Please select your travel date</p>
+        </div> */}
+
+
+        <div id='content' className={styles.container2}>
           {/* Recommendations */}
           <div className="left-container">
             <div id='recommendations'>
@@ -211,10 +219,10 @@ function App() {
             <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
           </div>
 
-          {/* Fixed Navigation on the screen bottom */}
-          <div className='nav-box'>
-            <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
-          </div>
+        </div>
+        {/* Fixed Navigation on the screen bottom */}
+        <div className='nav-box'>
+          <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
         </div>
       </main>
 

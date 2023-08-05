@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import styles from './Itinerary.module.css';
+import headStyles from './HeadDesign.module.css';
 import background from './assets/background.jpg'
 import morning from './assets/morning.jpg'
 import lunch from './assets/lunch.jpg'
@@ -138,18 +139,18 @@ const Itinerary = () => {
     
 
     return (
-        <div className={styles.container}>
+        <div className={headStyles.container}>
             <Header />
-            <div className={styles.image}>
-                <img className={styles.img} src={background}></img>
+            <div className={headStyles.image}>
+                <img className={headStyles.img} src={background}></img>
             </div>
-            <div className={styles.title}>
-                <p className={styles.itinerary}>Itinerary</p>
-                <p className={styles.day}>for the day!</p>
+            <div className={headStyles.titleContainer}>
+                <h1 className={headStyles.title}>Itinerary</h1>
+                <p className={headStyles.intro}>for the day!</p>
             </div>
-            <div className={styles.container2}>
+            <div className={headStyles.container2}>
 
-                <div className={styles.container3}>
+                <div className={headStyles.container3}>
                     
                     <img className={styles.img2} src={morning}></img>                    
                     <p className={styles.header}>10:00-12:00 Morning</p>
@@ -200,7 +201,10 @@ const Itinerary = () => {
 
             </div>
 
+        <div className='nav-box'>
             <Navigation />
+        </div>
+
         </div>
     );
 }

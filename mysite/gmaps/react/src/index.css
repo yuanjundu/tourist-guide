@@ -20,29 +20,23 @@
     display: flex;
     justify-content: space-between;
     padding: 2px;
+    z-index: 1;
+    padding-top: 10px;
+    padding-bottom: 2px;
+    height: 40px;
     background-color: #fff;
+    opacity: 0.8;
   }
+
+  #checkAccount {
+    position: relative;
+    right: 6px;
+  }      
   
   main {
     margin-top: 50px;
   }
-  
-  #headline {
-    padding: 5%;
-    margin-top: 60px;
-    padding-bottom: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  #headline h1 {
-    font-weight: 500;
-    font-size: 40px;
-  }
-  
-  #intro {
-    font-size: 20px;
-    color: #777;
-  }
+
   
   button {
     border: none;
@@ -160,7 +154,8 @@
   
   .map-container {
     height: 600px;
-    width: 100%
+    width: 100%;
+    text-align: center;
   }
   
   #search-box {
@@ -228,7 +223,6 @@
     width: 100%;
     left: 0;
     bottom: 0;
-    background-color: white;
     height: 50px;
     text-align: center;
   }
@@ -264,4 +258,3 @@
   
   }  
 }
-

@@ -6,10 +6,13 @@ import { refreshToken } from "./refreshToken";
 import axios from 'axios';
 import Navigation from "./Navigation";
 
-const Header = ({ selectedDate, handleSelectedDate }) => {
-    useEffect(() => {
-        console.log(selectedDate);
-    }, [selectedDate]);
+import DatePicker from "./DatePicker";
+
+
+const Header = () => {
+    // useEffect(() => {
+    //     console.log(selectedDate);
+    // }, [selectedDate]);
 
     // Check if logged in
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -100,7 +103,9 @@ const Header = ({ selectedDate, handleSelectedDate }) => {
 
     return (
         <header>
-            <input type='date' value={selectedDate} onChange={handleSelectedDate} />
+            {/* <input type='date' className={styles.date} value={selectedDate} onChange={handleSelectedDate} /> */}
+            <DatePicker />
+
             {/* <button id="date-select"><icons.CalendarDate /></button> */}
             <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
                 {isLoggedIn ? (
