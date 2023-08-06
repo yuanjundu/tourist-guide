@@ -31,7 +31,7 @@ const DatePicker = ({ selectedDate, handleSelectedDate }) => {
         </button>
         <DayPicker
             mode='single'
-            style={{ display: showDatePicker ? 'block' : 'none'}}
+            style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px'}}
             selected={selected}
             onSelect={setSelected}
             footer={footer}
