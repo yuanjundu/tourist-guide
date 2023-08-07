@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import AttractionsViewSet, SignupView, UserProfileUpdateView, RestaurantsByAttractionView, TSPView, ItineraryView, ItineraryHistoryView, DeleteItineraryView, ChangePasswordView, UserProfileView, ShareItineraryView, JoinItineraryView, CommunityItineraryListView, ExitItineraryView, ExitItineraryView, BusynessView
-from .views import PasswordResetRequestView, PasswordResetConfirmView, GeneView
+from .views import PasswordResetRequestView, PasswordResetConfirmView, GeneView, AllZonesBusynessView
 router = routers.DefaultRouter()
 router.register(r'attractions', AttractionsViewSet)
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/community_itinerary/', CommunityItineraryListView.as_view()),
     path('api/community_itinerary/<int:id>/exit/', ExitItineraryView.as_view(), name='exit-itinerary'),
     path('api/busyness/', BusynessView.as_view(), name='busyness'),
+    path('api/all_busyness/', AllZonesBusynessView.as_view(), name='all_busyness'),
     path('api/', include(router.urls)),
     path('api/attractions/<int:pk>/restaurants/', RestaurantsByAttractionView.as_view(), name='attractions_restaurants'),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
