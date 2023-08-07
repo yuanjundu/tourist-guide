@@ -14,6 +14,8 @@ import styles from './pages/HeadDesign.module.css';
 import background from './pages/assets/background.jpg'
 import Header from './components/Header';
 import Navigation from './components/Navigation';
+import { CSSTransition } from 'react-transition-group';
+import './FadeInEffect.css';
 
 function App() {
   // Fetch attractions
@@ -166,6 +168,29 @@ function App() {
     setMyLocation(location);
   };
 
+
+    const [fadeIn, setFadeIn] = useState(false);
+  
+    // const handleScroll = () => {
+    //   if (window.scrollY >= 20) {
+    //     setFadeIn(true);
+    //   } else {
+    //     setFadeIn(false);
+    //   }
+    // };
+  
+    useEffect(() => {
+      window.addEventListener('wheel', setFadeIn(true));
+      return () => {
+        window.removeEventListener('wheel', setFadeIn(false));
+      };
+    }, []);
+
+    const navigate = useNavigate();
+    const redirectToItinerary = () => {
+      navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
+    }
+  
   return (
     <div className={styles.container}>
       <div className={styles.image}>
@@ -181,11 +206,12 @@ function App() {
           <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
         </div>
 
-        {/* <div className={styles.dateSeletor}>
-          <p>Please select your travel date</p>
-        </div> */}
-
-
+      <CSSTransition
+            in={fadeIn}
+            timeout={1000}
+            classNames="fade"
+            unmountOnExit
+      >
         <div id='content' className={styles.container2}>
           {/* Recommendations */}
           <div className="left-container">
@@ -205,6 +231,7 @@ function App() {
             </div>
 
             <div id='place-bar-desktop'>
+              <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
               <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
             </div>
           </div>
@@ -216,10 +243,12 @@ function App() {
 
           {/* Placebar */}
           <div id='place-bar-mobile'>
+          <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
             <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
           </div>
 
         </div>
+      </CSSTransition>
         {/* Fixed Navigation on the screen bottom */}
         <div className='nav-box'>
           <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
@@ -227,6 +256,7 @@ function App() {
       </main>
 
     </div>
+
   );
 }
 
