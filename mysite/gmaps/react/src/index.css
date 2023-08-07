@@ -40,11 +40,10 @@
   button {
     border: none;
     background: none;
-    box-shadow: none;
+    border-radius: 10px;
   }
-  button:active {
-    background-color: #aaa;
-    border-color: #777;
+  #place-bar-mobile #createItineraryBtn:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   }
   
   #account-selection {
@@ -163,6 +162,19 @@
     margin: 10px;;
     text-align: center;
     height: 40px;
+  }
+
+  #place-bar-mobile #createItineraryBtn {
+    font-size: 18px;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    background-color: #efefef;
+    margin: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  #place-bar-mobile #createItineraryBtn:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   }
 
   #place-bar-desktop {
