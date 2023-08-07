@@ -53,10 +53,11 @@
     #account-selection {
       position: fixed;
       right: 2px;
-      top: 5%;
+      top: 60px;
       display: none;
       background-color: #e6e6e6;
       padding: 5px;
+      border-radius: 10px;
     }
     
     #content {
@@ -337,7 +338,9 @@
     color: green;
   }
   
-  
+  #place-bar-desktop {
+    text-align: center;
+  }
 
         
 }
