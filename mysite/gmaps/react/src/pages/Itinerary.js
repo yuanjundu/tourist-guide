@@ -14,7 +14,7 @@ import morning from './assets/morning.jpg'
 import lunch from './assets/lunch.jpg'
 import evening from './assets/evening.jpg'
 import dinner from './assets/dinner.jpg'
-
+import { useSpring, animated } from '@react-spring/web'
 
 const Itinerary = () => {
     const location = useLocation();
@@ -136,6 +136,11 @@ const Itinerary = () => {
             }
         });
     };
+
+    const springs = useSpring({
+        from: { x: 0 },
+        to: { x: 100 },
+      })
     
 
     return (
