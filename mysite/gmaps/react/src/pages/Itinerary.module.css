@@ -49,13 +49,11 @@
     margin-left: 35%;
     font-size: 1em;
     font-weight: bold;
-    width: 70%;
     margin-top: -35%;
 }
 
 
 .description, .attraction {
-    width: 70%;
     font-size: 0.6em;
     margin-left: 35%;
 }

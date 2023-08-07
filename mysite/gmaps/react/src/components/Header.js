@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { refreshToken } from "./refreshToken";
 import axios from 'axios';
+import { DayPicker } from 'react-day-picker';
 import Navigation from "./Navigation";
-
-import DatePicker from "./DatePicker";
+import { format } from 'date-fns';
+import 'react-day-picker/dist/style.css';
 
 
 const Header = () => {
@@ -45,7 +46,6 @@ const Header = () => {
                 }
             });
     };
-    
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -101,22 +101,71 @@ const Header = () => {
         accountSelectionRef.current.style.display = displayStatus === 'none' ? 'block' : 'none';
     }
 
+    // For DayPicker
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const toggleDatePicker = () => {
+        setShowDatePicker(!showDatePicker);
+    }
+
+    const formatDate = (date) => {
+        if (date) {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const day = String(date.getDate()).padStart(2, "0");
+          return `${year}-${month}-${day}`;
+        }
+        return '';
+      };
+
+    const [selected, setSelected] = useState();
+
+    let footer = <p>Please pick a day.</p>;
+    if (selected) {
+        console.log(formatDate(selected))
+        footer = <p>You picked {format(selected, 'PP')}.</p>;
+    }
+
+    const today = new Date();
+    const[selectedDate, setSelectedDate] = useState();
+
+    useEffect(() => {
+        console.log(formatDate(selectedDate));
+    }, [selectedDate]);
+
+
     return (
         <header>
             {/* <input type='date' className={styles.date} value={selectedDate} onChange={handleSelectedDate} /> */}
-            <DatePicker />
-
-            {/* <button id="date-select"><icons.CalendarDate /></button> */}
-            <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
-                {isLoggedIn ? (
-                    <div>
-                        <span>Hello {user?.first_name} {user?.last_name}</span>
-                        <icons.PersonCircle />
-                    </div>
-                ) : (
-                    <icons.BoxArrowInRight />
-                )}
-            </button>
+            <div>
+                <button onClick={toggleDatePicker} value={formatDate(selectedDate)}>
+                    <icons.Calendar />
+                </button>
+                <DayPicker
+                    mode='single'
+                    style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px'}}
+                    selected={selected || today}
+                    onSelect={setSelected}
+                    footer={footer}
+                    onChange={date => setSelectedDate(date)}
+                    dateFormat="yyyy-MM-dd"
+                    showPopperArrow={false}
+                    placeholderText="Select a date"
+                    // onDayClick={setSelectedDate()}
+                    
+                />
+            </div>
+                {/* <button id="date-select"><icons.CalendarDate /></button> */}
+                <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
+                    {isLoggedIn ? (
+                        <div>
+                            <span>Hello {user?.first_name} {user?.last_name}</span>
+                            <icons.PersonCircle />
+                        </div>
+                    ) : (
+                        <icons.BoxArrowInRight />
+                    )}
+                </button>
 
 
             {isLoggedIn && (
