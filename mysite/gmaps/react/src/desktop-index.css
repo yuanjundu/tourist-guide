@@ -340,8 +340,31 @@
   }
   
   .attraction:hover {
+    color: #373fa8;
     transform: scale(1.03);
   }
+  .attraction.selected {
+    color: rgb(161, 47, 161);
+}
+
+/* Initially hide the label */
+.attraction .open-website-label {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+.attraction:hover .open-website-label {
+  display: block;
+}
+
 
   .tick-container {
     position: absolute;

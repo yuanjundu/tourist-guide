@@ -34,6 +34,8 @@ function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected,
       </div>
       <img src={attraction.image} alt={attraction.name} className="attraction-image" />
       <h3 onClick={() => openAttractionWebsite(attraction.website)}>{attraction.name}</h3>
+
+      <span className="open-website-label">Open Website</span>
     </div>
   );
 };
