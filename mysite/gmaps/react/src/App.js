@@ -62,6 +62,16 @@ function App() {
 
 
   const handleToggleSelection = (attractionToToggle) => {
+    if (places.length >= 5) {
+      if (attractionToToggle.isSelected) {
+        const indexToRemove = placesAttractions.findIndex(attraction => attraction.id === attractionToToggle.id);
+        if (indexToRemove !== -1) {
+          handleDeletePlace(indexToRemove);
+          
+        }
+      }
+      return;
+    }
     setAttractions(attractions.map(attraction =>
       attraction.id === attractionToToggle.id ? { ...attraction, isSelected: !attraction.isSelected } : attraction
     ));
@@ -72,14 +82,6 @@ function App() {
       if (indexToRemove !== -1) {
         handleDeletePlace(indexToRemove);
         
-        // Remove the unselected markers
-        const markerToRemove = attractionMarkers[indexToRemove];
-        if(markerToRemove){
-          markerToRemove[0].setMap(null);
-          const updatedMarkers = [...attractionMarkers];
-          updatedMarkers.splice(indexToRemove, 1);
-          setAttractionMarkers(updatedMarkers);
-        }
       }
     }
   };
@@ -108,6 +110,9 @@ function App() {
 
   // Show markers of selected attractions
   const handleShowAttraction= (attraction) => {
+    if (places.length >= 5) {
+      return;
+    }
     const newMarkers = []
     const geocoder = new window.google.maps.Geocoder;
     geocoder.geocode({address: attraction.name}, (results, status) => {
