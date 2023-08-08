@@ -387,5 +387,24 @@
     background-color: #306a8d;
 }
 
+.website-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 35vw;
+  height: 100vh;
+  background: white;
+  border-left: 1px solid #ccc;
+  overflow: auto;
+  z-index: 1000;
+  transform: translateX(100%); /* initially pushed out of view */
+  transition: transform 0.3s ease;
+}
+
+.website-sidebar.open {
+  transform: translateX(0);
+}
+
+
         
 }

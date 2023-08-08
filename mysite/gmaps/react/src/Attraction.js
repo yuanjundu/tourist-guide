@@ -2,7 +2,7 @@ import React from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { useState } from 'react';
 
-function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected, onToggleSelection }) {
+function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected, onToggleSelection, setShowWebsite }) {
   const handleDoubleClick = () => {
     if (onAddAttraction) {
       onAddAttraction(attraction);
@@ -21,6 +21,8 @@ function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected,
     if (onToggleSelection) {
       onToggleSelection(attraction);
     }
+
+    setShowWebsite(attraction.website);
   };
 
   return (
