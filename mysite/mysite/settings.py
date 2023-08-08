@@ -238,6 +238,6 @@ CSRF_COOKIE_SECURE = False
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 
-GDAL_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\gdal307.dll'
-GEOS_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\geos_c.dll'
-PROJ_LIBRARY_PATH = 'C:\\OSGeo4W\\share\\proj'  
+# GDAL_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\gdal307.dll'
+# GEOS_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\geos_c.dll'
+# PROJ_LIBRARY_PATH = 'C:\\OSGeo4W\\share\\proj'  

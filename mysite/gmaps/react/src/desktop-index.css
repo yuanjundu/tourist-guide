@@ -365,5 +365,27 @@
     text-align: center;
   }
 
+  .filter-buttons-container {
+    position: absolute;
+    top: 100vh;
+    left: 5vw;
+  }
+  
+  .filter-buttons {
+    display: inline-block; 
+    padding: 10px 20px;
+    margin: 5px 10px 5px 0;
+    background-color: #4281ac;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.filter-buttons:hover {
+    background-color: #306a8d;
+}
+
         
 }
