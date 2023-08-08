@@ -122,7 +122,7 @@ const History = () => {
                 </div>
             ))}
             <div className='nav-box'>
-            <Navigation onLocationChange={() => { }} />
+                <Navigation onLocationChange={() => { }} />
             </div>
         </div>
     );

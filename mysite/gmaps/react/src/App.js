@@ -209,6 +209,7 @@ function App() {
         <div id='headline' className={styles.titleContainer}>
           <h1 className={styles.title}>Tourist Guide</h1>
           <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
+          <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
         </div>
 
       <CSSTransition
