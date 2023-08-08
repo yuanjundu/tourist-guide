@@ -1,8 +1,7 @@
 import React from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { useState } from 'react';
 
-function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected, onToggleSelection, setShowWebsite }) {
+function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected, onToggleSelection }) {
   const handleDoubleClick = () => {
     if (onAddAttraction) {
       onAddAttraction(attraction);
@@ -21,21 +20,22 @@ function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected,
     if (onToggleSelection) {
       onToggleSelection(attraction);
     }
+  };
 
-    setShowWebsite(attraction.website);
+  const openAttractionWebsite = (url) => {
+    // Open the URL in a new pop-up window.
+    window.open(url, 'attractionWindow', 'height=600,width=800,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
   };
 
   return (
     <div className={`attraction ${isSelected ? 'selected' : ''}`} onClick={handleClick}>
       <div className="tick-container">
-      {isSelected && <FaCheckCircle className="tick-icon" />}
+        {isSelected && <FaCheckCircle className="tick-icon" />}
       </div>
       <img src={attraction.image} alt={attraction.name} className="attraction-image" />
-      <h3>{attraction.name}</h3>
+      <h3 onClick={() => openAttractionWebsite(attraction.website)}>{attraction.name}</h3>
     </div>
   );
-  
 };
-
 
 export default Attraction;

@@ -25,8 +25,6 @@ function App() {
   const [placesAttractions, setPlacesAttractions] = useState([]);
   const [attractionMarkers, setAttractionMarkers] = useState([]);
   const [selectedTag, setSelectedTag] = useState('Sightseeing');
-  const [showWebsite, setShowWebsite] = useState(null);
-
 
   //<------------------Test--------------------->
   useEffect(() => {
@@ -288,7 +286,6 @@ function App() {
                         onShowAttraction={handleShowAttraction}
                         isSelected={attraction.isSelected}
                         onToggleSelection={handleToggleSelection}
-                        setShowWebsite={setShowWebsite}
                       />
                     ))}
 
@@ -320,17 +317,6 @@ function App() {
           <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
         </div>
       </main>
-
-      {showWebsite && (
-    <div className="website-sidebar open">
-      <button onClick={() => setShowWebsite(null)}>Close</button>
-      <iframe 
-        src={showWebsite} 
-        style={{ width: '100%', height: '90%' }}
-        title="Attraction Website"
-      ></iframe>
-    </div>
-  )}
 
     </div>
 
