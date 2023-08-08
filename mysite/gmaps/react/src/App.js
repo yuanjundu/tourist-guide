@@ -24,6 +24,7 @@ function App() {
   const [placeDetails, setPlaceDetails] = useState([]);
   const [placesAttractions, setPlacesAttractions] = useState([]);
   const [attractionMarkers, setAttractionMarkers] = useState([]);
+  const [selectedTag, setSelectedTag] = useState('Sightseeing');
 
   //<------------------Test--------------------->
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
     // console.log(selectedDate);
     // console.log(myLocation);
     // console.log(placesAttractions);
+    console.log(displayedAttractions);
   });
   //<------------------Test--------------------->
 
@@ -75,17 +77,16 @@ function App() {
     setAttractions(attractions.map(attraction =>
       attraction.id === attractionToToggle.id ? { ...attraction, isSelected: !attraction.isSelected } : attraction
     ));
-  
+
     // If the attraction is currently selected, remove it from the Placebar
     if (attractionToToggle.isSelected) {
       const indexToRemove = placesAttractions.findIndex(attraction => attraction.id === attractionToToggle.id);
       if (indexToRemove !== -1) {
         handleDeletePlace(indexToRemove);
-        
       }
     }
   };
-  
+
   const handleAddAttraction = (attraction) => {
     // Restrict the number of attractions
     if (places.length >= 5) {
@@ -106,7 +107,7 @@ function App() {
     setPlaces([...places, newPlace]);
     setPlacesAttractions([...placesAttractions, attraction]);
   };
-  
+
 
   // Show markers of selected attractions
   const handleShowAttraction= (attraction) => {
@@ -115,8 +116,8 @@ function App() {
     }
     const newMarkers = []
     const geocoder = new window.google.maps.Geocoder;
-    geocoder.geocode({address: attraction.name}, (results, status) => {
-      if(status === window.google.maps.GeocoderStatus.OK && results.length > 0){
+    geocoder.geocode({ address: attraction.name }, (results, status) => {
+      if (status === window.google.maps.GeocoderStatus.OK && results.length > 0) {
         const location = results[0].geometry.location;
         // console.log(location)
         newMarkers.push(
@@ -135,7 +136,7 @@ function App() {
   const handleDeletePlace = (index) => {
     const updatedPlaces = [...places];
     const updatedPlacesAttractions = [...placesAttractions];
-    
+
     // Unselect the respective attraction in the attractions list
     const attractionToUnselect = updatedPlacesAttractions[index];
     handleToggleSelection(attractionToUnselect);
@@ -143,20 +144,20 @@ function App() {
     // Remove the unselected markers
     const markerToRemove = attractionMarkers[index];
     console.log('TO REMOVE:', markerToRemove)
-    if(markerToRemove){
+    if (markerToRemove) {
       markerToRemove[0].setMap(null);
       const updatedMarkers = [...attractionMarkers];
       updatedMarkers.splice(index, 1);
       setAttractionMarkers(updatedMarkers);
     }
-  
+
     updatedPlaces.splice(index, 1);
     updatedPlacesAttractions.splice(index, 1);
-  
+
     setPlaces(updatedPlaces);
     setPlacesAttractions(updatedPlacesAttractions);
   }
-  
+
 
   // State to store map instance
   const [mapInstance, setMapInstance] = useState(null);
@@ -174,28 +175,36 @@ function App() {
   };
 
 
-    const [fadeIn, setFadeIn] = useState(false);
-  
-    // const handleScroll = () => {
-    //   if (window.scrollY >= 20) {
-    //     setFadeIn(true);
-    //   } else {
-    //     setFadeIn(false);
-    //   }
-    // };
-  
-    useEffect(() => {
-      window.addEventListener('wheel', setFadeIn(true));
-      return () => {
-        window.removeEventListener('wheel', setFadeIn(false));
-      };
-    }, []);
+  const [fadeIn, setFadeIn] = useState(false);
 
-    const navigate = useNavigate();
-    const redirectToItinerary = () => {
-      navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
-    }
-  
+  // const handleScroll = () => {
+  //   if (window.scrollY >= 20) {
+  //     setFadeIn(true);
+  //   } else {
+  //     setFadeIn(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    window.addEventListener('wheel', setFadeIn(true));
+    return () => {
+      window.removeEventListener('wheel', setFadeIn(false));
+    };
+  }, []);
+
+  const navigate = useNavigate();
+  const redirectToItinerary = () => {
+    navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate } });
+  }
+
+  const displayedAttractions = selectedTag === 'Sightseeing'
+  ? attractions
+  : attractions.filter(attraction => {
+      const attractionTags = attraction.tag.split(';').map(tag => tag.trim());
+      return attractionTags.includes(selectedTag);
+    });
+
+
   return (
     <div className={styles.container}>
       <div className={styles.image}>
@@ -212,49 +221,97 @@ function App() {
           <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
         </div>
 
-      <CSSTransition
-            in={fadeIn}
-            timeout={1000}
-            classNames="fade"
-            unmountOnExit
-      >
-        <div id='content' className={styles.container2}>
-          {/* Recommendations */}
-          <div className="left-container">
-            <div id='recommendations'>
-              <div id="recommendation-box">
-                {attractions.map((attraction) => (
-                  <Attraction
-                    key={attraction.id}
-                    attraction={attraction}
-                    onAddAttraction={handleAddAttraction}
-                    onShowAttraction={handleShowAttraction}
-                    isSelected={attraction.isSelected}
-                    onToggleSelection={handleToggleSelection}
-                  />
-                ))}
+        <CSSTransition
+          in={fadeIn}
+          timeout={1000}
+          classNames="fade"
+          unmountOnExit
+        >
+          <div>
+            <div className={'filter-buttons-container'}>
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Sightseeing')}
+              >
+                All
+              </button>
+
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Outdoor Activities')}
+              >
+                Outdoor Activities
+              </button>
+
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Historical')}
+              >
+                Historical
+              </button>
+
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Museum')}
+              >
+                Museum
+              </button>
+
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Architecture')}
+              >
+                Architecture
+              </button>
+
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Shopping')}
+              >
+                Shopping
+              </button>
+
+            </div>
+
+            <div id='content' className={styles.container2}>
+              {/* Recommendations */}
+              <div className="left-container">
+                <div id='recommendations'>
+                  <div id="recommendation-box">
+                    {displayedAttractions.map((attraction) => (
+                      <Attraction
+                        key={attraction.id}
+                        attraction={attraction}
+                        onAddAttraction={handleAddAttraction}
+                        onShowAttraction={handleShowAttraction}
+                        isSelected={attraction.isSelected}
+                        onToggleSelection={handleToggleSelection}
+                      />
+                    ))}
+
+                  </div>
+                </div>
+
+                <div id='place-bar-desktop'>
+                  <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
+                  <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
+                </div>
               </div>
+
+              {/* Google maps */}
+              <div ref={mapDivRef} id='mapcon'>
+                <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
+              </div>
+
+              {/* Placebar */}
+              <div id='place-bar-mobile'>
+                <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
+                <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
+              </div>
+
             </div>
-
-            <div id='place-bar-desktop'>
-              <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
-              <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
-            </div>
           </div>
-
-          {/* Google maps */}
-          <div ref={mapDivRef} id='mapcon'>
-            <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
-          </div>
-
-          {/* Placebar */}
-          <div id='place-bar-mobile'>
-          <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
-            <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
-          </div>
-
-        </div>
-      </CSSTransition>
+        </CSSTransition>
         {/* Fixed Navigation on the screen bottom */}
         <div className='nav-box'>
           <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
