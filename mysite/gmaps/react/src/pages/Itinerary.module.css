@@ -15,20 +15,25 @@
 
 .title {
     position: absolute; 
-    top: 0%; 
-    left: 5%; 
+    top: 2%; 
+    left: 4%; 
 }
 
 .itinerary{
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bolder;
     color: white;
 }
 
 .day{
-    font-size: 15px;
-    font-weight: bolder;
-    margin-top: -30%;
+    font-size: 12px;
+    margin-top: -15%;
+    color: white;
+}
+
+.day1{
+    font-size: 12px;
+    margin-top: -7%;
     color: white;
 }
 
@@ -40,6 +45,15 @@
     width: 95%;
 }
 
+.container2_title{
+    margin-left: 10%;
+    margin-top: 0%;
+    width: 100%;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 0%;
+}
+
 .container3{
     width: 95%;
 }
@@ -49,40 +63,61 @@
     margin-left: 35%;
     font-size: 1em;
     font-weight: bold;
+    width: 70%;
     margin-top: -35%;
 }
 
 
 .description, .attraction {
+    width: 70%;
     font-size: 0.6em;
     margin-left: 35%;
 }
 
-.img2{
-    object-fit: cover;
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
+
+
+.container4{
+    display: inline-block;
+    width: 100%;
     margin-top: 10%;
 }
 
-.img3, .img4{
-    object-fit: cover;
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    margin-top: 20%;
-}
-
 .attraction {
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    width: 70%;
+    border-radius: 5%;
+    font-size: 18px;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-bottom: 0%;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color: #000dffa4;
-    color:white;
+    color: black;
+    margin-top: 0%;
+    margin-left: 30%;
+}
+
+.time{
+    margin-left: 30%;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.container4_p{
+    font-size: 12px;
+    width: 70%;
+    padding-left: 30%;
+    margin-top: 0%;
+    text-align: justify;
+}
+.attraction_img{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    position: absolute;
+    margin-top: 5%;
+
 }
 
 .saveHistory {
@@ -152,22 +187,37 @@
     
     .day{
         font-size: 35px;
-        font-weight: bolder;
-        margin-top: -30%;
+        margin-top: -18%;
+        color: white;
+    }
+    
+    .day1{
+        font-size: 35px;
+        margin-top: -7%;
         color: white;
     }
     
     .container2{
         background-color: white;
         border-radius: 3%;
-        margin-top: -20em;
+        margin-top: -40em;
         padding: 1em;
-        width: 95%;
+        width: 75%;
     }
     
+    .container2_title{
+        margin-left: 25%;
+        margin-top: 3%;
+        width: 100%;
+        font-size: 50px;
+        font-weight: bold;
+        margin-bottom: 0%;
+    }
+
     .container3{
         width: 100%;
         display: inline-block;
+        margin-top: -7%;
     }
     
     .header {
@@ -186,23 +236,52 @@
         
     }
     
-    .img2{
-        object-fit: cover;
-        border-radius: 50%;
-        height: 200px;
-        width: 200px;
-        margin-bottom: -12%;
-        margin-left: 5%;
+    
+
+    .container4{
+        display: inline-block;
+        width: 90%;
+        margin-top: 15%;
     }
 
-    .img3, .img4{
-        object-fit: cover;
-        border-radius: 50%;
-        height: 200px;
+    .attraction {
+        width: 50%;
+        border-radius: 5%;
+        font-size: 35px;
+        text-decoration: underline;
+        font-weight: bold;
+        margin-bottom: 0%;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        color: black;
+        margin-top: 0%;
+        margin-left: 30%;
+    }
+
+    .time{
+        margin-left: 30%;
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+
+    .container4_p{
+        font-size: 24px;
+        width: 70%;
+        padding-left: 30%;
+        margin-top: 0%;
+        text-align: justify;
+    }
+
+    .attraction_img{
         width: 200px;
-        margin-bottom: -12%;
-        margin-top: 13%;
+        height: 200px;
+        border-radius: 100px;
+        position: absolute;
         margin-left: 5%;
+        margin-top: 0%;
+    
     }
     
     /* .attraction {
