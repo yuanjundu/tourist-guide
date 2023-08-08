@@ -55,6 +55,11 @@
     padding: 5px;
     border-radius: 10px;
   }
+
+  .filter-buttons-container{
+    top: -10em;
+    position: relative;
+  }
   
   #recommendations {
     padding:5%;

@@ -114,6 +114,12 @@
     ul {
       list-style: none;
     }
+
+    .filter-buttons-container{
+      top: -20em;
+      left: 3vw;
+      position: relative;
+    }
     
     #mapcon {
       position: relative;
@@ -365,12 +371,6 @@
     text-align: center;
   }
 
-  .filter-buttons-container {
-    position: absolute;
-    top: 100vh;
-    left: 5vw;
-  }
-  
   .filter-buttons {
     display: inline-block; 
     padding: 10px 20px;
