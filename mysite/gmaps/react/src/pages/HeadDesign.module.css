@@ -43,12 +43,13 @@
 .container2{
     background-color: white;
     border-radius: 20px;
-    margin-top: -9em;
+    margin-top: -11em;
     padding: 1%;
     width: 98%;
     margin-bottom: 50px;
     transition: width 0.5s ease;
-
+    z-index: 1;
+    position: relative;
     scroll-snap-align: start;
 }
 

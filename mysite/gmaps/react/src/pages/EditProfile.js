@@ -162,7 +162,7 @@ const EditProfile = () => {
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
-                        placeholder="firstName"
+                        placeholder="First Name"
                         name="firstName"
                         required
                         value={firstName}
@@ -174,7 +174,7 @@ const EditProfile = () => {
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
-                        placeholder="lastName"
+                        placeholder="Last Name"
                         name="lastName"
                         required
                         value={lastName}

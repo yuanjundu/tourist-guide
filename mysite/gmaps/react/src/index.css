@@ -57,8 +57,20 @@
   }
 
   .filter-buttons-container{
-    top: -10em;
+    background-color: #4281ac;
+    top: -9em;
+    padding-top: 10px;
     position: relative;
+    border-radius: 20px;
+    height: 90px;
+    text-align: center;
+  }
+
+  .filter-buttons {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 10px;
+    text-decoration: underline;
   }
   
   #recommendations {
@@ -98,6 +110,7 @@
 .attraction h3 {
     font-weight: bold;
     margin-top: 10px;
+    margin-bottom: 2px;
     text-align: center;
     font-size: 16px;
     width: 150px;
@@ -112,6 +125,10 @@
     font-weight: 400;
     margin-bottom: 10px;
     text-align: center;
+}
+
+.attraction .open-website-label {
+  font-size: 12px
 }
 
 .attraction:hover {
