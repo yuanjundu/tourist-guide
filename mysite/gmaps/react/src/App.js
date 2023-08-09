@@ -328,7 +328,7 @@ function App() {
 
               {/* Google maps */}
               <div ref={mapDivRef} id='mapcon'>
-                <Map placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
+                <Map selectedDate={selectedDate} selectedTime={selectedTime} placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
               </div>
 
               {/* Placebar */}

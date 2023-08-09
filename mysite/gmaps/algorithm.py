@@ -121,8 +121,6 @@ def fitness_function(busyness_locations, itinerary):
     for slot, location_id in itinerary.items():
         if slot in busyness_locations[location_id]:
             total_busyness += busyness_locations[location_id][slot]
-        else:
-            logger.warning(f"Slot {slot} is not a valid key in busyness_locations[{location_id}]. Ignoring this slot.")
     return -total_busyness
 
 

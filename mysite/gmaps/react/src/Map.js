@@ -2,12 +2,13 @@ import React, { createContext, useRef, useState, useEffect } from 'react';
 import { GoogleMap, StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
 import geoJsonData from './JSON/map.geojson';
 import axios from 'axios';
+import chroma from 'chroma-js';
 import Itinerary from './Placebar';
 
 export const clickPlaceInfo = createContext();
 const libraries = ['places'];
 
-function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
+function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMapInstance }) {
     // Map reference
     const mapRef = useRef(null);
     // Search box reference
@@ -32,14 +33,14 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
     };
     
     
-      useEffect(() => {
-        // Test
-        const selectedDate = "2023-08-12 09:00:00";
-        fetchBusynessData(selectedDate);
-      }, []);
+    useEffect(() => {
+        // Combine date and time to form the required format
+        const formattedDateTime = `${selectedDate} ${selectedTime}:00`;
+        console.log(formattedDateTime);
+        fetchBusynessData(formattedDateTime);
+    }, [selectedDate, selectedTime]);
+    
       
-
-
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
@@ -49,12 +50,47 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
     // console.log(busynessData);
 
     function busynessToColor(busynessValue) {
-        if (busynessValue < 0.01) return 'blue';
-        if (busynessValue < 0.02) return 'green';
-        if (busynessValue < 0.03) return 'yellow';
-        return 'red';
+        const colorScale = chroma.scale(['green', 'red']).domain([0, 0.03]); 
+        return colorScale(busynessValue).hex();
     }
 
+    const displayInfoWindow = (position, zone, locationId, busyness) => {
+        console.log(position);
+        const contentString = `
+            <div>
+                <h3>${zone}</h3>
+                <p>Location ID: ${locationId}</p>
+                <p>Busyness: ${busyness}</p>
+            </div>
+        `;
+    
+        if (infoWindowRef.current) {
+            infoWindowRef.current.close();
+        }
+        
+        infoWindowRef.current = new window.google.maps.InfoWindow({
+            content: contentString,
+            position: position
+        });
+    
+        infoWindowRef.current.open(mapRef.current);
+    }
+    
+
+    const handleFeatureClick = (event) => {
+        // console.log(event);
+        const zone = event.feature.getProperty('zone');
+        const locationId = event.feature.getProperty('locationid');
+        const matchingBusynessData = busynessData.find(item => item.zone_id === locationId);
+        
+        let busynessValue = "Unknown";
+        if (matchingBusynessData && matchingBusynessData.busyness && matchingBusynessData.busyness.length > 0) {
+            busynessValue = matchingBusynessData.busyness[0];
+        }
+    
+        displayInfoWindow(event.latLng, zone, locationId, busynessValue);
+    }
+    
 
     // Control the map loads
     const handleMapLoad = (map) => {
@@ -64,6 +100,8 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
         setMapInstance(map);
       
         map.data.loadGeoJson(geoJsonData);
+        map.data.addListener('click', handleFeatureClick);
+
       };
 
       useEffect(() => {

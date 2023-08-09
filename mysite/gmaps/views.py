@@ -311,6 +311,7 @@ class ItineraryView(APIView):
 
     def post(self, request, format=None):
         data = request.data
+        print(data)
         user = request.user
         morning_attractions_data = data.get('morningAttractions')
         afternoon_attractions_data = data.get('afternoonAttractions')
