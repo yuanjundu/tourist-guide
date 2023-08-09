@@ -466,7 +466,7 @@ class BusynessView(APIView):
     """
     Predict the busyness for a given zone and time
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def post(self, request):
         zone_id = request.data.get('zone_id')
@@ -498,7 +498,7 @@ class GeneView(APIView):
     """
     Use Genetic algorithm to find optimal path
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
