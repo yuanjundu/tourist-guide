@@ -1,0 +1,196 @@
+.container{
+    background-color: #f7f7f7;
+    padding-top: 5%;
+}
+
+.resttitle{
+    font-size: 19px;
+    text-align: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin-left: 2.5%;
+    width: 95%;
+}
+
+.resttitle1{
+    font-size: 14px;
+    margin-top: -10%;
+    text-align: center;
+    padding-top: 5%;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.cards{
+    width: 35%;
+    display: inline-block;
+    margin-left: 7%;
+    margin-top: 10%;
+    border: 1px solid black;
+    padding-left: 3%;
+    font-size: 12px;
+    position: relative;
+}
+
+.active {
+    background-color: lightblue;
+}
+
+.tick_icon {
+    display: inline-block;
+    color: green;
+    margin-left: 10px;
+}
+
+.allcards{
+    width: 100%;
+    color: black;
+    
+}
+ 
+#add-place {
+    justify-content: center;
+    display: flex;
+    text-align: center;
+  }
+
+.details {
+display: inline-block;
+}
+
+.attraction_img{
+    width: 150px;
+    height: 100px;
+    border-radius: 10%;
+    position: relative;
+    margin-top: -12px;
+    margin-left: -12px;
+    object-fit: cover;
+}
+
+.divcardname{
+    height: 25%;
+}
+
+.cardname1{
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 0%;
+}
+
+.cardname{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.divdetailname{
+    font-size: 10px;
+}
+
+.cardwebsite link{
+ font-size: 12px; 
+ 
+}
+
+.moredetails{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.cardname a:link{
+    font-size: 10px;
+    color: black;
+
+}
+
+.finaliselunch{
+    padding: 5%;
+    margin: 5%;
+    margin-left: 30%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 40%;
+    color: #f7f7f7;
+    background-color: grey;
+
+}
+
+
+@media screen and (min-width: 767px){
+    .container{
+        background-color: #f7f7f7;
+    }
+    
+    .resttitle{
+        font-size: 46px;
+        text-align: center;
+        padding-top: 5%;
+        margin-left: 2.5%;
+        width: 95%;
+    }
+    
+    .resttitle1{
+        font-size: 24px;
+        margin-top: -5%;
+        text-align: center;
+        padding-top: 5%;
+        margin-left: 10%;
+        width: 80%;
+    }
+    
+    .cards{
+        width: 20%;
+        display: inline-block;
+        margin-left: 7%;
+        margin-top: 5%;
+        border: 1px solid black;
+        padding-left: 3%;
+        padding-top: 3%;
+        padding-bottom: 3%;
+        font-size: 12px;
+        border-radius: 10px;
+    }
+    
+    .allcards{
+        width: 100%;
+        color: black;
+    }
+    
+    .divcardname{
+        height: 25%;
+    }
+    
+    .cardname1{
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    .cardname{
+        font-size: 10px;
+        font-weight: bold;
+    }
+    
+    .divdetailname{
+        font-size: 10px;
+    }
+
+    .cardname a:link{
+        font-size: 10px;
+        color: black;
+    
+    }
+    
+    .finaliselunch{
+        padding: 2%;
+        margin: 5%;
+        font-size: 20px;
+        margin-left: 30%;
+        margin-top: 10%;
+        width: 40%;
+        color: #f7f7f7;
+        background-color: grey;
+        border-radius: 10px;
+    }
+    
+
+}
