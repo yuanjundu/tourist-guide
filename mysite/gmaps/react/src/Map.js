@@ -1,5 +1,7 @@
 import React, { createContext, useRef, useState, useEffect } from 'react';
 import { GoogleMap, StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
+import geoJsonData from './JSON/map.geojson';
+import axios from 'axios';
 import Itinerary from './Placebar';
 
 export const clickPlaceInfo = createContext();
@@ -18,6 +20,25 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
     // const [placeDetails, setPlaceDetails] = useState(null);
 
     const [places, setPlaces] = useState([]);
+    const [busynessData, setBusynessData] = useState([]);
+
+    const fetchBusynessData = async (date) => {
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/all_busyness/?format=json`, { date_str: date });
+          setBusynessData(response.data);
+        } catch (error) {
+          console.error("Error fetching busyness data:", error);
+        }
+    };
+    
+    
+      useEffect(() => {
+        // Test
+        const selectedDate = "2023-08-12 09:00:00";
+        fetchBusynessData(selectedDate);
+      }, []);
+      
+
 
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
@@ -25,13 +46,44 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
         libraries,
     });
 
+    // console.log(busynessData);
+
+    function busynessToColor(busynessValue) {
+        if (busynessValue < 0.01) return 'blue';
+        if (busynessValue < 0.02) return 'green';
+        if (busynessValue < 0.03) return 'yellow';
+        return 'red';
+    }
+
+
     // Control the map loads
     const handleMapLoad = (map) => {
         mapRef.current = map;
         mapRef.current.addListener('click', handleMapClick);
         console.log('Map loaded:', map);
         setMapInstance(map);
-    };
+      
+        map.data.loadGeoJson(geoJsonData);
+      };
+
+      useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.data.setStyle(feature => {
+                const locationId = feature.getProperty("locationid");
+                const zone = busynessData.find(item => item.zone_id === locationId);
+                
+                // If no match or no busyness data, default to white color
+                const busynessValue = zone?.busyness[0] || 0;
+                
+                return {
+                    fillColor: busynessToColor(busynessValue),
+                    strokeWeight: 1
+                };
+            });
+        }
+    }, [busynessData, mapRef.current]);
+    
+      
 
     // Control the search box loads
     const handleSearchBoxLoad = (searchBox) => {
