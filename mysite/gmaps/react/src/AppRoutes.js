@@ -8,6 +8,7 @@ import History from "./pages/History";
 import Community from "./pages/Community"
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import Restaurants from './pages/LunchRestaurants';
 
 export default function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
       <Route path="community" element={<Community />} />
       <Route path="resetPassword" element={<ResetPassword />} />
       <Route path="password/reset/:uid/:token" element={<ResetPasswordConfirm />} />
+      <Route path="lunchrestaurants" element={<Restaurants />} />
     </Routes>
   );
 }

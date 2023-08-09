@@ -9,39 +9,34 @@ import { refreshToken } from '../components/refreshToken';
 const History = () => {
     const [history, setHistory] = useState([]);
 
+    console.log(history);
+
     useEffect(() => {
         const fetchHistory = async () => {
-            const localHistory = localStorage.getItem('history');
-            if (localHistory) {
-                // Parse the JSON string back into an array
-                setHistory(JSON.parse(localHistory));
-            } else {
-                const token = localStorage.getItem('access');
-                axios.get(`${process.env.REACT_APP_API_URL}/api/itinerary/history/`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                    .then((response) => {
-                        console.log(response.data);
-                        // Store the history data in localStorage
-                        localStorage.setItem('history', JSON.stringify(response.data));
-                        setHistory(response.data);
-                    })
-                    .catch((error) => {
-                        // handle error
-                        if (error.response && error.response.status === 401) {
-                            refreshToken(fetchHistory);  // Pass fetchHistory as a callback to retry the request after refreshing the token
-                        } else {
-                            console.log(error);
-                        }
-                    });
-            }
+            const token = localStorage.getItem('access');
+            axios.get(`${process.env.REACT_APP_API_URL}/api/itinerary/history/`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data);
+                setHistory(response.data);
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    refreshToken(fetchHistory);
+                } else {
+                    console.log(error);
+                }
+            });
         };
         fetchHistory();
     }, []);
 
     const handleDelete = async (itineraryId) => {
+        console.log("Trying to delete itinerary with ID:", itineraryId);
+
         const token = localStorage.getItem('access');
         axios.delete(`${process.env.REACT_APP_API_URL}/api/itinerary/${itineraryId}/delete/`, {
             headers: {
@@ -51,12 +46,9 @@ const History = () => {
             .then(() => {
                 // handle success
                 console.log("Itinerary deleted successfully!");
-                // remove the deleted itinerary from the state
                 const newHistory = history.filter(itinerary => itinerary.id !== itineraryId);
                 setHistory(newHistory);
-                console.log(newHistory);
-                // Also update localStorage
-                localStorage.setItem('history', JSON.stringify(newHistory));
+
             })
             .catch((error) => {
                 // handle error
@@ -86,11 +78,10 @@ const History = () => {
                 }
             });
     }
-    
 
     return (
         <div className={styles.historyContainer}>
-            <Header />
+            {/* <Header /> */}
             <h1 className={styles.header}>History</h1>
             {history.map((itinerary, index) => (
                 <div key={index} className={styles.itinerary}>
@@ -121,9 +112,7 @@ const History = () => {
                     </div>
                 </div>
             ))}
-            <div className='nav-box'>
-                <Navigation onLocationChange={() => { }} />
-            </div>
+            <Navigation onLocationChange={() => { }} />
         </div>
     );
 };

@@ -405,7 +405,7 @@ class ItinerarySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Itinerary
-        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'lunch_restaurant', 'dinner_restaurant', 'saved_date']
+        fields = ['id', 'user', 'morning_attractions', 'afternoon_attractions', 'lunch_restaurant', 'dinner_restaurant', 'saved_date']
 
 
 class CommunityItinerarySerializer(serializers.ModelSerializer):

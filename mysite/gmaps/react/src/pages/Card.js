@@ -3,16 +3,14 @@ import { MdDone } from 'react-icons/md'; // Import the tick icon from react-icon
 import styles from './Restaurants.module.css';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const local = "http://localhost:8000/media/restaurants/";
+const local = `${process.env.REACT_APP_API_URL}/media/restaurants/`;
 
-const Card = ({ title, index, onAddLunch, contact, isSelected, address, website }) => {
+const Card = ({ restaurant, title, index, onAddLunch, contact, isSelected, address, website }) => {
 
-  
-  
   const handleClick = () => {
     if (!isSelected) {
       if (onAddLunch) {
-        onAddLunch(title);
+        onAddLunch(restaurant);
       }
     };
   };
