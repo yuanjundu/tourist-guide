@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 
 
-const Header = () => {
+const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicker }) => {
     // useEffect(() => {
     //     console.log(selectedDate);
     // }, [selectedDate]);
@@ -22,7 +22,7 @@ const Header = () => {
 
     const getUserInfo = () => {
         const accessToken = localStorage.getItem('access');
-    
+
         axios.get(`${process.env.REACT_APP_API_URL}/api/profile/`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
@@ -31,7 +31,7 @@ const Header = () => {
             .then((response) => {
                 console.log(response);
                 setUser(response.data);
-    
+
                 // Store user data in localStorage
                 localStorage.setItem('user', JSON.stringify(response.data));
                 localStorage.setItem('userId', JSON.stringify(response.data.id))
@@ -67,7 +67,7 @@ const Header = () => {
         const token = localStorage.getItem('access');
         if (token) {
             setIsLoggedIn(true);
-    
+
             const userData = localStorage.getItem('user');
             if (userData) {
                 setUser(JSON.parse(userData));
@@ -78,7 +78,7 @@ const Header = () => {
             setIsLoggedIn(false);
         }
     };
-    
+
 
     const handleLogout = () => {
         // remove tokens and user data
@@ -101,22 +101,16 @@ const Header = () => {
         accountSelectionRef.current.style.display = displayStatus === 'none' ? 'block' : 'none';
     }
 
-    // For DayPicker
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
-    const toggleDatePicker = () => {
-        setShowDatePicker(!showDatePicker);
-    }
-
     const formatDate = (date) => {
-        if (date) {
-          const year = date.getFullYear();
-          const month = String(date.getMonth() + 1).padStart(2, "0");
-          const day = String(date.getDate()).padStart(2, "0");
-          return `${year}-${month}-${day}`;
+        if (date && date instanceof Date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
         }
         return '';
-      };
+    };
+
 
     const [selected, setSelected] = useState();
 
@@ -127,7 +121,7 @@ const Header = () => {
     }
 
     const today = new Date();
-    const[selectedDate, setSelectedDate] = useState();
+    // const[selectedDate, setSelectedDate] = useState();
 
     useEffect(() => {
         console.log(formatDate(selectedDate));
@@ -143,29 +137,37 @@ const Header = () => {
                 </button>
                 <DayPicker
                     mode='single'
-                    style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px'}}
+                    style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px' }}
                     selected={selected || today}
                     onSelect={setSelected}
                     footer={footer}
-                    onChange={date => setSelectedDate(date)}
+                    onDayClick={date => {
+                        console.log(date);
+                        if (date instanceof Date) {
+                            const formattedDate = formatDate(date);
+                            console.log("Picked Date:", formattedDate);
+                            setSelectedDate(formattedDate);
+                        }
+                    }}
                     dateFormat="yyyy-MM-dd"
                     showPopperArrow={false}
                     placeholderText="Select a date"
-                    // onDayClick={setSelectedDate()}
-                    
+                // onDayClick={setSelectedDate()}
+
                 />
+                
             </div>
-                {/* <button id="date-select"><icons.CalendarDate /></button> */}
-                <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
-                    {isLoggedIn ? (
-                        <div>
-                            <span>Hello {user?.first_name} {user?.last_name}</span>
-                            <icons.PersonCircle />
-                        </div>
-                    ) : (
-                        <icons.BoxArrowInRight />
-                    )}
-                </button>
+            {/* <button id="date-select"><icons.CalendarDate /></button> */}
+            <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
+                {isLoggedIn ? (
+                    <div>
+                        <span>Hello {user?.first_name} {user?.last_name}</span>
+                        <icons.PersonCircle />
+                    </div>
+                ) : (
+                    <icons.BoxArrowInRight />
+                )}
+            </button>
 
 
             {isLoggedIn && (

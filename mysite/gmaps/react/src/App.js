@@ -25,6 +25,7 @@ function App() {
   const [placesAttractions, setPlacesAttractions] = useState([]);
   const [attractionMarkers, setAttractionMarkers] = useState([]);
   const [selectedTag, setSelectedTag] = useState('Sightseeing');
+  
 
   //<------------------Test--------------------->
   useEffect(() => {
@@ -33,7 +34,7 @@ function App() {
     // console.log(selectedDate);
     // console.log(myLocation);
     // console.log(placesAttractions);
-    console.log(displayedAttractions);
+    // console.log(displayedAttractions);
   });
   //<------------------Test--------------------->
 
@@ -41,10 +42,29 @@ function App() {
   // Select time
   const today = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState(today);
-  const handleSelectedDate = (event) => {
-    const dateValue = event.target.value;
+
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const toggleDatePickerInApp = () => {
+    setShowDatePicker(prev => !prev);
+};
+
+
+  const currentTime = new Date();
+  const formattedTime = `${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}`;
+
+  const [selectedTime, setSelectedTime] = useState(formattedTime);
+
+
+  // const handleSelectedDate = (event) => {
+  //   const dateValue = event.target.value;
+  //   setSelectedDate(dateValue);
+  // }
+
+  const handleSelectedDate = (dateValue) => {
     setSelectedDate(dateValue);
-  }
+}
+
 
 
   useEffect(() => {
@@ -69,7 +89,7 @@ function App() {
         const indexToRemove = placesAttractions.findIndex(attraction => attraction.id === attractionToToggle.id);
         if (indexToRemove !== -1) {
           handleDeletePlace(indexToRemove);
-          
+
         }
       }
       return;
@@ -110,7 +130,7 @@ function App() {
 
 
   // Show markers of selected attractions
-  const handleShowAttraction= (attraction) => {
+  const handleShowAttraction = (attraction) => {
     if (places.length >= 5) {
       return;
     }
@@ -198,8 +218,8 @@ function App() {
   }
 
   const displayedAttractions = selectedTag === 'Sightseeing'
-  ? attractions
-  : attractions.filter(attraction => {
+    ? attractions
+    : attractions.filter(attraction => {
       const attractionTags = attraction.tag.split(';').map(tag => tag.trim());
       return attractionTags.includes(selectedTag);
     });
@@ -211,7 +231,7 @@ function App() {
         <img className={styles.img} src={background}></img>
       </div>
       {/* Fixed header on the screen top */}
-      <Header selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} />
+      <Header selectedDate={selectedDate} setSelectedDate={handleSelectedDate} toggleDatePicker={toggleDatePickerInApp} showDatePicker={showDatePicker}/>
 
       <main >
         {/* Title */}
@@ -270,6 +290,14 @@ function App() {
               >
                 Shopping
               </button>
+
+
+              <div className={'selected-datetime'}>
+              <div onClick={toggleDatePickerInApp}>Date: {selectedDate}</div>
+                <div>Time:
+                  <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} />
+                </div>
+              </div>
 
             </div>
 
