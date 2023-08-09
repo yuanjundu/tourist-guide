@@ -1,10 +1,10 @@
 .fade-enter {
   opacity: 0;
-  transform: translateY(20px); /* 初始位置为下方偏移 20px，隐藏元素 */
+  transform: translateY(20px); 
 }
 
 .fade-enter-active {
   opacity: 1;
-  transform: translateY(-10); /* 平滑过渡到初始位置，显示元素 */
-  transition: opacity 1s ease, transform 1s ease; /* 过渡持续时间，单位为秒 */
+  transform: translateY(-10);
+  transition: opacity 1s ease, transform 1s ease; 
 }

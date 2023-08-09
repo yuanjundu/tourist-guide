@@ -128,7 +128,7 @@
 }
 
 .attraction .open-website-label {
-  font-size: 12px
+  display: none;
 }
 
 .attraction:hover {

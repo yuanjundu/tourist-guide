@@ -28,11 +28,11 @@ function Attraction({ attraction, onAddAttraction, onShowAttraction, isSelected,
   };
 
   return (
-    <div className={`attraction ${isSelected ? 'selected' : ''}`} onClick={handleClick}>
+    <div className={`attraction ${isSelected ? 'selected' : ''}`}>
       <div className="tick-container">
         {isSelected && <FaCheckCircle className="tick-icon" />}
       </div>
-      <img src={attraction.image} alt={attraction.name} className="attraction-image" />
+      <img src={attraction.image} alt={attraction.name} className="attraction-image" onClick={handleClick} />
       <h3 onClick={() => openAttractionWebsite(attraction.website)}>{attraction.name}</h3>
 
       <span className="open-website-label">Open Website</span>
