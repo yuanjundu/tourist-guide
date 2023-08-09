@@ -116,7 +116,7 @@ const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicke
 
     let footer = <p>Please pick a day.</p>;
     if (selected) {
-        console.log(formatDate(selected))
+        // console.log(formatDate(selected))
         footer = <p>You picked {format(selected, 'PP')}.</p>;
     }
 

@@ -22,25 +22,30 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
 
     const [places, setPlaces] = useState([]);
     const [busynessData, setBusynessData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const fetchBusynessData = async (date) => {
-        try {
-          const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/all_busyness/?format=json`, { date_str: date });
-          setBusynessData(response.data);
-        } catch (error) {
-          console.error("Error fetching busyness data:", error);
-        }
-    };
-    
-    
     useEffect(() => {
         // Combine date and time to form the required format
         const formattedDateTime = `${selectedDate} ${selectedTime}:00`;
+        // console.log(selectedDate);
+        // console.log(selectedTime);
         console.log(formattedDateTime);
         fetchBusynessData(formattedDateTime);
     }, [selectedDate, selectedTime]);
-    
-      
+
+    const fetchBusynessData = async (date) => {
+        try {
+            setLoading(true);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/all_busyness/?format=json`, { date_str: date });
+            console.log("Response Data:", response.data);
+            setBusynessData(response.data);
+        } catch (error) {
+            console.error("Error fetching busyness data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
@@ -78,7 +83,8 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
     
 
     const handleFeatureClick = (event) => {
-        // console.log(event);
+        console.log(loading);
+        console.log(busynessData);
         const zone = event.feature.getProperty('zone');
         const locationId = event.feature.getProperty('locationid');
         const matchingBusynessData = busynessData.find(item => item.zone_id === locationId);
@@ -88,7 +94,7 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
             busynessValue = matchingBusynessData.busyness[0];
         }
     
-        displayInfoWindow(event.latLng, zone, locationId, busynessValue);
+        if (!loading) displayInfoWindow(event.latLng, zone, locationId, busynessValue);
     }
     
 
