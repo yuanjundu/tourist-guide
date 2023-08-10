@@ -43,7 +43,6 @@ function App() {
   const today = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState(today);
 
-
   const [showDatePicker, setShowDatePicker] = useState(false);
   const toggleDatePickerInApp = () => {
     setShowDatePicker(prev => !prev);

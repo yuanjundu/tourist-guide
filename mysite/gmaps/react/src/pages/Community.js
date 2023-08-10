@@ -12,14 +12,7 @@ const Community = () => {
     const [sharedItineraries, setSharedItineraries] = useState([]);
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
-<<<<<<< HEAD
     const local = `${process.env.REACT_APP_API_URL}`;
-    const time = [["10:00-12:00","13:00-14:00","20:00-21:00"],["10:00-12:00","13:00-15:00","16:00-19:00","20:00-21:00"],["10:00-12:00","13:00-14:00","15:00-17:00","18:00-20:00","21:00-22:00"],["9:00-11:00","12:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"],["9:00-10:00","11:00-12:00","13:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"]];
-    const midPoint = Math.floor(length / 2);
-
-=======
-    const local = "http://localhost:8000";
->>>>>>> parent of e16c80f (change map)
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
@@ -43,6 +36,7 @@ const Community = () => {
 
     useEffect(() => {
         fetchSharedItineraries();
+        console.log("shared",sharedItineraries);
     }, [fetchSharedItineraries]);
 
     const handleJoin = async (itineraryId) => {
@@ -108,7 +102,6 @@ const Community = () => {
             });
     }
 
-    
 
     return (
         <div className={styles.communityContainer}>
@@ -125,9 +118,7 @@ const Community = () => {
                                 ? <button className={styles.exitButton} onClick={() => handleExit(itinerary.id)}>Exit</button>
                                 : <button className={styles.joinButton} onClick={() => handleJoin(itinerary.id)}>Join</button>
                         }
-                    
                     </h3>
-                    {length = (itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1)}
                     <div className={styles.attractionSection}>
                        <b><p className={styles.sectiondate}>Date of travelling:</p></b>
                         <p className={styles.sectiondate}>{itinerary.itinerary.saved_date}</p>
@@ -135,32 +126,23 @@ const Community = () => {
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Morning Attractions:</h3>
                         {itinerary.itinerary.morning_attractions?.map((attraction, index) => (
-                            <div>
-                                <li className={styles.sectiondate} key={index}>{attraction.name}</li>
-                                <li className={styles.time}>{time[length][index]}</li>
-                            </div>
+                            <li className={styles.sectiondate} key={index}>{attraction.name}</li>
                         ))}
                     </div>
-                    
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Lunch Restaurant:</h3>
                         <p className={styles.sectiondate}>{itinerary.itinerary.lunch_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][midPoint]}</p>
                     </div>
 
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Afternoon Attractions:</h3>
                         {itinerary.itinerary.afternoon_attractions?.map((attraction, index) => (
-                            <div>
                             <li className={styles.sectiondate} key={index}>{attraction.name}</li>
-                            <p className={styles.time}>{time[length][index+midPoint+1]}</p>
-                            </div>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Dinner Restaurant:</h3>
                         <p className={styles.sectiondate}>{itinerary.itinerary.dinner_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][length+2]}</p>
                     </div>
 
                 </div>

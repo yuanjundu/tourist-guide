@@ -33,7 +33,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
-from .algorithm import genetic_algorithm, get_busyness_locations, get_day_and_closest_quarter_minute
+from .algorithm import genetic_algorithm, get_busyness_locations, get_day_and_closest_quarter_minute, get_month_week_day_and_closest_quarter_minute
 import joblib
 import pickle
 from datetime import datetime
@@ -474,21 +474,24 @@ class BusynessView(APIView):
         date_str = request.data.get('date_str')
 
         try:
-            model_path = 'gmaps/pkl/busyness_model.pkl'
+            model_path = 'gmaps/pkl/random_forest_model.pkl'
             if not os.path.exists(model_path):
                 raise Http404
 
             model = joblib.load(model_path)
 
-            day_of_year, total_minutes = get_day_and_closest_quarter_minute(date_str)
+            month, week_of_year, day_of_year, total_minutes = get_month_week_day_and_closest_quarter_minute(date_str)
             
             new_data = pd.DataFrame({
                 'LocationID': [zone_id],  
                 'day_of_year': [day_of_year], 
-                'minute_of_day': [total_minutes]
+                'minute_of_day': [total_minutes],
+                'month': month,
+                'week': week_of_year,
+                'day': day_of_year,
             })
 
-            busyness =  model.predict(new_data)
+            busyness =  model.predict(new_data)/20
             return Response({"busyness": busyness.tolist()}, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -535,21 +538,24 @@ class AllZonesBusynessView(APIView):
         response = []
 
         try:
-            model_path = 'gmaps/pkl/busyness_model.pkl'
+            model_path = 'gmaps/pkl/random_forest_model.pkl'
             if not os.path.exists(model_path):
                 raise Http404
 
             model = joblib.load(model_path)
-            day_of_year, total_minutes = get_day_and_closest_quarter_minute(date_str)
+            month, week_of_year, day_of_year, total_minutes = get_month_week_day_and_closest_quarter_minute(date_str)
 
             for zone_id in range(1, 264): # zones from 1 to 263
                 new_data = pd.DataFrame({
-                    'LocationID': [zone_id],  
-                    'day_of_year': [day_of_year], 
-                    'minute_of_day': [total_minutes]
-                })
+                'LocationID': [zone_id],  
+                'day_of_year': [day_of_year], 
+                'minute_of_day': [total_minutes],
+                'month': month,
+                'week': week_of_year,
+                'day': day_of_year,
+            })
 
-                busyness =  model.predict(new_data)
+                busyness =  model.predict(new_data)/20
                 response.append({
                     "zone_id": zone_id,
                     "busyness": busyness.tolist()
