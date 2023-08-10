@@ -72,6 +72,7 @@
       display: inline-block;
       position: relative;
       width: 44%;
+      padding-top: 5%;
       height: 700px;
       left: 0;
       padding-left: 2.5%;
@@ -274,8 +275,20 @@
     } */
 
     #recommendations {
+      padding: 2%;
+      padding-top: 3%;
       max-height: calc(100vh); 
       overflow-y: auto; /* Allows vertical scrolling if content overflows */
+  }
+
+    #precommendations{
+      font-size: 24px;
+      font-weight: bold;
+      position: absolute;
+      width: 88%;
+      text-align: center;
+      background-color: transparent;
+      margin-top: 2%;
   }
   
     #recommendations::-webkit-scrollbar-thumb {
@@ -289,30 +302,50 @@
 
     #recommendation-box {
       display: flex;
-      flex-wrap: wrap;
-      background-color: #ebebeb;
+      border-radius: 20px;
+      height: 200px;
+      width: 100%;
+      background-color: white;
       overflow-x: auto;
-      padding: 20px;
+      align-items: center;
+      padding: 1%;
   }
 
   .attraction {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #ffffff;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-      width: 120px;
-      word-break: break-word; /* Break words if they are too long to fit */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px;
+    margin: 5px;
+    margin-top: 10%;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    width: 200px;
+    height: 140px; /* Break words if they are too long to fit */
   }
 
   .attraction img {
-      width: 100px; 
-      height: 100px; 
-      object-fit: cover;
-      border-radius: 10px;
+    width: 180px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 0%;
+    border: 3px solid;
+  }
+
+  .attraction h3{
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 2px;
+    text-align: center;
+    font-size: 16px;
+    width: 160px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: absolute;
+    border: 1px solid;
   }
 
   .attraction h2 {
@@ -379,7 +412,8 @@
     border: 1px solid lightgray;
     border-radius: 50%;
     opacity: 0; 
-    transition: opacity 0.3s ease; 
+    transition: opacity 0.3s ease;
+    z-index: 1; 
   }
   
   .attraction.selected .tick-container {
