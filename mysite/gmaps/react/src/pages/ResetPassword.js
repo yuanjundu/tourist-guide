@@ -32,12 +32,15 @@ const ResetPassword = () => {
 
   return (
     <body className={SignupStyle.body}>
+    <div class={SignupStyle.group_no}>
+        <h1>Itinera</h1>
+      </div>
+    <div className={SignupStyle.wrapper}>
     <form onSubmit={handleSubmit} className="container">
       <div className={SignupStyle.log}>
         <h1>Reset Password</h1>
       </div>
-      {errors.detail && <p className="error">{errors.detail}</p>}
-      {message && <p className="message">{message}</p>}
+      
       <div className={SignupStyle.sub_log}>
         <h3>Please enter your username and email address to receive password reset instructions.</h3>
       </div>
@@ -49,8 +52,12 @@ const ResetPassword = () => {
         {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
 
         <button type="submit" className={SignupStyle.button}>Submit</button>
+
+        {errors.detail && <p className={SignupStyle.error}>{errors.detail}</p>}
+        {message && <p className={SignupStyle.message}>{message}</p>}
       </div>
     </form>
+    </div>
     </body>
   );
 };

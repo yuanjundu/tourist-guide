@@ -47,10 +47,11 @@ const Signup = () => {
 
   return (
     <body class={SignupStyle.body}>
+    <div class={SignupStyle.group_no}>
+        <h1>Itinera</h1>
+    </div>
+    <div class={SignupStyle.wrapper}>
     <form onSubmit={handleSubmit} className="container">
-      <div class={SignupStyle.group_no}>
-        <h2>GROUP 16</h2>
-      </div>
       <div class={SignupStyle.log}>
         <h1>Let's make</h1>
         <h1>memories!</h1>
@@ -59,27 +60,31 @@ const Signup = () => {
         <h3>This will create an account for ya</h3>
       </div>
 
-      <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
-      {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
-      <li class={SignupStyle.p}>Max 150 characters. Letters, digits, @ . + - _ only.</li>
+      <div class={SignupStyle.container}>
+        <input class = {SignupStyle.input} type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
+        {errors.username && errors.username.map((error, index) => <p key={index} className="error">{error}</p>)}
+        <p class={SignupStyle.p}>Max 150 characters. Letters, digits, @ . + - _ only.</p>
 
-      <input class = {SignupStyle.input}  type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-      {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
+        <input class = {SignupStyle.input}  type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+        {errors.email && errors.email.map((error, index) => <p key={index} className="error">{error}</p>)}
 
-      <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} required />
-      {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
-      
-      <input class = {SignupStyle.input}  type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} required />
-      {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
-      <li class={SignupStyle.p}>Your password can't be too similar to personal information.</li>
-      <li class={SignupStyle.p}>At least 8 characters.</li>
-      <li class={SignupStyle.p}>Can't be just numeric.</li>
+        <input class = {SignupStyle.input}  type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} required />
+        {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
+        
+        <input class = {SignupStyle.input}  type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} required />
+        {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
+        <p class={SignupStyle.p}>- Your password can't be too similar to personal information.</p>
+        <p class={SignupStyle.p}>- At least 8 characters.</p>
+        <p class={SignupStyle.p}>- Can't be just numeric.</p>
+      </div>
+
       <button type="submit" class = {SignupStyle.button}>Sign Up</button>
 
       <div class={SignupStyle.container1}>
-        <span className={SignupStyle.psw}>You already have an account? <a className={SignupStyle.psw2} href="/login"><b>Log in</b></a></span>
+        <span className={SignupStyle.psw}>You already have an account? <a className={SignupStyle.psw2} href="/login"><h3>Log in</h3></a></span>
       </div>
     </form>
+    </div>
     </body>
 
   );

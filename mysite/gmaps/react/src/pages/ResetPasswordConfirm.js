@@ -31,22 +31,27 @@ const ResetPasswordConfirm = () => {
   
     return (
       <body className={SignupStyle.body}>
-      <form onSubmit={handleSubmit} className="container">
-        <div className={SignupStyle.log}>
-          <h1>Reset Password</h1>
-        </div>
-        <div className={SignupStyle.container}>
-          <input className={SignupStyle.input} type="password" placeholder="New password" value={password} onChange={e => setPassword(e.target.value)} required />
-          {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
-  
-          <input className={SignupStyle.input} type="password" placeholder="Confirm new password" value={password2} onChange={e => setPassword2(e.target.value)} required />
-          {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
-  
-          {errors.detail && <p className="error">{errors.detail}</p>} 
-  
-          <button type="submit" className={SignupStyle.button}>Submit</button>
-        </div>
-      </form>
+      <div class={SignupStyle.group_no}>
+        <h1>Itinera</h1>
+      </div>
+      <div className={SignupStyle.wrapper}>
+        <form onSubmit={handleSubmit} className="container">
+          <div className={SignupStyle.log}>
+            <h1>Reset Password</h1>
+          </div>
+          <div className={SignupStyle.container}>
+            <input className={SignupStyle.input} type="password" placeholder="New password" value={password} onChange={e => setPassword(e.target.value)} required />
+            {errors.password && errors.password.map((error, index) => <p key={index} className="error">{error}</p>)}
+    
+            <input className={SignupStyle.input} type="password" placeholder="Confirm new password" value={password2} onChange={e => setPassword2(e.target.value)} required />
+            {errors.password2 && errors.password2.map((error, index) => <p key={index} className="error">{error}</p>)}
+    
+            {errors.detail && <p className="error">{errors.detail}</p>} 
+    
+            <button type="submit" className={SignupStyle.button}>Submit</button>
+          </div>
+        </form>
+      </div>
       </body>
     );
   };
