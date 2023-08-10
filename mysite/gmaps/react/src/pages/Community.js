@@ -5,7 +5,7 @@ import styles from './Community.module.css';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
-
+import Footer from '../components/Footer';
 
 
 const Community = () => {
@@ -150,6 +150,7 @@ const Community = () => {
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
+            <Footer />
         </div>
     );
 };

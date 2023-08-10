@@ -16,6 +16,8 @@ import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { CSSTransition } from 'react-transition-group';
 import './FadeInEffect.css';
+import Datepicker from './components/DatePicker';
+import Footer from './components/Footer'
 
 function App() {
   // Fetch attractions
@@ -240,13 +242,6 @@ function App() {
           <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
           <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
         </div>
-
-        <CSSTransition
-          in={fadeIn}
-          timeout={1000}
-          classNames="fade"
-          unmountOnExit
-        >
           <div>
             <div className={'filter-buttons-container'}>
               <button
@@ -290,16 +285,18 @@ function App() {
               >
                 Shopping
               </button>
+            </div>
 
-
-              <div className={'selected-datetime'}>
-              <div onClick={toggleDatePickerInApp}>Date: {selectedDate}</div>
-                <div>Time:
+            <div className={'selected-datetime'}>
+                <div onClick={toggleDatePickerInApp}>
+                  <p>Select&nbsp;</p>
+                  <p className='selectDate'>Date </p>: {selectedDate}
+                </div>
+                <Datepicker selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
+                <div>Time:&nbsp;
                   <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} />
                 </div>
               </div>
-
-            </div>
 
             <div id='content' className={styles.container2}>
               {/* Recommendations */}
@@ -339,12 +336,12 @@ function App() {
 
             </div>
           </div>
-        </CSSTransition>
         {/* Fixed Navigation on the screen bottom */}
         <div className='nav-box'>
           <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
         </div>
       </main>
+      <Footer />
 
     </div>
 

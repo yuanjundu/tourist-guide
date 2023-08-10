@@ -82,7 +82,7 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
         const zone = event.feature.getProperty('zone');
         const locationId = event.feature.getProperty('locationid');
         const matchingBusynessData = busynessData.find(item => item.zone_id === locationId);
-        
+
         let busynessValue = "Unknown";
         if (matchingBusynessData && matchingBusynessData.busyness && matchingBusynessData.busyness.length > 0) {
             busynessValue = matchingBusynessData.busyness[0];

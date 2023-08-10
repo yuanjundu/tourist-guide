@@ -8,7 +8,7 @@ import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import styles from './Restaurants.module.css';
-
+import Footer from '../components/Footer';
 
 const Restaurants = () => {
     const location = useLocation();
@@ -172,7 +172,7 @@ const Restaurants = () => {
                     <button className={styles.finaliselunch} onClick={redirectToItinerary}>Save</button>
 
                 </div>
-                
+                <Footer />
 
                     {/* <!-- End page content --> */}
             </div>

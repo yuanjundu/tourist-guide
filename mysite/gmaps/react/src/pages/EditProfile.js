@@ -4,6 +4,7 @@ import styles from './EditProfile.module.css';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
@@ -235,6 +236,7 @@ const EditProfile = () => {
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
+            <Footer />
         </div>
     );
 

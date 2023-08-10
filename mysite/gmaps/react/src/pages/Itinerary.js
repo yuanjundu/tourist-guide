@@ -13,6 +13,7 @@ import lunchpic from './assets/lunch.jpg'
 import dinnerpic from './assets/dinner.jpg'
 import {firstpara, restpara} from './ItineraryEnhance.js'
 import Card from './Card';
+import Footer from '../components/Footer';
 
 const Itinerary = () => {
     const location = useLocation();
@@ -142,7 +143,10 @@ const Itinerary = () => {
 
             </div>
 
+
             <Navigation />
+
+            <Footer />
         </div>
     );
 }

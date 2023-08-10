@@ -5,6 +5,7 @@ import styles from './History.module.css';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
+import Footer from '../components/Footer';
 
 const History = () => {
     const [history, setHistory] = useState([]);
@@ -112,7 +113,11 @@ const History = () => {
                     </div>
                 </div>
             ))}
-            <Navigation onLocationChange={() => { }} />
+
+            <div className='nav-box'>
+                <Navigation onLocationChange={() => { }} />
+            </div>
+            <Footer />
         </div>
     );
 };
