@@ -8,7 +8,8 @@ import { refreshToken } from '../components/refreshToken';
 
 const History = () => {
     const [history, setHistory] = useState([]);
-
+    const time = [["10:00-12:00","13:00-14:00","20:00-21:00"],["10:00-12:00","13:00-15:00","16:00-19:00","20:00-21:00"],["10:00-12:00","13:00-14:00","15:00-17:00","18:00-20:00","21:00-22:00"],["9:00-11:00","12:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"],["9:00-10:00","11:00-12:00","13:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"]];
+    const midPoint = Math.floor(length / 2);
     console.log(history);
 
     useEffect(() => {
@@ -89,26 +90,35 @@ const History = () => {
                         <button className={styles.deleteButton} onClick={() => handleDelete(itinerary.id)}>Delete</button>
                         <button className={styles.shareButton} onClick={() => handleShare(itinerary.id)}>Share</button>
                     </h2>
+                    {length = (itinerary.morning_attractions.length+itinerary.afternoon_attractions.length-1)}
                     <div className={styles.attractionSection}>
                         <h3>Morning Attractions:</h3>
                         {itinerary.morning_attractions?.map((attraction, index) => (
-                            <p key={index}>{attraction.name}</p>
+                            <div>
+                                <p key={index}>{attraction.name}</p>
+                                <p className={styles.time}>{time[length][index]}</p>
+                            </div>
                         ))}
 
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Lunch Restaurant:</h3>
                         <p>{itinerary.lunch_restaurant?.name}</p>
+                        <p className={styles.time}>{time[length][midPoint]}</p>
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Afternoon Attractions:</h3>
                         {itinerary.afternoon_attractions?.map((attraction, index) => (
-                            <p key={index}>{attraction.name}</p>
+                            <div>
+                                <p key={index}>{attraction.name}</p>
+                                <p className={styles.time}>{time[length][index+midPoint+1]}</p>
+                            </div>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Dinner Restaurant:</h3>
                         <p>{itinerary.dinner_restaurant?.name}</p>
+                        <p className={styles.time}>{time[length][length+2]}</p>
                     </div>
                 </div>
             ))}
