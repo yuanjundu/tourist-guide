@@ -151,8 +151,9 @@ const Community = () => {
                     <div className={styles.attractionSection}>
                         <h3 className={styles.styling}>Dinner Restaurant:</h3>
                         <div  className={styles.box}>
+                            <h2 className={styles.time}>{time[length][length+2]}</h2>
                             <p className={styles.styling}>{itinerary.itinerary.dinner_restaurant?.name}</p>
-                            <p className={styles.time}>{time[length][length+2]}</p>
+                            
                         </div>
                     </div>
 
