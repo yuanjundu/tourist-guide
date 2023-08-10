@@ -232,6 +232,8 @@ def get_month_week_day_and_closest_quarter_minute(date_str):
     for the closest quarter hour.
     """
     # Convert the input string to a datetime object
+    if " " not in date_str: # there is no time part in the date string
+        date_str += " 00:00:00" # add a default time part
     date_obj = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
     # Get the month
     month = date_obj.month
@@ -248,7 +250,8 @@ def get_month_week_day_and_closest_quarter_minute(date_str):
     return month, week_of_year, day_of_year, total_minutes
 
 def get_busyness_locations(locations, date_str):
-    model_path = 'random_forest_model.pkl'
+    print(date_str)
+    model_path = 'gmaps/pkl/random_forest_model.pkl'
     if not os.path.exists(model_path):
         raise FileNotFoundError
 
@@ -262,6 +265,7 @@ def get_busyness_locations(locations, date_str):
         zone_id = location['zone']
         for time_slot in time_slots[len(locations) - 1]:
             start_time, end_time = map(convert_time_to_minutes, time_slot.split(" - "))
+            print(start_time, end_time)
             start_data = {
                 'LocationID': [zone_id],
                 'day_of_year': [day_of_year],

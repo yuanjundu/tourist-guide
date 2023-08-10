@@ -8,7 +8,7 @@ import { DayPicker } from 'react-day-picker';
 import Navigation from "./Navigation";
 import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-import styles from '../pages/HeadDesign.module.css';
+
 
 const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicker }) => {
     // useEffect(() => {
@@ -101,62 +101,16 @@ const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicke
         accountSelectionRef.current.style.display = displayStatus === 'none' ? 'block' : 'none';
     }
 
-    const formatDate = (date) => {
-        if (date && date instanceof Date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-            return `${year}-${month}-${day}`;
-        }
-        return '';
-    };
-
-
-    const [selected, setSelected] = useState();
-
-    let footer = <p>Please pick a day.</p>;
-    if (selected) {
-        console.log(formatDate(selected))
-        footer = <p>You picked {format(selected, 'PP')}.</p>;
-    }
-
-    const today = new Date();
-    // const[selectedDate, setSelectedDate] = useState();
-
-    useEffect(() => {
-        console.log(formatDate(selectedDate));
-    }, [selectedDate]);
 
 
     return (
         <header>
             {/* <input type='date' className={styles.date} value={selectedDate} onChange={handleSelectedDate} /> */}
             <div>
-                <button onClick={toggleDatePicker} value={formatDate(selectedDate)}>
+                {/* <button onClick={toggleDatePicker} value={formatDate(selectedDate)}>
                     <icons.Calendar />
-                </button>
-                <DayPicker
-                    mode='single'
-                    className={styles.calender}
-                    style={{ display: showDatePicker ? 'block' : 'none',}}
-                    
-                    selected={selected || today}
-                    onSelect={setSelected}
-                    footer={footer}
-                    onDayClick={date => {
-                        console.log(date);
-                        if (date instanceof Date) {
-                            const formattedDate = formatDate(date);
-                            console.log("Picked Date:", formattedDate);
-                            setSelectedDate(formattedDate);
-                        }
-                    }}
-                    dateFormat="yyyy-MM-dd"
-                    showPopperArrow={false}
-                    placeholderText="Select a date"
-                // onDayClick={setSelectedDate()}
+                </button> */}
 
-                />
                 
             </div>
             {/* <button id="date-select"><icons.CalendarDate /></button> */}

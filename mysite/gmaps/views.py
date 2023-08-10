@@ -333,8 +333,6 @@ class ItineraryView(APIView):
         return Response({'message': 'Itinerary saved successfully', 'itineraryId': itinerary.id}, status=status.HTTP_200_OK)
 
 
-
-
 class ItineraryHistoryView(APIView):
     """
     View to fetch itinerary history

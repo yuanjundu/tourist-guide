@@ -5,14 +5,14 @@ import styles from './Community.module.css';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
-
+import Footer from '../components/Footer';
 
 
 const Community = () => {
     const [sharedItineraries, setSharedItineraries] = useState([]);
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
-    const local = `${process.env.REACT_APP_API_URL}`;
+    const local = "http://localhost:8000";
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
@@ -150,6 +150,7 @@ const Community = () => {
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
+            <Footer />
         </div>
     );
 };

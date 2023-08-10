@@ -12,10 +12,11 @@ import Attraction from '../Attraction';
 import { MdDone } from 'react-icons/md';
 import Card from './Card';
 import * as icons from 'react-bootstrap-icons';
+import Footer from '../components/Footer';
 
 const Restaurants = () => {
     const location = useLocation();
-    const { myLocation, placesAttractions, selectedDate } = location.state || {};
+    const { myLocation, placesAttractions, selectedDate, selectedTime } = location.state || {};
     const { latitude = 0, longitude = 0 } = myLocation || {};
     const [orderedAttractions, setOrderedAttractions] = useState([]);
     const [morningAttractions, setMorningAttractions] = useState([]);
@@ -162,7 +163,7 @@ const Restaurants = () => {
                     </div>
                     
                     <button className={styles.finaliselunch} onClick={redirectToItinerary}>Save</button>
-
+                    <Footer />
                     {/* <!-- End page content --> */}
             </div>
         
