@@ -85,7 +85,7 @@ const History = () => {
             <h1 className={styles.header}>History</h1>
             {history.map((itinerary, index) => (
                 <div key={index} className={styles.itinerary}>
-                    <h2>Itinerary {index + 1} for {itinerary.saved_date}
+                    <h2 className={styles.itineraryh2}>Itinerary {index + 1} for {itinerary.saved_date}
                         <button className={styles.deleteButton} onClick={() => handleDelete(itinerary.id)}>Delete</button>
                         <button className={styles.shareButton} onClick={() => handleShare(itinerary.id)}>Share</button>
                     </h2>
