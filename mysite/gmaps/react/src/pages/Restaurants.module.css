@@ -22,14 +22,16 @@
 }
 
 .cards{
-    width: 35%;
+    width: 80%;
     display: inline-block;
     margin-left: 7%;
-    margin-top: 10%;
+    margin-top: 7%;
     border: 1px solid black;
     padding-left: 3%;
+    padding-top: 4%;
     font-size: 12px;
     position: relative;
+    display: flex;
 }
 
 .active {
@@ -59,12 +61,12 @@ display: inline-block;
 }
 
 .attraction_img{
-    width: 150px;
-    height: 100px;
-    border-radius: 10%;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
     position: relative;
     margin-top: -12px;
-    margin-left: -12px;
+    margin-left: -10px;
     object-fit: cover;
 }
 
@@ -75,26 +77,48 @@ display: inline-block;
 .cardname1{
     font-size: 14px;
     font-weight: bold;
-    margin-top: 0%;
+    display: inline-block;
+    margin-left: 5%;
+    position: absolute;
+    margin-top: -2%
 }
 
-.cardname{
-    font-size: 10px;
+.cardcontact{
+    font-size: 12px;
     font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    margin-top: 4%;
+    margin-left: 5%;
+}
+
+.cardaddress{
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    margin-top: 9%;
+    margin-left: 5%;
 }
 
 .divdetailname{
     font-size: 10px;
+    display: block;
 }
 
 .cardwebsite link{
  font-size: 12px; 
- 
+ display: inline-block;
+ color: black;
 }
 
 .moredetails{
     font-size: 12px;
     font-weight: bold;
+    position: absolute;
+    left: 30%;
+    top: 75%;
+    color: black;
 }
 
 .cardname a:link{
