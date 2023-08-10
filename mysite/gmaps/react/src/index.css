@@ -293,9 +293,9 @@
     height: 100px; 
   }
   
-  footer {
-  
-  }  
+  /* footer {
+    position: relative;
+  };  */
 
 
 }
