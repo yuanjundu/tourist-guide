@@ -12,10 +12,14 @@ const Community = () => {
     const [sharedItineraries, setSharedItineraries] = useState([]);
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
+<<<<<<< HEAD
     const local = `${process.env.REACT_APP_API_URL}`;
     const time = [["10:00-12:00","13:00-14:00","20:00-21:00"],["10:00-12:00","13:00-15:00","16:00-19:00","20:00-21:00"],["10:00-12:00","13:00-14:00","15:00-17:00","18:00-20:00","21:00-22:00"],["9:00-11:00","12:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"],["9:00-10:00","11:00-12:00","13:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"]];
     const midPoint = Math.floor(length / 2);
 
+=======
+    const local = "http://localhost:8000";
+>>>>>>> parent of e16c80f (change map)
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
