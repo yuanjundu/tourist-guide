@@ -144,7 +144,9 @@ const Itinerary = () => {
             </div>
 
 
-            <Navigation />
+            <div className='nav-box'>
+                <Navigation onLocationChange={() => { }} />
+            </div>   
 
             <Footer />
         </div>

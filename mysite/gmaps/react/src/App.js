@@ -244,14 +244,14 @@ function App() {
           <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
           <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
         </div>
-        <div>
-          <div className={'filter-buttons-container'}>
-            <button
-              className={'filter-buttons'}
-              onClick={() => setSelectedTag('Sightseeing')}
-            >
-              All
-            </button>
+          <div>
+            <div className={'filter-buttons-container'}>
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Sightseeing')}
+              >
+                All
+              </button>
 
             <button
               className={'filter-buttons'}
@@ -281,13 +281,13 @@ function App() {
               Architecture
             </button>
 
-            <button
-              className={'filter-buttons'}
-              onClick={() => setSelectedTag('Shopping')}
-            >
-              Shopping
-            </button>
-          </div>
+              <button
+                className={'filter-buttons'}
+                onClick={() => setSelectedTag('Shopping')}
+              >
+                Shopping
+              </button>
+            </div>
 
           <div className={'selected-datetime'}>
             <div onClick={toggleDatePickerInApp}>

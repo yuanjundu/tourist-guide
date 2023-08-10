@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 import { DayPicker } from 'react-day-picker';
 
-const Datepicker = ({ selectedDate, setSelectedDate }) => {
+const Datepicker = ({ showDatePicker, selectedDate, setSelectedDate }) => {
     const formatDate = (date) => {
         if (date && date instanceof Date) {
             const year = date.getFullYear();
