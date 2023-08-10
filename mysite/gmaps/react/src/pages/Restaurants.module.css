@@ -34,14 +34,16 @@
     display: flex;
 }
 
-.active {
-    background-color: lightblue;
-}
+
 
 .tick_icon {
     display: inline-block;
     color: green;
-    margin-left: 10px;
+    margin-left: 60%;
+    position: absolute;
+    z-index: 2;
+    margin-top: -2%;
+    font-size: 42px;
 }
 
 .allcards{
