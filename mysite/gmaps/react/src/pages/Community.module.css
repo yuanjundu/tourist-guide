@@ -6,8 +6,8 @@
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
   }
-
-.communityContainer {
+  
+  .communityContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,18 +27,19 @@
     text-transform: capitalize;
     width: 100%;
   }
-
+  
   .joined {
     text-align: center;
     font-size: 1.2rem;
     margin-top: 10px;
   }
+  
   .p_none {
     display: none;
   }
-
-
+  
   .itinerary {
+    max-width: 500px;
     border-radius: 10px;
     padding: 20px;
     margin-top: 10%;
@@ -50,19 +51,22 @@
   }
   
   .deleteButton, .joinButton, .exitButton {
-    color: #ffffff;
+    background-color: black;
+    color: white;
+    padding: 10px;
     border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
     cursor: pointer;
-    float: right;
-    margin-right: 10px;
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-top: 1.5rem;
   }
   
   .deleteButton { background-color: #ff0000; }
   .joinButton { background-color: #008000; }
   .exitButton { background-color: #ff8c00; }
-
+  
   .date {
     display: flex;
     justify-content: center;
@@ -81,12 +85,43 @@
     font-size: 1.25rem;
     padding-top: 1%;
     padding-bottom: 1%;
-    background-color: transparent;
+    background-color: transparent; 
     margin: 0;
   }
-
   
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+    margin: 10px;
+  }
   
+  .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .time {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    background-color: transparent; 
+  }
+  
+  .styling {
+    font-size: 14px;
+    color: #666;
+    background-color: transparent; 
+  }
   
   @media screen and (min-width: 767px) {
     .header { margin-top: 5%; }
