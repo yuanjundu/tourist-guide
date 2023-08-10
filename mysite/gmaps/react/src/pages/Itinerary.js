@@ -92,7 +92,7 @@ const Itinerary = () => {
                 <p className={styles.day1}>There's nothing you can't do!</p>
             </div>
             <div className={styles.container2}>
-
+                <div className={styles.title}>
                 <p className={styles.container2_title}>Your itinerary for the day</p>
                 <div className={styles.container3}>
                                        
@@ -141,7 +141,7 @@ const Itinerary = () => {
                 <button className={styles.saveButton} onClick={handleSaveItinerary}>Save Itinerary</button>
 
             </div>
-
+            </div>
             <Navigation />
         </div>
     );
