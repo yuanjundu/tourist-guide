@@ -133,19 +133,18 @@ const EditProfile = () => {
 
     return (
         <div className={styles.root}>
-             <div class={styles.group_no}>
-                <h2>GROUP 16</h2>
-            </div>
-            <div class={styles.log}>
-                <h1>Edit Profile</h1>
-            </div>
-            <div class={styles.sub_log}>
-                <h3>Enter your details below to edit your info.</h3>
-            </div>
+            <h1 className={styles.group_no}>GROUP 16</h1>
+            
 
             <div className={styles.container}>
+                
                 <form onSubmit={updateUserProfile}>
-
+                    <div class={styles.log}>
+                        <h1 >Edit Profile</h1>
+                    </div>
+                    <div class={styles.sub_log}>
+                        <h3>Enter your details below to edit your info.</h3>
+                    </div>
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
@@ -181,16 +180,16 @@ const EditProfile = () => {
                         onChange={e => setLastName(e.target.value)}
                     />
                     
-
                     <button className={styles.blackbutton} type="submit">Save changes</button>
-                </form>
-
-                <button onClick={() => setIsChangingPassword(true)} className={styles.pwdbutton}  >Change Password</button>
-
-                {isChangingPassword && (
+                    <button onClick={() => setIsChangingPassword(true)} className={styles.pwdbutton}  >Change Password</button>
+                    {isChangingPassword && (
                     <div className={styles.container}>
-                        <h2 className={styles.change}>Change Password</h2>
+                        
                         <form onSubmit={handlePasswordChange}>
+                        <div class={styles.log}>
+                            <h1>Change Password</h1>
+                        </div>
+                        
                             <input
                                 className={styles['input[type="password"]']}
                                 type="password"
@@ -231,6 +230,11 @@ const EditProfile = () => {
                         </form>
                     </div>
                 )}
+                </form>
+
+                
+
+               
             </div>
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />

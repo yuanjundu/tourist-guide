@@ -42,7 +42,6 @@ const Login = () => {
         <form onSubmit={handleSubmit} >
           <div class={SignupStyle.log}>
             <h1>Let's log you in!</h1>
-            {/* <h1>you in!</h1> */}
           </div>
           
           <div class={SignupStyle.sub_log}>
