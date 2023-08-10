@@ -1,182 +1,108 @@
+* {
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+  }
+
 .communityContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1%;
-}
-
-.header {
+  }
+  
+  .header {
     text-align: center;
     margin-bottom: -5%;
-}
-
-.title{
-    margin-top: 2%;
-    font-size: 26px;
-    width: 100%;
-    font-weight: bold;
+    margin-top: 5%;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
     color: black;
-    text-decoration: underline;
-}
+    text-transform: capitalize;
+    width: 100%;
+  }
 
-.itinerary {
+  .joined {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+  .p_none {
+    display: none;
+  }
+
+
+  .itinerary {
     border-radius: 10px;
     padding: 20px;
     margin-top: 10%;
     margin-bottom: 5%;
-}
-
-.backgroundimg{
-    position: absolute;
-    z-index: -1;
-    width: 325px;
-    height: 600px;
-    object-fit: cover;
-    margin-left: -5%;
-    border-radius: 10px;
-    margin-top: -3%;
-}
-
-.sectiondate{
-    font: 20px;
-    width: 100%;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    margin-left: 5%;
-}
-
-.deleteButton {
-    background-color: #ff0000;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    float: right;
-}
-
-.joinButton {
-    background-color: #008000;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    float: right;
-    margin-right: 10px;
-}
-
-.exitButton {
-    background-color: #ff8c00;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    float: right;
-    margin-right: 10px;
-}
-
-.attractionSection {
-    margin-left: -3%;
-    margin-top: 7%;
-    width: 105%;
-    border-radius: 10px;
-    padding: 1%;
-    background-color: rgb(255 255 255 / 0.3);
     backdrop-filter: blur(10px);
-}
+    border: 3.5px solid black;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 75%;
+  }
+  
+  .deleteButton, .joinButton, .exitButton {
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    margin-right: 10px;
+  }
+  
+  .deleteButton { background-color: #ff0000; }
+  .joinButton { background-color: #008000; }
+  .exitButton { background-color: #ff8c00; }
 
-@media screen and (min-width: 767px){
+  .date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    background-color: black;
+    margin: 0 auto;
+    margin-top: 15px;
+    border-radius: 5px;
+    line-height: 5vh;
+  }
+  
+  .sectiondate {
+    color: white;
+    text-align: center;
+    font-size: 1.25rem;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: transparent;
+    margin: 0;
+  }
 
-    .communityContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1%;
+  
+  
+  
+  @media screen and (min-width: 767px) {
+    .header { margin-top: 5%; }
+    .title { margin-top: 2%; }
+    
+    .backgroundimg {
+      position: absolute;
+      z-index: -1;
+      width: 325px;
+      height: 600px;
+      object-fit: cover;
+      margin-left: -1%;
+      border-radius: 10px;
+      margin-top: -3%;
     }
     
-    .header {
-        text-align: center;
-        margin-bottom: -5%;
-        margin-top: 5%;
-    }
-    
-    .title{
-        margin-top: -5%;
-        font-size: 26px;
-        width: 100%;
-        font-weight: bold;
-        color: black;
-        text-decoration: underline;
-    }
-    
-    .itinerary {
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 10%;
-        margin-bottom: 5%;
-    }
-    
-    .backgroundimg{
-        position: absolute;
-        z-index: -1;
-        width: 325px;
-        height: 600px;
-        object-fit: cover;
-        margin-left: -1%;
-        border-radius: 10px;
-        margin-top: -3%;
-    }
-    
-    .sectiondate{
-        font: 20px;
-        width: 100%;
-        margin-top: 1%;
-        margin-bottom: 1%;
-        margin-left: 5%;
-    }
-    
-    .deleteButton {
-        background-color: #ff0000;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        float: right;
-    }
-    
-    .joinButton {
-        background-color: #008000;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        float: right;
-        margin-right: 10px;
-    }
-    
-    .exitButton {
-        background-color: #ff8c00;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        float: right;
-        margin-right: 10px;
-    }
-    
-    .attractionSection {
-        margin-left: -3%;
-        margin-top: 7%;
-        width: 105%;
-        border-radius: 10px;
-        padding: 1%;
-        background-color: rgb(255 255 255 / 0.3);
-        backdrop-filter: blur(10px);
-    }
-
-}
+    .attractionSection { margin-top: 7%; }
+  }
+  
