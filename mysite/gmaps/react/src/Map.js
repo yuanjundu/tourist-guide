@@ -38,14 +38,17 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
             setLoading(true);
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/all_busyness/?format=json`, { date_str: date });
             console.log("Response Data:", response.data);
+            
             setBusynessData(response.data);
+            localStorage.setItem('busynessData', JSON.stringify(response.data));
+            
         } catch (error) {
             console.error("Error fetching busyness data:", error);
         } finally {
             setLoading(false);
         }
     };
-
+    
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
@@ -83,18 +86,20 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
     
 
     const handleFeatureClick = (event) => {
+        const storedDataString = localStorage.getItem('busynessData');
+        const storedData = JSON.parse(storedDataString || '[]'); 
         console.log(loading);
-        console.log(busynessData);
+        console.log(storedData);
         const zone = event.feature.getProperty('zone');
         const locationId = event.feature.getProperty('locationid');
-        const matchingBusynessData = busynessData.find(item => item.zone_id === locationId);
+        const matchingBusynessData = storedData.find(item => item.zone_id === locationId);
         
         let busynessValue = "Unknown";
         if (matchingBusynessData && matchingBusynessData.busyness && matchingBusynessData.busyness.length > 0) {
             busynessValue = matchingBusynessData.busyness[0];
         }
     
-        if (!loading) displayInfoWindow(event.latLng, zone, locationId, busynessValue);
+        displayInfoWindow(event.latLng, zone, locationId, busynessValue);
     }
     
 
@@ -106,15 +111,18 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
         setMapInstance(map);
       
         map.data.loadGeoJson(geoJsonData);
-        map.data.addListener('click', handleFeatureClick);
-
+        console.log(loading);
+        map.data.addListener('click', handleFeatureClick);    
       };
 
+  
       useEffect(() => {
         if (mapRef.current) {
             mapRef.current.data.setStyle(feature => {
+                const storedDataString = localStorage.getItem('busynessData');
+                const storedData = JSON.parse(storedDataString || '[]'); 
                 const locationId = feature.getProperty("locationid");
-                const zone = busynessData.find(item => item.zone_id === locationId);
+                const zone = storedData.find(item => item.zone_id === locationId);
                 
                 // If no match or no busyness data, default to white color
                 const busynessValue = zone?.busyness[0] || 0;
@@ -125,7 +133,7 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
                 };
             });
         }
-    }, [busynessData, mapRef.current]);
+    }, [selectedDate, selectedTime, mapRef.current]);
     
       
 

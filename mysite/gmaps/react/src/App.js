@@ -214,7 +214,7 @@ function App() {
 
   const navigate = useNavigate();
   const redirectToItinerary = () => {
-    navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate } });
+    navigate('/lunchrestaurants', { state: { myLocation, placesAttractions: placesAttractions, selectedDate } });
   }
 
   const displayedAttractions = selectedTag === 'Sightseeing'

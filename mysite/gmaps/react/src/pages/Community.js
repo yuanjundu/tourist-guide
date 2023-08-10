@@ -12,7 +12,7 @@ const Community = () => {
     const [sharedItineraries, setSharedItineraries] = useState([]);
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
-    const local = "http://localhost:8000";
+    const local = `${process.env.REACT_APP_API_URL}`;
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
