@@ -1,0 +1,182 @@
+.communityContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: -5%;
+}
+
+.title{
+    margin-top: 2%;
+    font-size: 26px;
+    width: 100%;
+    font-weight: bold;
+    color: black;
+    text-decoration: underline;
+}
+
+.itinerary {
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+.backgroundimg{
+    position: absolute;
+    z-index: -1;
+    width: 325px;
+    height: 600px;
+    object-fit: cover;
+    margin-left: -5%;
+    border-radius: 10px;
+    margin-top: -3%;
+}
+
+.sectiondate{
+    font: 20px;
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 5%;
+}
+
+.deleteButton {
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+}
+
+.joinButton {
+    background-color: #008000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    margin-right: 10px;
+}
+
+.exitButton {
+    background-color: #ff8c00;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    margin-right: 10px;
+}
+
+.attractionSection {
+    margin-left: -3%;
+    margin-top: 7%;
+    width: 105%;
+    border-radius: 10px;
+    padding: 1%;
+    background-color: rgb(255 255 255 / 0.3);
+    backdrop-filter: blur(10px);
+}
+
+@media screen and (min-width: 767px){
+
+    .communityContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1%;
+    }
+    
+    .header {
+        text-align: center;
+        margin-bottom: -5%;
+        margin-top: 5%;
+    }
+    
+    .title{
+        margin-top: -5%;
+        font-size: 26px;
+        width: 100%;
+        font-weight: bold;
+        color: black;
+        text-decoration: underline;
+    }
+    
+    .itinerary {
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 10%;
+        margin-bottom: 5%;
+    }
+    
+    .backgroundimg{
+        position: absolute;
+        z-index: -1;
+        width: 325px;
+        height: 600px;
+        object-fit: cover;
+        margin-left: -1%;
+        border-radius: 10px;
+        margin-top: -3%;
+    }
+    
+    .sectiondate{
+        font: 20px;
+        width: 100%;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        margin-left: 5%;
+    }
+    
+    .deleteButton {
+        background-color: #ff0000;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        float: right;
+    }
+    
+    .joinButton {
+        background-color: #008000;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        float: right;
+        margin-right: 10px;
+    }
+    
+    .exitButton {
+        background-color: #ff8c00;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        float: right;
+        margin-right: 10px;
+    }
+    
+    .attractionSection {
+        margin-left: -3%;
+        margin-top: 7%;
+        width: 105%;
+        border-radius: 10px;
+        padding: 1%;
+        background-color: rgb(255 255 255 / 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+}

@@ -1,0 +1,391 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+
+.img{
+    width: 100vw;
+    height: 30vh;
+}
+
+.title {
+    position: absolute; 
+    top: 4%; 
+    left: 4%; 
+    background-color: transparent;
+}
+
+.itinerary{
+    font-size: 30px;
+    font-weight: bolder;
+    color: white;
+    background-color: transparent;
+}
+
+.day{
+    font-size: 12px;
+    margin-top: 0%;
+    color: white;
+    background-color: transparent;
+}
+
+.day1{
+    font-size: 12px;
+    margin-top: 0%;
+    color: white;
+    background-color: transparent;
+}
+
+.container2{
+    background-color: white;
+    border-radius: 20px;
+    margin-top: -5em;
+    padding: 1em;
+    width: 95%;
+    z-index: 1;
+    padding-bottom: 5%;
+    margin-bottom: 15%;
+}
+
+.container2_title{
+    margin-left: 10%;
+    margin-top: 0%;
+    width: 100%;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 0%;
+    background-color: transparent;
+}
+
+.container3{
+    width: 95%;
+    background-color: transparent;
+}
+
+
+.header {
+    margin-left: 35%;
+    font-size: 1em;
+    font-weight: bold;
+    width: 70%;
+    margin-top: -35%;
+    background-color: transparent;
+}
+
+
+.description, .attraction {
+    width: 70%;
+    font-size: 0.6em;
+    margin-left: 35%;
+    background-color: transparent;
+}
+
+
+
+.container4{
+    display: inline-block;
+    width: 100%;
+    margin-top: 10%;
+    background-color: transparent;
+}
+
+/* .container4::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 5%;
+    background-color: white;
+    border: 4px solid #FF9F55;
+    top: 5%;
+    border-radius: 50%;
+    z-index: 1;
+  } */
+
+.attraction {
+    width: 70%;
+    border-radius: 5%;
+    font-size: 18px;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-bottom: 0%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: black;
+    margin-top: 0%;
+    background-color: transparent;
+    margin-left: 30%;
+}
+
+.time{
+    margin-left: 30%;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: transparent;
+}
+
+.container4_p{
+    font-size: 12px;
+    width: 100%;
+    padding-left: 30%;
+    margin-top: 0%;
+    text-align: justify;
+    background-color: transparent;
+}
+
+.attraction_imgs{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    position: absolute;
+    margin-top: 5%;
+    background-color: transparent;
+    /* -webkit-filter: grayscale(100%); 
+    filter: grayscale(100%); */
+}
+
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: transparent;
+}
+  
+  /* The actual timeline (the vertical ruler) */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: black;
+    top: 4%;
+    bottom: 5%;
+    left: 12%;
+    margin-left: -3px;
+    z-index: -1;
+}
+
+.saveHistory {
+    border: 1px solid #f7f7f7;
+    border-radius: 10%;
+    padding: 10px;
+    margin: 1em auto;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-color: #f7f7f7;
+    
+}
+
+.restaurantSelector {
+    font-size: 1em; 
+    background-color: #f7f7f7; 
+    color: black; 
+    padding: 1px;  
+    border-radius: 5px; 
+    width: 55%;  
+    margin-left: 35%; 
+}
+
+.saveButton {
+    background-color: #f7f7f7;
+    color: black; 
+    font-size: 1em;
+    padding: 5%; 
+    border: 1px solid black;
+    border-radius: 5%;  
+    cursor: pointer; 
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-bottom: 5%;
+}
+
+.saveButton:hover {
+    background-color: #274ae6;
+}
+
+@media screen and (min-width: 767px){
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background-color: #f7f7f7;
+    }
+    
+   
+    
+    .img{
+        width: 100%;
+        height: 100%;
+    }
+    
+    .title {
+        position: absolute; 
+        top: 10%; 
+        left: 5%; 
+    }
+    
+    .itinerary{
+        font-size: 100px;
+        font-weight: bolder;
+        color: white;
+    }
+    
+    .day{
+        font-size: 35px;
+        margin-top: 0%;
+        color: white;
+    }
+    
+    .day1{
+        font-size: 35px;
+        margin-top: 0%;
+        color: white;
+    }
+    
+    .container2{
+        background-color: white;
+        border-radius: 3%;
+        margin-top: -40em;
+        padding: 1em;
+        width: 80%;
+    }
+    
+    .container2_title{
+        margin-left: 25%;
+        margin-top: 3%;
+        width: 100%;
+        font-size: 50px;
+        font-weight: bold;
+        margin-bottom: 0%;
+    }
+
+    .container3{
+        width: 100%;
+        display: inline-block;
+        margin-top: -7%;
+    }
+    
+    .header {
+        display: inline-block;
+        font-size: 1.2em;
+        font-weight: bold;
+        width: 50%;
+        margin-left: 3%;
+    }
+    
+    .description, .attraction {
+        width: 50%;
+        font-size: 1em;
+        margin-left: 22%;
+        margin-top: -1%;
+        
+    }
+    
+    
+
+    .container4{
+        display: inline-block;
+        width: 90%;
+        margin-top: 15%;
+    }
+
+    .attraction {
+        width: 50%;
+        border-radius: 5%;
+        font-size: 35px;
+        text-decoration: underline;
+        font-weight: bold;
+        margin-bottom: 0%;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        color: black;
+        margin-top: 0%;
+        margin-left: 30%;
+    }
+
+    .time{
+        margin-left: 30%;
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+
+    .container4_p{
+        font-size: 24px;
+        width: 90%;
+        padding-left: 30%;
+        margin-top: 0%;
+        text-align: justify;
+    }
+
+    .attraction_imgs{
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+        position: absolute;
+        margin-left: 4%;
+        margin-top: 0%;
+    }
+    
+    /* .attraction {
+        border: 1px solid gray;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        background-color: #000dffa4;
+        color:white;
+    } */
+    
+    .saveHistory {
+        border: 1px solid #f7f7f7;
+        border-radius: 10%;
+        padding: 10px;
+        margin: 1em auto;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        background-color: #f7f7f7;
+    }
+    
+    .restcontainer{
+        margin-top: 0%;
+        margin-left: -20%;
+    }
+
+    .restaurantSelector {
+        font-size: 1em; 
+        background-color: #f7f7f7; 
+        color: black; 
+        padding: 10px;  
+        border-radius: 5px; 
+        width: 30%;
+    }
+    
+    .saveButton {
+        background-color: #f7f7f7;
+        color: black; 
+        font-size: 1em;
+        padding: 1%; 
+        border: 1px solid black;
+        border-radius: 5%;  
+        cursor: pointer; 
+        margin-top: 5%;
+        margin-left: 50%;
+    }
+    
+    .saveButton:hover {
+        background-color: #274ae6;
+    }
+
+
+}

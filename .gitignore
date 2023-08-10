@@ -1,2 +1,6 @@
 __pycache__/
 *.swp
+node_modules/
+media/
+.vscode/
+build/

@@ -1,0 +1,26 @@
+@media screen and (max-width: 767px){
+    footer {
+        position: relative;
+        bottom: 55px;
+        z-index: 0;
+        text-align: center;
+        padding: 0;
+    }
+}
+
+
+
+@media screen and (min-width: 767px){
+    footer {
+        background-color: #f0f0f0;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+    }
+
+    footer p {
+        margin: 0;
+        font-size: 18px;
+    }
+}

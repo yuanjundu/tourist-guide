@@ -1,0 +1,266 @@
+/* Bordered form */
+.body {
+  background-color: #f7f7f7;
+  
+}
+
+.group_no {
+  width: 25%;
+  text-align: left;
+  margin-left: 70%;
+  font-size: 12px;
+  padding-top: 7%;
+}
+
+.log {
+  width: 70%;
+  height: 20%;
+  position: relative;
+  text-align: left;
+  margin-left: 15%;
+  margin-top: 20%;
+  font-size: 24px;
+  line-height: 10px;
+}
+
+.p{
+  margin-left: 12%;
+  font-size: 11px;
+}
+
+.sub_log {
+  width: 80%;
+  height: 5%;
+  position: relative;
+  text-align: left;
+  margin-left: 15%;
+  font-size: 12px;
+  line-height: 40px;
+  color: grey;
+  margin-bottom: 10%;
+}
+
+.line {
+  margin-left: 20%;
+  margin: 1%;
+  margin-top: -5%;
+  position: absolute;
+  left: 13%;
+}
+
+/* Full-width inputs */
+.input {
+  width: 75%;
+  padding: 5px;
+  margin: 2%;
+  margin-left: 10%;
+  margin-top: 5%;
+  display: inline-block;
+  border: 1px solid grey;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+/* Set a style for all buttons */
+.button {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 15px;
+  border: none;
+  cursor: pointer;
+  width: 70%;
+  left: 10%;
+  margin-top: 7%;
+  margin-left: 13%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 2%;
+}
+
+.container1{
+  padding-bottom: 12%;
+  margin-left: 13%;
+  margin-top: 25%;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  font-size: 18px;
+  color: grey;
+}
+
+.psw2{
+  color: black;
+}
+
+
+a:link {
+  color: black;
+  font-weight: bolder;
+  font-size: 20px;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+
+  .cancelbtn {
+    width: 100%;
+  }
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+
+@media screen and (min-width: 767px){
+
+  .body {
+    background-color: #f7f7f7;
+  }
+  
+  .group_no {
+    width: 15%;
+    text-align: left;
+    margin-left: 85%;
+    font-size: 24px;
+    padding-top: 1%;
+  }
+  
+  .log {
+    width: 30%;
+    text-align: left;
+    font-size: 44px;
+    line-height: 20px;
+    margin-top: -3%;
+  }
+  
+  .p{
+    margin-left: 12%;
+    font-size: 11px;
+  }
+  
+  .sub_log {
+    width: 70%;
+    position: relative;
+    text-align: left;
+    margin-left: 17%;
+    margin-top: -2%;
+    font-size: 12px;
+    color: grey;
+    margin-bottom: 3%;
+  }
+  
+  
+  /* Full-width inputs */
+  .input {
+    width: 45%;
+    padding: 5px;
+    margin-left: 10%;
+    display: inline-block;
+    border: 1px solid grey;
+    font-size: 14px;
+    background-color: transparent;
+    margin-top: 1%;
+    margin-bottom: 0%;
+  }
+  
+  /* Set a style for all buttons */
+  .button {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 15px;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    margin-top: 2%;
+    margin-left: 11%;
+    margin-bottom: 5%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .forgot{
+    margin-left: 70%;
+    padding-bottom: 12%;
+    display: inline-block;
+    position: absolute;
+    margin-top: -23%;
+  }
+  
+  .forgotpassword{
+    color: black;
+  }
+  
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  /* Avatar image */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 2%;
+    margin-top: 5%;
+  }
+  
+  .container1{
+    position: absolute;
+    padding-bottom: 12%;
+    margin-left: 70%;
+    margin-top: -24%;
+  }
+  
+  /* The "Forgot password" text */
+  span.psw {
+    font-size: 18px;
+    color: grey;
+  }
+  
+  .psw2{
+    color: black;
+  }
+  
+  a:link {
+    color: black;
+    font-weight: bolder;
+    font-size: 20px;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+
+}
