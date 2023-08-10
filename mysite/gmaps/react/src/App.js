@@ -11,7 +11,7 @@ import './App.css';
 import './index.css';
 import './desktop-index.css';
 import styles from './pages/HeadDesign.module.css';
-import background from './pages/assets/background.jpg'
+import background from './pages/assets/background.jpg';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { CSSTransition } from 'react-transition-group';
@@ -214,7 +214,7 @@ function App() {
 
   const navigate = useNavigate();
   const redirectToItinerary = () => {
-    navigate('/lunchrestaurants', { state: { myLocation, placesAttractions: placesAttractions, selectedDate } });
+    navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate } });
   }
 
   const displayedAttractions = selectedTag === 'Sightseeing'
@@ -224,21 +224,49 @@ function App() {
       return attractionTags.includes(selectedTag);
     });
 
+    
+    const [selectValue, setSelectValue] = useState([]);
+    const onChange = (event) => {
+      const value = event.target.value;
+      setSelectValue(value);
+      console.log(value);
+    };
 
   return (
+    
+    <main >
+      <Header selectedDate={selectedDate} setSelectedDate={handleSelectedDate} toggleDatePicker={toggleDatePickerInApp} showDatePicker={showDatePicker}/>
     <div className={styles.container}>
       <div className={styles.image}>
         <img className={styles.img} src={background}></img>
       </div>
       {/* Fixed header on the screen top */}
-      <Header selectedDate={selectedDate} setSelectedDate={handleSelectedDate} toggleDatePicker={toggleDatePickerInApp} showDatePicker={showDatePicker}/>
+      </div>
 
-      <main >
+      
         {/* Title */}
         <div id='headline' className={styles.titleContainer}>
           <h1 className={styles.title}>Tourist Guide</h1>
-          <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
-          <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
+          <p className={styles.intro}><b className={styles.introbold}>Immerse Yourself in the wonders of travelling </b> </p>
+          <p className={styles.intro}> by creating an itinerary based on</p>
+          <p className={styles.intro}> <b className={styles.introbold}>busyness of New York!</b></p>
+        </div>
+
+        <div className={styles.inputContainer}>  
+        {/* User click on below input, calender should appear */}
+          <input className={styles.titleinput} placeholder='When?'></input>
+        
+        {/* User click on below drop down, the recommendations should change accordingly. */}
+          <select onChange={onChange} className={styles.options}>
+              <option className={styles.option} defaultValue >
+                Where?
+              </option>
+              <option className={styles.option} value="sightseeing">Sightseeing</option>
+              <option className={styles.option} value="outdoor">Outdoor</option>
+              <option className={styles.option} value="historical">Historical</option>
+              <option className={styles.option} value="museum">Museum</option>
+              <option className={styles.option} value="architecture">Architecture</option>
+            </select>
         </div>
 
         <CSSTransition
@@ -247,7 +275,7 @@ function App() {
           classNames="fade"
           unmountOnExit
         >
-          <div>
+          {/* <div>
             <div className={'filter-buttons-container'}>
               <button
                 className={'filter-buttons'}
@@ -289,22 +317,23 @@ function App() {
                 onClick={() => setSelectedTag('Shopping')}
               >
                 Shopping
-              </button>
+              </button> */}
 
 
-              <div className={'selected-datetime'}>
+              {/* <div className={'selected-datetime'}>
               <div onClick={toggleDatePickerInApp}>Date: {selectedDate}</div>
                 <div>Time:
                   <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} />
                 </div>
               </div>
 
-            </div>
-
+            </div> */}
+          {/* </div> */}
             <div id='content' className={styles.container2}>
               {/* Recommendations */}
               <div className="left-container">
                 <div id='recommendations'>
+                  <p id="precommendations">Places to visit</p>
                   <div id="recommendation-box">
                     {displayedAttractions.map((attraction) => (
                       <Attraction
@@ -338,7 +367,7 @@ function App() {
               </div>
 
             </div>
-          </div>
+          
         </CSSTransition>
         {/* Fixed Navigation on the screen bottom */}
         <div className='nav-box'>
@@ -346,7 +375,7 @@ function App() {
         </div>
       </main>
 
-    </div>
+    
 
   );
 }
