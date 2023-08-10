@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
+    margin-top: 5%;
     padding: 20px;
 }
 
@@ -12,12 +13,28 @@
     margin-top: 5%;
 }
 
+.itinerary {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 5%;
+    padding-bottom: 20%;
+    position: relative;
+}
+
+.itineraryh2{
+    font-size: 26px;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
 .div1{
     background-color: white;
     width: 90%;
     align-content: center;
     padding: 2%;
     border-radius: 10%;
+    
 }
 
 .div1p{
@@ -48,6 +65,7 @@
     padding-left: 5%;
     border-radius: 10%;
     margin: 2%;
+    margin-top: 10%;
 }
 
 .div2p{
@@ -62,33 +80,39 @@
 
 }
 
-/* .itinerary {
-    background-color: #f7f7f7;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-} */
+
 
 .deleteButton {
-    background-color: #ff0000;
+    background-color: grey;
     color: #ffffff;
     border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5% 10%;
     cursor: pointer;
-    float: right;
+    float: left;
+    margin-top: 85%;
+    right: 10%;
+    position: absolute;
 }
 
 .attractionSection {
     margin: 15px 0;
+    border-radius: 10px;
 }
 
 .shareButton {
-    background-color: #0055ff;
+    background-color: grey;
     color: #ffffff;
     border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5% 10%;
     cursor: pointer;
-    float: right;
+    float: left;
+    margin-top: 85%;
+    right: 55%;
+    position: absolute;
 }
