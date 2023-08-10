@@ -8,7 +8,7 @@ import { DayPicker } from 'react-day-picker';
 import Navigation from "./Navigation";
 import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-
+import styles from '../pages/HeadDesign.module.css';
 
 const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicker }) => {
     // useEffect(() => {
@@ -116,7 +116,7 @@ const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicke
 
     let footer = <p>Please pick a day.</p>;
     if (selected) {
-        // console.log(formatDate(selected))
+        console.log(formatDate(selected))
         footer = <p>You picked {format(selected, 'PP')}.</p>;
     }
 
@@ -137,7 +137,9 @@ const Header = ({ selectedDate, setSelectedDate, toggleDatePicker, showDatePicke
                 </button>
                 <DayPicker
                     mode='single'
-                    style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px' }}
+                    className={styles.calender}
+                    style={{ display: showDatePicker ? 'block' : 'none',}}
+                    
                     selected={selected || today}
                     onSelect={setSelected}
                     footer={footer}
