@@ -12,6 +12,7 @@ import './index.css';
 import './desktop-index.css';
 import styles from './pages/HeadDesign.module.css';
 import background from './pages/assets/background.jpg'
+import video from './pages/assets/video.mp4'
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import { CSSTransition } from 'react-transition-group';
@@ -27,7 +28,7 @@ function App() {
   const [placesAttractions, setPlacesAttractions] = useState([]);
   const [attractionMarkers, setAttractionMarkers] = useState([]);
   const [selectedTag, setSelectedTag] = useState('Sightseeing');
-  
+
 
   //<------------------Test--------------------->
   useEffect(() => {
@@ -49,7 +50,7 @@ function App() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const toggleDatePickerInApp = () => {
     setShowDatePicker(prev => !prev);
-};
+  };
 
 
   const currentTime = new Date();
@@ -64,7 +65,7 @@ function App() {
 
   const handleSelectedDate = (dateValue) => {
     setSelectedDate(dateValue);
-}
+  }
 
   useEffect(() => {
     const localAttractions = localStorage.getItem('attractions');
@@ -227,10 +228,14 @@ function App() {
   return (
     <div className={styles.container}>
       <div className={styles.image}>
-        <img className={styles.img} src={background}></img>
+        {/* <img className={styles.img} src={background}></img> */}
+        <video className={styles.img} autoPlay loop muted>
+          <source src={video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
       {/* Fixed header on the screen top */}
-      <Header selectedDate={selectedDate} setSelectedDate={handleSelectedDate} toggleDatePicker={toggleDatePickerInApp} showDatePicker={showDatePicker}/>
+      <Header selectedDate={selectedDate} setSelectedDate={handleSelectedDate} toggleDatePicker={toggleDatePickerInApp} showDatePicker={showDatePicker} />
 
       <main >
         {/* Title */}
@@ -239,100 +244,100 @@ function App() {
           <p className={styles.intro}>Discover, Navigate and Immerse yourself in the wonders of travelling</p>
           <p className={styles.sideIntro}>---Create itinerary based on busyness</p>
         </div>
-          <div>
-            <div className={'filter-buttons-container'}>
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Sightseeing')}
-              >
-                All
-              </button>
+        <div>
+          <div className={'filter-buttons-container'}>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Sightseeing')}
+            >
+              All
+            </button>
 
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Outdoor Activities')}
-              >
-                Outdoor Activities
-              </button>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Outdoor Activities')}
+            >
+              Outdoor Activities
+            </button>
 
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Historical')}
-              >
-                Historical
-              </button>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Historical')}
+            >
+              Historical
+            </button>
 
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Museum')}
-              >
-                Museum
-              </button>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Museum')}
+            >
+              Museum
+            </button>
 
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Architecture')}
-              >
-                Architecture
-              </button>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Architecture')}
+            >
+              Architecture
+            </button>
 
-              <button
-                className={'filter-buttons'}
-                onClick={() => setSelectedTag('Shopping')}
-              >
-                Shopping
-              </button>
+            <button
+              className={'filter-buttons'}
+              onClick={() => setSelectedTag('Shopping')}
+            >
+              Shopping
+            </button>
+          </div>
+
+          <div className={'selected-datetime'}>
+            <div onClick={toggleDatePickerInApp}>
+              <p>Select&nbsp;</p>
+              <p className='selectDate'>Date </p>: {selectedDate}
             </div>
+            <Datepicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <div>Time:&nbsp;
+              <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} />
+            </div>
+          </div>
 
-            <div className={'selected-datetime'}>
-                <div onClick={toggleDatePickerInApp}>
-                  <p>Select&nbsp;</p>
-                  <p className='selectDate'>Date </p>: {selectedDate}
-                </div>
-                <Datepicker selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
-                <div>Time:&nbsp;
-                  <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} />
-                </div>
-              </div>
+          <div id='content' className={styles.container2}>
+            {/* Recommendations */}
+            <div className="left-container">
+              <div id='recommendations'>
+                <div id="recommendation-box">
+                  {displayedAttractions.map((attraction) => (
+                    <Attraction
+                      key={attraction.id}
+                      attraction={attraction}
+                      onAddAttraction={handleAddAttraction}
+                      onShowAttraction={handleShowAttraction}
+                      isSelected={attraction.isSelected}
+                      onToggleSelection={handleToggleSelection}
+                    />
+                  ))}
 
-            <div id='content' className={styles.container2}>
-              {/* Recommendations */}
-              <div className="left-container">
-                <div id='recommendations'>
-                  <div id="recommendation-box">
-                    {displayedAttractions.map((attraction) => (
-                      <Attraction
-                        key={attraction.id}
-                        attraction={attraction}
-                        onAddAttraction={handleAddAttraction}
-                        onShowAttraction={handleShowAttraction}
-                        isSelected={attraction.isSelected}
-                        onToggleSelection={handleToggleSelection}
-                      />
-                    ))}
-
-                  </div>
-                </div>
-
-                <div id='place-bar-desktop'>
-                  <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
-                  <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
                 </div>
               </div>
 
-              {/* Google maps */}
-              <div ref={mapDivRef} id='mapcon'>
-                <Map selectedDate={selectedDate} selectedTime={selectedTime} placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
-              </div>
-
-              {/* Placebar */}
-              <div id='place-bar-mobile'>
+              <div id='place-bar-desktop'>
                 <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
                 <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
               </div>
-
             </div>
+
+            {/* Google maps */}
+            <div ref={mapDivRef} id='mapcon'>
+              <Map selectedDate={selectedDate} selectedTime={selectedTime} placeDetails={placeDetails} setPlaceDetails={setPlaceDetails} setMapInstance={setMapInstance} />
+            </div>
+
+            {/* Placebar */}
+            <div id='place-bar-mobile'>
+              <button id='createItineraryBtn' onClick={redirectToItinerary}>Create Itinerary</button>
+              <Placebar places={places} handleShowAttraction={handleShowAttraction} handleDeletePlace={handleDeletePlace} />
+            </div>
+
           </div>
+        </div>
         {/* Fixed Navigation on the screen bottom */}
         <div className='nav-box'>
           <Navigation onLocationChange={handleLocationChange} myLocation={myLocation} placesAttractions={placesAttractions} selectedDate={selectedDate} mapInstance={mapInstance} />
