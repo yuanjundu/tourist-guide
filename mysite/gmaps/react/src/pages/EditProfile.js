@@ -4,6 +4,7 @@ import styles from './EditProfile.module.css';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
@@ -162,7 +163,7 @@ const EditProfile = () => {
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
-                        placeholder="firstName"
+                        placeholder="First Name"
                         name="firstName"
                         required
                         value={firstName}
@@ -174,7 +175,7 @@ const EditProfile = () => {
                     <input
                         className={styles['input[type="text"]']}
                         type="text"
-                        placeholder="lastName"
+                        placeholder="Last Name"
                         name="lastName"
                         required
                         value={lastName}
@@ -235,6 +236,7 @@ const EditProfile = () => {
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
+            <Footer />
         </div>
     );
 

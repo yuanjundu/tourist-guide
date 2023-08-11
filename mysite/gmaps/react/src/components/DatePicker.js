@@ -1,48 +1,44 @@
-import React from 'react';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
-import * as icons from 'react-bootstrap-icons';
-import { useEffect, useRef, useState } from 'react';
+import React, { useState } from "react";
 import { format } from 'date-fns';
+import 'react-day-picker/dist/style.css';
+import { DayPicker } from 'react-day-picker';
 
-const DatePicker = ({ selectedDate, handleSelectedDate }) => {
-    useEffect(() => {
-        console.log(selectedDate);
-    }, [selectedDate]);
-
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
-    const toggleDatePicker = () => {
-        setShowDatePicker(!showDatePicker);
-    }
-
+const Datepicker = ({ showDatePicker, selectedDate, setSelectedDate }) => {
+    const formatDate = (date) => {
+        if (date && date instanceof Date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+        return '';
+    };
+    
     const [selected, setSelected] = useState();
-
-
+    
     let footer = <p>Please pick a day.</p>;
     if (selected) {
-      footer = <p>You picked {format(selected, 'PP')}.</p>;
+        console.log(formatDate(selected));
+        footer = <p>You picked {format(selected, 'PP')}.</p>;
     }
-
-    return(
-        <div>
-        <button onClick={toggleDatePicker} selectedDate={handleSelectedDate}>
-            <icons.Calendar />
-        </button>
+    
+    return (
         <DayPicker
             mode='single'
-            style={{ display: showDatePicker ? 'block' : 'none', backgroundColor: '#fff', borderRadius: '10px'}}
-            selected={selected}
+            style={{ backgroundColor: '#ebebeb', color: 'Black', borderRadius: '10px', margin: 0 , marginBottom: '10px' }}
+            selected={selected || new Date()}
             onSelect={setSelected}
             footer={footer}
-            onChange={date => handleSelectedDate(date)}
             dateFormat="yyyy-MM-dd"
             showPopperArrow={false}
             placeholderText="Select a date"
+            onDayClick={(date) => {
+                const formattedDate = formatDate(date);
+                console.log("Picked Date:", formattedDate);
+                setSelectedDate(formattedDate);
+            }}
         />
-    </div>
-    )
-
+    );
 }
 
-export default DatePicker
+export default Datepicker;

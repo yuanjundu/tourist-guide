@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { refreshToken } from "./refreshToken";
 import axios from 'axios';
+import { DayPicker } from 'react-day-picker';
 import Navigation from "./Navigation";
+import { format } from 'date-fns';
+import 'react-day-picker/dist/style.css';
+import Datepicker from "./DatePicker";
 
-import DatePicker from "./DatePicker";
 
-
-const Header = () => {
+const Header = ({ selectedDate, setSelectedDate }) => {
     // useEffect(() => {
     //     console.log(selectedDate);
     // }, [selectedDate]);
@@ -21,7 +23,7 @@ const Header = () => {
 
     const getUserInfo = () => {
         const accessToken = localStorage.getItem('access');
-    
+
         axios.get(`${process.env.REACT_APP_API_URL}/api/profile/`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
@@ -30,7 +32,7 @@ const Header = () => {
             .then((response) => {
                 console.log(response);
                 setUser(response.data);
-    
+
                 // Store user data in localStorage
                 localStorage.setItem('user', JSON.stringify(response.data));
                 localStorage.setItem('userId', JSON.stringify(response.data.id))
@@ -45,7 +47,6 @@ const Header = () => {
                 }
             });
     };
-    
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -67,7 +68,7 @@ const Header = () => {
         const token = localStorage.getItem('access');
         if (token) {
             setIsLoggedIn(true);
-    
+
             const userData = localStorage.getItem('user');
             if (userData) {
                 setUser(JSON.parse(userData));
@@ -78,7 +79,7 @@ const Header = () => {
             setIsLoggedIn(false);
         }
     };
-    
+
 
     const handleLogout = () => {
         // remove tokens and user data
@@ -101,12 +102,24 @@ const Header = () => {
         accountSelectionRef.current.style.display = displayStatus === 'none' ? 'block' : 'none';
     }
 
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const toggleDatePicker = () => {
+        setShowDatePicker(!showDatePicker);
+        console.log(showDatePicker)
+    }
+
     return (
         <header>
-            {/* <input type='date' className={styles.date} value={selectedDate} onChange={handleSelectedDate} /> */}
-            <DatePicker />
-
-            {/* <button id="date-select"><icons.CalendarDate /></button> */}
+            <div className="selectDate">
+                <button onClick={toggleDatePicker}>
+                    <icons.Calendar />
+                </button>
+                <div className="calendar" style={{ display: showDatePicker ? 'block' : 'none' }}>
+                    <Datepicker setSelectedDate={setSelectedDate} selectedDate={selectedDate}/>
+                </div>
+                
+            </div>
             <button id="checkAccount" onClick={isLoggedIn ? showAccountDetails : redirectToLogin}>
                 {isLoggedIn ? (
                     <div>

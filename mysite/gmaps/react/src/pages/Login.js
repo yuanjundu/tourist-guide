@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import SignupStyle from './login.module.css';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -66,6 +67,7 @@ const Login = () => {
         <span className={SignupStyle.psw}>Don't have an account? <a className={SignupStyle.psw2} href="/register"><b>Sign up</b></a></span>
       </div>
     </form>
+    <Footer />
     </body>
   );
 };

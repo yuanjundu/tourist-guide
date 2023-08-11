@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import SignupStyle from './Signup.module.css';
+import Footer from '../components/Footer';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -80,6 +81,7 @@ const Signup = () => {
         <span className={SignupStyle.psw}>You already have an account? <a className={SignupStyle.psw2} href="/login"><b>Log in</b></a></span>
       </div>
     </form>
+    <Footer />
     </body>
 
   );

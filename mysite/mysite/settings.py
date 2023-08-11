@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-o7%wz+uuc&l%yyz^8kkydj044zb#a7zuwik09v+0d5cquo^l9y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["34.229.205.53", 'django', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["csstudent07.ucd.ie", "34.229.205.53", 'django', 'localhost', '127.0.0.1', '137.43.49.77']
 
 
 # Application definition
@@ -68,6 +68,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://34.229.205.53",
+    "http://137.43.49.77",
+    "http://csstudent07.ucd.ie",
+    "https://137.43.49.77",
+    "https://csstudent07.ucd.ie",
+
 ]
 
 
@@ -201,14 +206,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gmaps/react/build/static'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gmaps/react/build/static/'),]
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # If you are in production, use whitenoise to serve static files
 # This is not applicable if you are in development
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 

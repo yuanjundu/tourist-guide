@@ -101,6 +101,10 @@ def get_day_and_closest_quarter_minute(date_str):
     closest_datetime = date_obj.replace(minute=closest_quarter_minute, second=0)
     return day_of_year, total_minutes
 
+
+
+
+
 time_slots = {
     1: ("9:00 - 12:00"),
     2: ("9:00 - 12:00", "14:00 - 17:00"),
@@ -121,8 +125,6 @@ def fitness_function(busyness_locations, itinerary):
     for slot, location_id in itinerary.items():
         if slot in busyness_locations[location_id]:
             total_busyness += busyness_locations[location_id][slot]
-        else:
-            logger.warning(f"Slot {slot} is not a valid key in busyness_locations[{location_id}]. Ignoring this slot.")
     return -total_busyness
 
 
@@ -224,15 +226,38 @@ def convert_time_to_minutes(time_str):
     hours, minutes = map(int, time_str.split(":"))
     return hours * 60 + minutes
 
+def get_month_week_day_and_closest_quarter_minute(date_str):
+    """
+    Calculate the month, week of the year, day of the year, and the total minutes 
+    for the closest quarter hour.
+    """
+    # Convert the input string to a datetime object
+    if " " not in date_str: # there is no time part in the date string
+        date_str += " 00:00:00" # add a default time part
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    # Get the month
+    month = date_obj.month
+    # Get the week of the year
+    week_of_year = date_obj.isocalendar()[1]
+    # Get the day of the year (1 to 365/366)
+    day_of_year = date_obj.timetuple().tm_yday
+    # Calculate the closest minute to 15 minutes
+    minute = date_obj.minute
+    closest_quarter_minute = round(minute / 15) * 15
+    # Calculate the total minutes
+    total_minutes = closest_quarter_minute + (date_obj.hour * 60)
+    
+    return month, week_of_year, day_of_year, total_minutes
 
 def get_busyness_locations(locations, date_str):
-    model_path = 'gmaps/pkl/busyness_model.pkl'
+    print(date_str)
+    model_path = 'gmaps/pkl/random_forest_model.pkl'
     if not os.path.exists(model_path):
         raise FileNotFoundError
 
     model = joblib.load(model_path)
 
-    day_of_year, _ = get_day_and_closest_quarter_minute(date_str)
+    month, week_of_year, day_of_year, _ = get_month_week_day_and_closest_quarter_minute(date_str)
 
     busyness_locations = {}
     for location in locations:
@@ -240,9 +265,24 @@ def get_busyness_locations(locations, date_str):
         zone_id = location['zone']
         for time_slot in time_slots[len(locations) - 1]:
             start_time, end_time = map(convert_time_to_minutes, time_slot.split(" - "))
-            start_data = pd.DataFrame({'LocationID': [zone_id], 'day_of_year': [day_of_year], 'minute_of_day': [start_time]})
-            end_data = pd.DataFrame({'LocationID': [zone_id], 'day_of_year': [day_of_year], 'minute_of_day': [end_time]})
-            busyness_times[time_slot] = (model.predict(start_data)[0] + model.predict(end_data)[0]) / 2
+            print(start_time, end_time)
+            start_data = {
+                'LocationID': [zone_id],
+                'day_of_year': [day_of_year],
+                'minute_of_day': [start_time],
+                'month': [month],
+                'week': [week_of_year], 
+                'day': [day_of_year]
+            }
+            end_data = {
+                'LocationID': [zone_id],
+                'day_of_year': [day_of_year],
+                'minute_of_day': [end_time],
+                'month': [month],
+                'week': [week_of_year], 
+                'day': [day_of_year]
+            }
+            busyness_times[time_slot] = (model.predict(pd.DataFrame(start_data))[0] + model.predict(pd.DataFrame(end_data))[0]) / 2
         busyness_locations[location['id']] = busyness_times
 
     return busyness_locations

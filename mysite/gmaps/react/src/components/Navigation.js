@@ -61,20 +61,19 @@ const Navigation = ({ onLocationChange, myLocation, placesAttractions = [], sele
     }
 
     const redirectToItinerary = () => {
-        navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
+        // navigate('/itinerary', { state: { myLocation, placesAttractions: placesAttractions, selectedDate} });
+        navigate('/lunchrestaurants', { state: { myLocation, placesAttractions: placesAttractions,selectedDate} });
     }
 
     const redirectToCommunity = () => {
         navigate('/community');
     }
 
-
     return (
         <nav>
             <ul id="nav-list">
                 <li><button onClick={redirectToCommunity}><icons.PeopleFill /><p className='nav-items'>Community</p></button></li>
                 <li><button onClick={getCurrentLocation}><icons.GeoAlt /><p className='nav-items'>Location</p></button></li>
-                <li><button onClick={redirectToItinerary}><icons.RocketTakeoff /><p className='nav-items'>Itineraries</p></button></li>
                 <li><button onClick={redirectToHome}><icons.HouseDoor /><p className='nav-items'>Home</p></button></li>
                 <li><button onClick={reDirectToEditProfile}><icons.Gear /><p className='nav-items'>Settings</p></button></li>
             </ul>

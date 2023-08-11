@@ -5,11 +5,14 @@ import styles from './Community.module.css';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import { refreshToken } from '../components/refreshToken';
+import Footer from '../components/Footer';
+
 
 const Community = () => {
     const [sharedItineraries, setSharedItineraries] = useState([]);
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
+    const local = "http://localhost:8000";
 
     const fetchSharedItineraries = useCallback(async () => {
         const token = localStorage.getItem('access');
@@ -33,7 +36,7 @@ const Community = () => {
 
     useEffect(() => {
         fetchSharedItineraries();
-        console.log(sharedItineraries);
+        console.log("shared",sharedItineraries);
     }, [fetchSharedItineraries]);
 
     const handleJoin = async (itineraryId) => {
@@ -102,43 +105,44 @@ const Community = () => {
 
     return (
         <div className={styles.communityContainer}>
-            <Header />
+            {/* <Header /> */}
             <h1 className={styles.header}>Community</h1>
             {sharedItineraries.map((itinerary, index) => (
-                <div key={index} className={styles.itinerary}>
-                    <h2>Itinerary {index + 1} (Joined by {itinerary.joined_users.length} users)
-                        Created by {itinerary.user.first_name + " " + itinerary.user.last_name}
+                <div key={index} className={styles.itinerary} >
+                    <img className={styles.backgroundimg} src={local + itinerary.itinerary.morning_attractions[0].image}></img>
+                    <h3 className={styles.title}>Created by {itinerary.user.first_name + " " + itinerary.user.last_name}<br/>
+                        (Joined by {itinerary.joined_users.length} users)
                         {itinerary.user.id === comparedUserId
                             ? <button className={styles.deleteButton} onClick={() => handleDelete(itinerary.id)}>Delete</button>
                             : itinerary.joined_users.includes(comparedUserId)
                                 ? <button className={styles.exitButton} onClick={() => handleExit(itinerary.id)}>Exit</button>
                                 : <button className={styles.joinButton} onClick={() => handleJoin(itinerary.id)}>Join</button>
                         }
-                    </h2>
+                    </h3>
                     <div className={styles.attractionSection}>
-                        <h3>Date of travelling:</h3>
-                        <p>{itinerary.itinerary.saved_date}</p>
+                       <b><p className={styles.sectiondate}>Date of travelling:</p></b>
+                        <p className={styles.sectiondate}>{itinerary.itinerary.saved_date}</p>
                     </div>
                     <div className={styles.attractionSection}>
-                        <h3>Morning Attractions:</h3>
+                        <h3 className={styles.sectiondate}>Morning Attractions:</h3>
                         {itinerary.itinerary.morning_attractions?.map((attraction, index) => (
-                            <p key={index}>{attraction.name}</p>
+                            <li className={styles.sectiondate} key={index}>{attraction.name}</li>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
-                        <h3>Lunch Restaurant:</h3>
-                        <p>{itinerary.itinerary.lunch_restaurant?.name}</p>
+                        <h3 className={styles.sectiondate}>Lunch Restaurant:</h3>
+                        <p className={styles.sectiondate}>{itinerary.itinerary.lunch_restaurant?.name}</p>
                     </div>
 
                     <div className={styles.attractionSection}>
-                        <h3>Afternoon Attractions:</h3>
+                        <h3 className={styles.sectiondate}>Afternoon Attractions:</h3>
                         {itinerary.itinerary.afternoon_attractions?.map((attraction, index) => (
-                            <p key={index}>{attraction.name}</p>
+                            <li className={styles.sectiondate} key={index}>{attraction.name}</li>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
-                        <h3>Dinner Restaurant:</h3>
-                        <p>{itinerary.itinerary.dinner_restaurant?.name}</p>
+                        <h3 className={styles.sectiondate}>Dinner Restaurant:</h3>
+                        <p className={styles.sectiondate}>{itinerary.itinerary.dinner_restaurant?.name}</p>
                     </div>
 
                 </div>
@@ -146,6 +150,7 @@ const Community = () => {
             <div className='nav-box'>
                 <Navigation onLocationChange={() => { }} />
             </div>
+            <Footer />
         </div>
     );
 };

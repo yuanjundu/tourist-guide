@@ -1,11 +1,14 @@
 import React, { createContext, useRef, useState, useEffect } from 'react';
 import { GoogleMap, StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
+import geoJsonData from './JSON/map.geojson';
+import axios from 'axios';
+import chroma from 'chroma-js';
 import Itinerary from './Placebar';
 
 export const clickPlaceInfo = createContext();
 const libraries = ['places'];
 
-function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
+function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMapInstance }) {
     // Map reference
     const mapRef = useRef(null);
     // Search box reference
@@ -18,12 +21,87 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
     // const [placeDetails, setPlaceDetails] = useState(null);
 
     const [places, setPlaces] = useState([]);
+    const [busynessData, setBusynessData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        // Combine date and time to form the required format
+        const formattedDateTime = `${selectedDate} ${selectedTime}`;
+        // console.log(selectedDate);
+        // console.log(selectedTime);
+        console.log(formattedDateTime);
+        fetchBusynessData(formattedDateTime);
+    }, [selectedDate, selectedTime]);
+
+    const fetchBusynessData = async (date) => {
+        try {
+            setLoading(true);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/all_busyness/?format=json`, { date_str: date });
+            console.log("Response Data:", response.data);
+            
+            setBusynessData(response.data);
+            localStorage.setItem('busynessData', JSON.stringify(response.data));
+            
+        } catch (error) {
+            console.error("Error fetching busyness data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
         libraries,
     });
+
+    // console.log(busynessData);
+
+    function busynessToColor(busynessValue) {
+        const colorScale = chroma.scale(['green', 'red']).domain([0, 0.03]); 
+        return colorScale(busynessValue).hex();
+    }
+
+    const displayInfoWindow = (position, zone, locationId, busyness) => {
+        console.log(position);
+        const contentString = `
+            <div>
+                <h3>${zone}</h3>
+                <p>Location ID: ${locationId}</p>
+                <p>Busyness: ${busyness}</p>
+            </div>
+        `;
+    
+        if (infoWindowRef.current) {
+            infoWindowRef.current.close();
+        }
+        
+        infoWindowRef.current = new window.google.maps.InfoWindow({
+            content: contentString,
+            position: position
+        });
+    
+        infoWindowRef.current.open(mapRef.current);
+    }
+    
+
+    const handleFeatureClick = (event) => {
+        const storedDataString = localStorage.getItem('busynessData');
+        const storedData = JSON.parse(storedDataString || '[]'); 
+        console.log(loading);
+        console.log(storedData);
+        const zone = event.feature.getProperty('zone');
+        const locationId = event.feature.getProperty('locationid');
+        const matchingBusynessData = storedData.find(item => item.zone_id === locationId);
+        
+        let busynessValue = "Unknown";
+        if (matchingBusynessData && matchingBusynessData.busyness && matchingBusynessData.busyness.length > 0) {
+            busynessValue = matchingBusynessData.busyness[0];
+        }
+    
+        displayInfoWindow(event.latLng, zone, locationId, busynessValue);
+    }
+    
 
     // Control the map loads
     const handleMapLoad = (map) => {
@@ -31,7 +109,33 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
         mapRef.current.addListener('click', handleMapClick);
         console.log('Map loaded:', map);
         setMapInstance(map);
-    };
+      
+        map.data.loadGeoJson(geoJsonData);
+        console.log(loading);
+        map.data.addListener('click', handleFeatureClick);    
+      };
+
+  
+      useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.data.setStyle(feature => {
+                const storedDataString = localStorage.getItem('busynessData');
+                const storedData = JSON.parse(storedDataString || '[]'); 
+                const locationId = feature.getProperty("locationid");
+                const zone = storedData.find(item => item.zone_id === locationId);
+                
+                // If no match or no busyness data, default to white color
+                const busynessValue = zone?.busyness[0] || 0;
+                
+                return {
+                    fillColor: busynessToColor(busynessValue),
+                    strokeWeight: 1
+                };
+            });
+        }
+    }, [selectedDate, selectedTime, mapRef.current]);
+    
+      
 
     // Control the search box loads
     const handleSearchBoxLoad = (searchBox) => {
@@ -39,6 +143,188 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
         console.log('Search box loaded:', searchBox);
     };
 
+    const mapStyle = [
+        {
+            "featureType": "all",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "administrative",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "simplified"
+                },
+                {
+                    "color": "#5b6571"
+                },
+                {
+                    "lightness": "35"
+                }
+            ]
+        },
+        {
+            "featureType": "administrative.neighborhood",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#f3f4f4"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape.man_made",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "weight": 0.9
+                },
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#83cead"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#fee379"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "simplified"
+                },
+                {
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#7fc8ed"
+                }
+            ]
+        }
+    ]
     // Handle search place
     // const handleSearchPlace = () => {
     //     const places = searchBoxRef.current.getPlaces();
@@ -161,6 +447,7 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
                 mapContainerClassName='map-container'
                 onLoad={handleMapLoad}
                 options={{
+                    styles: mapStyle,
                     mapTypeControl: true,
                     mapTypeControlOptions: { style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU },
                     restriction: {
@@ -186,5 +473,4 @@ function Map({ placeDetails, setPlaceDetails, setMapInstance }) {
 
 
 export default Map;
-
 

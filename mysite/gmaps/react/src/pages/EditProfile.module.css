@@ -154,10 +154,9 @@ span.psw {
   }
   
   .log {
-    width: 30%;
     text-align: left;
     font-size: 44px;
-    line-height: 20px;
+    line-height: 70px;
     margin-top: -3%;
     margin-left: 35%;
   }

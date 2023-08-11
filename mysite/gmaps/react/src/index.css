@@ -14,7 +14,7 @@
   }
   
   header {
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 100%;
     display: flex;
@@ -24,8 +24,8 @@
     padding-top: 10px;
     padding-bottom: 2px;
     height: 40px;
+    opacity: 0.7;
     background-color: #fff;
-    opacity: 0.8;
   }
 
   #checkAccount {
@@ -41,20 +41,41 @@
   button {
     border: none;
     background: none;
-    box-shadow: none;
+    border-radius: 10px;
   }
-  button:active {
-    background-color: #aaa;
-    border-color: #777;
+  #place-bar-mobile #createItineraryBtn:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   }
   
   #account-selection {
     position: fixed;
     right: 2px;
-    top: 5%;
+    top: 50px;
     display: none;
     background-color: #e6e6e6;
     padding: 5px;
+    border-radius: 10px;
+  }
+
+  .filter-buttons-container{
+    background-color: #4281ac;
+    top: -9em;
+    padding-top: 10px;
+    position: relative;
+    border-radius: 20px;
+    height: 90px;
+    text-align: center;
+  }
+
+  .filter-buttons {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 10px;
+    text-decoration: underline;
+  }
+
+  .selected-datetime {
+    display: none;
   }
   
   #recommendations {
@@ -94,6 +115,7 @@
 .attraction h3 {
     font-weight: bold;
     margin-top: 10px;
+    margin-bottom: 2px;
     text-align: center;
     font-size: 16px;
     width: 150px;
@@ -108,6 +130,10 @@
     font-weight: 400;
     margin-bottom: 10px;
     text-align: center;
+}
+
+.attraction .open-website-label {
+  display: none;
 }
 
 .attraction:hover {
@@ -165,8 +191,25 @@
     height: 40px;
   }
 
+  #place-bar-mobile #createItineraryBtn {
+    font-size: 18px;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    background-color: #efefef;
+    margin: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  #place-bar-mobile #createItineraryBtn:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
   #place-bar-desktop {
     display: none;
+  }
+
+  #place-bar-mobile {
+    text-align: center;
   }
   
   #add-place {
@@ -219,12 +262,14 @@
   nav {
     padding-top: 1px;
     padding-bottom: 10px;
-    position: sticky;
+    position: fixed;
     width: 100%;
     left: 0;
     bottom: 0;
     height: 50px;
     text-align: center;
+    background-color: #fff;
+    z-index: 1000;
   }
   
   ul {
@@ -239,7 +284,7 @@
   .nav-items {
     display: none;
   }
-  
+
   svg {
     font-size: 30px;
   }
@@ -253,8 +298,6 @@
     width: 100px; 
     height: 100px; 
   }
-  
-  footer {
-  
-  }  
+
+
 }

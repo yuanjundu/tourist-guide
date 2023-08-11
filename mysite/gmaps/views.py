@@ -33,7 +33,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .algorithm import TSP, greedy_TSP
-from .algorithm import genetic_algorithm, get_busyness_locations, get_day_and_closest_quarter_minute
+from .algorithm import genetic_algorithm, get_busyness_locations, get_day_and_closest_quarter_minute, get_month_week_day_and_closest_quarter_minute
 import joblib
 import pickle
 from datetime import datetime
@@ -311,6 +311,7 @@ class ItineraryView(APIView):
 
     def post(self, request, format=None):
         data = request.data
+        print(data)
         user = request.user
         morning_attractions_data = data.get('morningAttractions')
         afternoon_attractions_data = data.get('afternoonAttractions')
@@ -330,8 +331,6 @@ class ItineraryView(APIView):
         itinerary.afternoon_attractions.set(afternoon_attractions)
         
         return Response({'message': 'Itinerary saved successfully', 'itineraryId': itinerary.id}, status=status.HTTP_200_OK)
-
-
 
 
 class ItineraryHistoryView(APIView):
@@ -404,7 +403,7 @@ class ItinerarySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Itinerary
-        fields = ['user', 'morning_attractions', 'afternoon_attractions', 'lunch_restaurant', 'dinner_restaurant', 'saved_date']
+        fields = ['id', 'user', 'morning_attractions', 'afternoon_attractions', 'lunch_restaurant', 'dinner_restaurant', 'saved_date']
 
 
 class CommunityItinerarySerializer(serializers.ModelSerializer):
@@ -466,28 +465,31 @@ class BusynessView(APIView):
     """
     Predict the busyness for a given zone and time
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def post(self, request):
         zone_id = request.data.get('zone_id')
         date_str = request.data.get('date_str')
 
         try:
-            model_path = 'gmaps/pkl/busyness_model.pkl'
+            model_path = 'gmaps/pkl/random_forest_model.pkl'
             if not os.path.exists(model_path):
                 raise Http404
 
             model = joblib.load(model_path)
 
-            day_of_year, total_minutes = get_day_and_closest_quarter_minute(date_str)
+            month, week_of_year, day_of_year, total_minutes = get_month_week_day_and_closest_quarter_minute(date_str)
             
             new_data = pd.DataFrame({
                 'LocationID': [zone_id],  
                 'day_of_year': [day_of_year], 
-                'minute_of_day': [total_minutes]
+                'minute_of_day': [total_minutes],
+                'month': month,
+                'week': week_of_year,
+                'day': day_of_year,
             })
 
-            busyness =  model.predict(new_data)
+            busyness =  model.predict(new_data)/20
             return Response({"busyness": busyness.tolist()}, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -524,3 +526,41 @@ class GeneView(APIView):
 
         return JsonResponse(optimal_order_data, safe=False)
 
+class AllZonesBusynessView(APIView):
+    """
+    Predict the busyness for all zones for a given date
+    """
+    
+    def post(self, request):
+        date_str = request.data.get('date_str')
+        response = []
+
+        try:
+            model_path = 'gmaps/pkl/random_forest_model.pkl'
+            if not os.path.exists(model_path):
+                raise Http404
+
+            model = joblib.load(model_path)
+            month, week_of_year, day_of_year, total_minutes = get_month_week_day_and_closest_quarter_minute(date_str)
+
+            for zone_id in range(1, 264): # zones from 1 to 263
+                new_data = pd.DataFrame({
+                'LocationID': [zone_id],  
+                'day_of_year': [day_of_year], 
+                'minute_of_day': [total_minutes],
+                'month': month,
+                'week': week_of_year,
+                'day': day_of_year,
+            })
+
+                busyness =  model.predict(new_data)/20
+                response.append({
+                    "zone_id": zone_id,
+                    "busyness": busyness.tolist()
+                })
+
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Exception: {str(e)}, Type: {type(e)}, Traceback: {traceback.format_exc()}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
