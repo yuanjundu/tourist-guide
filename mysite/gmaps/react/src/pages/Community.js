@@ -124,7 +124,7 @@ const Community = () => {
                         }
                     
                     </h3>
-                    {length = (itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1)}
+                    
                     <div className={styles.attractionSection}>
                        <b><p className={styles.sectiondate}>Date of travelling:</p></b>
                         <p className={styles.sectiondate}>{itinerary.itinerary.saved_date}</p>
@@ -134,7 +134,7 @@ const Community = () => {
                         {itinerary.itinerary.morning_attractions?.map((attraction, index) => (
                             <div>
                                 <li className={styles.sectiondate} key={index}>{attraction.name}</li>
-                                <li className={styles.time}>{time[length][index]}</li>
+                                <li className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index]}</li>
                             </div>
                         ))}
                     </div>
@@ -142,7 +142,7 @@ const Community = () => {
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Lunch Restaurant:</h3>
                         <p className={styles.sectiondate}>{itinerary.itinerary.lunch_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][midPoint]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][midPoint]}</p>
                     </div>
 
                     <div className={styles.attractionSection}>
@@ -150,14 +150,14 @@ const Community = () => {
                         {itinerary.itinerary.afternoon_attractions?.map((attraction, index) => (
                             <div>
                             <li className={styles.sectiondate} key={index}>{attraction.name}</li>
-                            <p className={styles.time}>{time[length][index+midPoint+1]}</p>
+                            <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+midPoint+1]}</p>
                             </div>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Dinner Restaurant:</h3>
                         <p className={styles.sectiondate}>{itinerary.itinerary.dinner_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][length+2]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][length+2]}</p>
                     </div>
 
                 </div>
