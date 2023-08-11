@@ -5,19 +5,16 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 const local = `${process.env.REACT_APP_API_URL}/media/restaurants/`;
 
-const Card = ({ restaurant, title, index, onAddLunch, contact, isSelected, address, website }) => {
-
+const Card = ({ restaurant, title, index, onAddLunch, contact, isSelected, onSelect, address, website }) => {
+  
   const handleClick = () => {
-    if (!isSelected) {
-      if (onAddLunch) {
-        onAddLunch(restaurant);
-      }
-    };
-  };
+    onSelect();
+};
+
 
   
   return (
-    <div className={`restaurant ${isSelected ? 'active' : ''}`} onClick={handleClick}>
+    <div className={`${styles.cards} ${isSelected ? styles.active : ''}`} onClick={handleClick}>
       <img src={local + index + ".webp"} className={styles.attraction_img} loading="lazy" />
       <h2 className={styles.cardname1}>{title}</h2>
       <p className={styles.cardname}>Contact: {contact}</p>

@@ -28,33 +28,16 @@ const Restaurants = () => {
     const [Lunch, setLunchRestaurant] = useState(null);
     const [Dinner, setDinnerRestaurant] = useState(null);
 
-    const handleAddLunch = (restaurant) => {
-        // Restrict the number of attractions
-        if (Lunchplaces.length >= 1) {
-          alert("You could choose at most 1 restaurant!");
-          return;
+    const handleSelectRestaurant = (restaurant, mealType) => {
+        if (mealType === 'lunch') {
+            setLunchRestaurant(restaurant);
+        } else {
+            setDinnerRestaurant(restaurant);
         }
-        const newPlace = (restaurant);
-        console.log(newPlace)
-        // Add the new place into array
-        setLunchPlaces([...Lunchplaces, newPlace]);
-        setLunchRestaurant(restaurant);
-      };
+    };
 
-      const handleAddDinner = (restaurant) => {
-        // Restrict the number of attractions
-        if (Dinnerplaces.length >= 1) {
-          alert("You could choose at most 1 restaurant!");
-          return;
-        }
-        const newPlace = (restaurant);
-        console.log(newPlace)
-    
-        // Add the new place into array
-        setDinnerPlaces([...Dinnerplaces, newPlace]);
-        setDinnerRestaurant(restaurant);
-      };
-      
+
+
 
     const fetchOptimalOrder = async () => {
         const token = localStorage.getItem('access');
@@ -68,19 +51,19 @@ const Restaurants = () => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then((response) => {
-            setOrderedAttractions(response.data);
-        })
-        .catch((error) => {
-            // handle error
-            if (error.response && error.response.status === 401) {
-                refreshToken(fetchOptimalOrder);
-            } else {
-                console.error('Error occurred:', error);
-            }
-        });
+            .then((response) => {
+                setOrderedAttractions(response.data);
+            })
+            .catch((error) => {
+                // handle error
+                if (error.response && error.response.status === 401) {
+                    refreshToken(fetchOptimalOrder);
+                } else {
+                    console.error('Error occurred:', error);
+                }
+            });
     }
-    
+
     useEffect(() => {
         fetchOptimalOrder();
     }, []);
@@ -111,62 +94,66 @@ const Restaurants = () => {
         console.log(morningAttractions);
         console.log(dinnerRestaurants);
     });
-    
+
     const redirectToItinerary = () => {
-        navigate('/itinerary', { state: { myLocation, Lunch, Dinner, orderedAttractions, morningAttractions, afternoonAttractions, selectedDate} });
+        navigate('/itinerary', { state: { myLocation, Lunch, Dinner, orderedAttractions, morningAttractions, afternoonAttractions, selectedDate } });
 
     }
 
     return (
-            <div className={styles.container}>
-                {/* <Header /> */}
-                <h1 className={styles.resttitle}>What would you like to eat for lunch?</h1>
-                <p className={styles.resttitle1}>We have loads of options to eat</p>
-                <div className={styles.allcards}>
-                    {lunchRestaurants.map((restaurant, index) => (
-                        
-                        <div className={styles.cards}>
-                            <Card 
-                            key={restaurant.id} 
-                            title={restaurant.name} 
-                            restaurant={restaurant}
-                            index={index+1}
-                            contact={restaurant.phone}
-                            address={restaurant.street}
-                            website={restaurant.website}
-                            isSelected={restaurant.isSelected} 
-                            onAddLunch={handleAddLunch}/>
-                        </div>
-                        ))}
-                </div>
-                
-            
-                    <h1 className={styles.resttitle}>What would you like to eat for dinner?</h1>
-                    <p className={styles.resttitle1}>Select any one from below.</p>
-                    <div className={styles.allcards}>
-                    {dinnerRestaurants.map((restaurant, index) => (
+        <div className={styles.container}>
+            {/* <Header /> */}
+            <h1 className={styles.resttitle}>What would you like to eat for lunch?</h1>
+            <p className={styles.resttitle1}>We have loads of options to eat</p>
+            <div className={styles.allcards}>
+                {lunchRestaurants.map((restaurant, index) => (
 
-
-                        <div className={styles.cards}>
-                            <Card 
-                            key={restaurant.id} 
-                            title={restaurant.name}
-                            restaurant={restaurant} 
-                            index={index+21}
-                            contact={restaurant.phone}
-                            address={restaurant.street}
-                            website={restaurant.website}
-                            isSelected={restaurant.isSelected} 
-                            onAddLunch={handleAddDinner}/>
-                        </div>
-                        ))}
-                    </div>
                     
-                    <button className={styles.finaliselunch} onClick={redirectToItinerary}>Save</button>
-                    <Footer />
-                    {/* <!-- End page content --> */}
+                        <Card
+                            key={restaurant.id}
+                            title={restaurant.name}
+                            restaurant={restaurant}
+                            index={index + 1}
+                            contact={restaurant.phone}
+                            address={restaurant.street}
+                            website={restaurant.website}
+                            isSelected={Lunch && Lunch.id === restaurant.id}
+                            onSelect={() => handleSelectRestaurant(restaurant, 'lunch')}
+                        />
+
+                    
+                ))}
             </div>
-        
+
+
+            <h1 className={styles.resttitle}>What would you like to eat for dinner?</h1>
+            <p className={styles.resttitle1}>Select any one from below.</p>
+            <div className={styles.allcards}>
+                {dinnerRestaurants.map((restaurant, index) => (
+
+
+                
+                        <Card
+                            key={restaurant.id}
+                            title={restaurant.name}
+                            restaurant={restaurant}
+                            index={index + 21}
+                            contact={restaurant.phone}
+                            address={restaurant.street}
+                            website={restaurant.website}
+                            isSelected={Dinner && Dinner.id === restaurant.id}
+                            onSelect={() => handleSelectRestaurant(restaurant, 'dinner')}
+                        />
+
+         
+                ))}
+            </div>
+
+            <button className={styles.finaliselunch} onClick={redirectToItinerary}>Save</button>
+            <Footer />
+            {/* <!-- End page content --> */}
+        </div>
+
     );
 }
 

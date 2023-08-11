@@ -1,9 +1,9 @@
-.container{
+.container {
     background-color: #f7f7f7;
     padding-top: 5%;
 }
 
-.resttitle{
+.resttitle {
     font-size: 19px;
     text-align: center;
     padding-top: 5%;
@@ -12,28 +12,30 @@
     width: 95%;
 }
 
-.resttitle1{
+.resttitle1 {
     font-size: 14px;
-    margin-top: -10%;
+    margin-top: 2%;
     text-align: center;
     padding-top: 5%;
     margin-left: 10%;
     width: 80%;
 }
 
-.cards{
-    width: 35%;
+.cards {
+    width: 100%;
     display: inline-block;
     margin-left: 7%;
     margin-top: 10%;
     border: 1px solid black;
-    padding-left: 3%;
+    padding: 0px 3%;
     font-size: 12px;
     position: relative;
+    box-sizing: border-box;
+    border-radius: 5px;
 }
 
 .active {
-    background-color: lightblue;
+    background-color: #d1f4d1;
 }
 
 .tick_icon {
@@ -42,68 +44,73 @@
     margin-left: 10px;
 }
 
-.allcards{
+.allcards {
     width: 100%;
     color: black;
-    
 }
- 
+
 #add-place {
     justify-content: center;
     display: flex;
     text-align: center;
-  }
-
-.details {
-display: inline-block;
 }
 
-.attraction_img{
+.details {
+    display: inline-block;
+}
+
+.attraction_img {
     width: 150px;
     height: 100px;
     border-radius: 10%;
     position: relative;
-    margin-top: -12px;
-    margin-left: -12px;
+    margin-top: 10px;
+    margin-left: 0;
     object-fit: cover;
 }
 
-.divcardname{
-    height: 25%;
+.divcardname {
+    height: auto;
 }
 
-.cardname1{
+.cardname1 {
     font-size: 14px;
     font-weight: bold;
-    margin-top: 0%;
+    margin-bottom: 10px;
 }
 
-.cardname{
+.cardname {
     font-size: 10px;
     font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.2;
 }
 
-.divdetailname{
+.divdetailname {
     font-size: 10px;
+    margin-bottom: 10px;
 }
 
-.cardwebsite link{
- font-size: 12px; 
- 
+.cardwebsite link {
+    font-size: 12px;
 }
 
-.moredetails{
+.moredetails {
     font-size: 12px;
     font-weight: bold;
 }
 
-.cardname a:link{
+.cardname a {
     font-size: 10px;
     color: black;
-
+    text-decoration: none;
 }
 
-.finaliselunch{
+.cardname a:hover {
+    text-decoration: underline;
+}
+
+.finaliselunch {
     padding: 5%;
     margin: 5%;
     margin-left: 30%;
@@ -112,24 +119,27 @@ display: inline-block;
     width: 40%;
     color: #f7f7f7;
     background-color: grey;
-
 }
 
+.cards:hover {
+    background-color: #ebebeb;
+    cursor: pointer;
+}
 
-@media screen and (min-width: 767px){
-    .container{
+@media screen and (min-width: 767px) {
+    .container {
         background-color: #f7f7f7;
     }
-    
-    .resttitle{
+
+    .resttitle {
         font-size: 46px;
         text-align: center;
         padding-top: 5%;
         margin-left: 2.5%;
         width: 95%;
     }
-    
-    .resttitle1{
+
+    .resttitle1 {
         font-size: 24px;
         margin-top: -5%;
         text-align: center;
@@ -137,8 +147,8 @@ display: inline-block;
         margin-left: 10%;
         width: 80%;
     }
-    
-    .cards{
+
+    .cards {
         width: 20%;
         display: inline-block;
         margin-left: 7%;
@@ -150,37 +160,36 @@ display: inline-block;
         font-size: 12px;
         border-radius: 10px;
     }
-    
-    .allcards{
+
+    .allcards {
         width: 100%;
         color: black;
     }
-    
-    .divcardname{
+
+    .divcardname {
         height: 25%;
     }
-    
-    .cardname1{
+
+    .cardname1 {
         font-size: 14px;
         font-weight: bold;
     }
-    
-    .cardname{
+
+    .cardname {
         font-size: 10px;
         font-weight: bold;
     }
-    
-    .divdetailname{
+
+    .divdetailname {
         font-size: 10px;
     }
 
-    .cardname a:link{
+    .cardname a {
         font-size: 10px;
         color: black;
-    
     }
-    
-    .finaliselunch{
+
+    .finaliselunch {
         padding: 2%;
         margin: 5%;
         font-size: 20px;
@@ -191,6 +200,13 @@ display: inline-block;
         background-color: grey;
         border-radius: 10px;
     }
-    
 
+    .cards:hover {
+        background-color: #ebebeb;
+        cursor: pointer;
+    }
+
+    .active {
+        background-color: #d1f4d1;
+    }
 }
