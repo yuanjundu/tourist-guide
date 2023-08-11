@@ -90,13 +90,13 @@ const History = () => {
                         <button className={styles.deleteButton} onClick={() => handleDelete(itinerary.id)}>Delete</button>
                         <button className={styles.shareButton} onClick={() => handleShare(itinerary.id)}>Share</button>
                     </h2>
-                    {length = (itinerary.morning_attractions.length+itinerary.afternoon_attractions.length-1)}
+                    
                     <div className={styles.attractionSection}>
                         <h3>Morning Attractions:</h3>
                         {itinerary.morning_attractions?.map((attraction, index) => (
                             <div>
                                 <p key={index}>{attraction.name}</p>
-                                <p className={styles.time}>{time[length][index]}</p>
+                                <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index]}</p>
                             </div>
                         ))}
 
@@ -104,21 +104,21 @@ const History = () => {
                     <div className={styles.attractionSection}>
                         <h3>Lunch Restaurant:</h3>
                         <p>{itinerary.lunch_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][midPoint]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][midPoint]}</p>
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Afternoon Attractions:</h3>
                         {itinerary.afternoon_attractions?.map((attraction, index) => (
                             <div>
                                 <p key={index}>{attraction.name}</p>
-                                <p className={styles.time}>{time[length][index+midPoint+1]}</p>
+                                <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+midPoint+1]}</p>
                             </div>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Dinner Restaurant:</h3>
                         <p>{itinerary.dinner_restaurant?.name}</p>
-                        <p className={styles.time}>{time[length][length+2]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][length+2]}</p>
                     </div>
                 </div>
             ))}
