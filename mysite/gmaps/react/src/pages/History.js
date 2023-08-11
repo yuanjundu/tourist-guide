@@ -9,8 +9,8 @@ import { refreshToken } from '../components/refreshToken';
 const History = () => {
     const [history, setHistory] = useState([]);
     const time = [["10:00-12:00","13:00-14:00","20:00-21:00"],["10:00-12:00","13:00-15:00","16:00-19:00","20:00-21:00"],["10:00-12:00","13:00-14:00","15:00-17:00","18:00-20:00","21:00-22:00"],["9:00-11:00","12:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"],["9:00-10:00","11:00-12:00","13:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"]];
-    const midPoint = Math.floor(length / 2);
-    console.log(history);
+    
+    
 
     useEffect(() => {
         const fetchHistory = async () => {
@@ -104,21 +104,21 @@ const History = () => {
                     <div className={styles.attractionSection}>
                         <h3>Lunch Restaurant:</h3>
                         <p>{itinerary.lunch_restaurant?.name}</p>
-                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][midPoint]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][(Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2))]}</p>
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Afternoon Attractions:</h3>
                         {itinerary.afternoon_attractions?.map((attraction, index) => (
                             <div>
                                 <p key={index}>{attraction.name}</p>
-                                <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+midPoint+1]}</p>
+                                <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+(Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2))+1]}</p>
                             </div>
                         ))}
                     </div>
                     <div className={styles.attractionSection}>
                         <h3>Dinner Restaurant:</h3>
                         <p>{itinerary.dinner_restaurant?.name}</p>
-                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][length+2]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1+2]}</p>
                     </div>
                 </div>
             ))}
