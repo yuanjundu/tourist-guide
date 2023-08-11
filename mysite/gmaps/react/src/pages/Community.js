@@ -14,7 +14,7 @@ const Community = () => {
     const comparedUserId = JSON.parse(localStorage.getItem('userId'))
     const local = "http://localhost:8000";
     const time = [["10:00-12:00","13:00-14:00","20:00-21:00"],["10:00-12:00","13:00-15:00","16:00-19:00","20:00-21:00"],["10:00-12:00","13:00-14:00","15:00-17:00","18:00-20:00","21:00-22:00"],["9:00-11:00","12:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"],["9:00-10:00","11:00-12:00","13:00-14:00","15:00-16:00","17:00-18:00","19:00-20:00","21:00-22:00"]];
-    const midPoint = Math.floor(length / 2);
+    
 
 
 
@@ -142,7 +142,7 @@ const Community = () => {
                     <div className={styles.attractionSection}>
                         <h3 className={styles.sectiondate}>Lunch Restaurant:</h3>
                         <p className={styles.sectiondate}>{itinerary.itinerary.lunch_restaurant?.name}</p>
-                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2)]}</p>
+                        <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][(Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2))]}</p>
                     </div>
 
                     <div className={styles.attractionSection}>
@@ -150,7 +150,7 @@ const Community = () => {
                         {itinerary.itinerary.afternoon_attractions?.map((attraction, index) => (
                             <div>
                             <li className={styles.sectiondate} key={index}>{attraction.name}</li>
-                            <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2)+1]}</p>
+                            <p className={styles.time}>{time[itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1][index+(Math.floor((itinerary.itinerary.morning_attractions.length+itinerary.itinerary.afternoon_attractions.length-1) / 2))+1]}</p>
                             </div>
                         ))}
                     </div>
