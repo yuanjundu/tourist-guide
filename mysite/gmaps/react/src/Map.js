@@ -51,7 +51,7 @@ function Map({ selectedDate, selectedTime, placeDetails, setPlaceDetails, setMap
     
     // Make sure the map is loaded
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "AIzaSyD0DJ6Y_h6dUHAlAyRA82RScpFjrgZgNIM",
+        googleMapsApiKey: "",
         libraries,
     });
 
